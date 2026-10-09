@@ -101,6 +101,18 @@ export function AuthForm({ mode }: Props) {
         )}
       </Pressable>
 
+      {/* --- NOWY KOD: Przycisk zapomniałem hasła (widoczny tylko przy logowaniu) --- */}
+      {isLogin && (
+        <Link href="/(auth)/forgot-password" asChild>
+          <Pressable>
+            <Text style={[styles.link, { marginBottom: 8, marginTop: 16 }]}>
+              {t("auth.forgotPassword")}
+            </Text>
+          </Pressable>
+        </Link>
+      )}
+      {/* --- KONIEC NOWEGO KODU --- */}
+
       <Link href={isLogin ? "/register" : "/login"} style={styles.link}>
         {t(isLogin ? "auth.noAccount" : "auth.haveAccount")}
       </Link>
@@ -128,5 +140,5 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  link: { textAlign: "center", marginTop: 16, color: "#2e7d32" },
+  link: { textAlign: "center", marginTop: 8, color: "#2e7d32" },
 });
