@@ -4,12 +4,22 @@ jest.mock("../../../shared/api/supabase", () => ({
       signUp: jest.fn(),
       signInWithPassword: jest.fn(),
       signOut: jest.fn(),
+      resetPasswordForEmail: jest.fn(),
+      verifyOtp: jest.fn(),
+      updateUser: jest.fn(),
     },
   },
 }));
 
 import { supabase } from "../../../shared/api/supabase";
-import { mapAuthError, signIn, signUp } from "../api/authApi";
+import {
+    mapAuthError,
+    sendPasswordResetCode,
+    signIn,
+    signUp,
+    updatePassword,
+    verifyResetCode,
+} from "../api/authApi";
 
 const mockSignIn = supabase.auth.signInWithPassword as jest.Mock;
 const mockSignUp = supabase.auth.signUp as jest.Mock;
@@ -66,6 +76,50 @@ describe("signIn i signUp", () => {
     expect(await signUp("a@b.pl", "haslo1234")).toEqual({
       ok: false,
       error: "emailTaken",
+    });
+  });
+});
+
+describe("Logika resetowania hasła", () => {
+  afterEach(() => jest.clearAllMocks());
+
+  test("sendPasswordResetCode wywołuje metodę resetPasswordForEmail", async () => {
+    (supabase.auth.resetPasswordForEmail as jest.Mock).mockResolvedValue({
+      error: null,
+    });
+
+    await sendPasswordResetCode("test@example.com");
+
+    expect(supabase.auth.resetPasswordForEmail).toHaveBeenCalledWith(
+      "test@example.com",
+    );
+  });
+
+  test("verifyResetCode weryfikuje kod OTP z odpowiednim typem", async () => {
+    (supabase.auth.verifyOtp as jest.Mock).mockResolvedValue({
+      data: {},
+      error: null,
+    });
+
+    await verifyResetCode("test@example.com", "123456");
+
+    expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({
+      email: "test@example.com",
+      token: "123456",
+      type: "recovery",
+    });
+  });
+
+  test("updatePassword aktualizuje hasło użytkownika", async () => {
+    (supabase.auth.updateUser as jest.Mock).mockResolvedValue({
+      data: {},
+      error: null,
+    });
+
+    await updatePassword("NoweHaslo123!");
+
+    expect(supabase.auth.updateUser).toHaveBeenCalledWith({
+      password: "NoweHaslo123!",
     });
   });
 });

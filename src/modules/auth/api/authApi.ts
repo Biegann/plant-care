@@ -47,3 +47,28 @@ export async function signIn(
 export async function signOut(): Promise<void> {
   await supabase.auth.signOut();
 }
+
+// 1. Prosi Supabase o wysłanie e-maila z 6-cyfrowym kodem
+export const sendPasswordResetCode = async (email: string) => {
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  if (error) throw error;
+};
+
+// 2. Weryfikuje kod wpisany przez użytkownika
+export const verifyResetCode = async (email: string, code: string) => {
+  const { data, error } = await supabase.auth.verifyOtp({
+    email,
+    token: code,
+    type: "recovery", // Ważne: informuje Supabase, że to kod do resetu hasła
+  });
+  if (error) throw error;
+  return data;
+};
+
+// 3. Ustawia nowe hasło (zadziała tylko, jeśli krok 2 przeszedł pomyślnie)
+export const updatePassword = async (newPassword: string) => {
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+  if (error) throw error;
+};
