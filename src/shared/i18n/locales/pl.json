@@ -1,0 +1,24 @@
+{
+  "common": {
+    "email": "E-mail",
+    "password": "Hasło",
+    "loading": "Proszę czekać…"
+  },
+  "auth": {
+    "loginTitle": "Zaloguj się",
+    "registerTitle": "Załóż konto",
+    "login": "Zaloguj",
+    "register": "Zarejestruj",
+    "logout": "Wyloguj",
+    "noAccount": "Nie masz konta? Zarejestruj się",
+    "haveAccount": "Masz już konto? Zaloguj się",
+    "forgotPassword": "Nie pamiętasz hasła?",
+    "errors": {
+      "invalidEmail": "Podaj poprawny adres e-mail",
+      "shortPassword": "Hasło musi mieć co najmniej 8 znaków",
+      "invalidCredentials": "Nieprawidłowy e-mail lub hasło",
+      "emailTaken": "Ten adres e-mail jest już zarejestrowany",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie"
+    }
+  }
+}
