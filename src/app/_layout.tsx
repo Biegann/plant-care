@@ -1,3 +1,4 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -6,6 +7,7 @@ import {
   useAuthInitialized,
   useIsSignedIn,
 } from "../modules/auth/hooks/useSession";
+import { queryClient } from "../shared/api/queryClient";
 import "../shared/i18n";
 
 SplashScreen.preventAutoHideAsync();
@@ -20,14 +22,21 @@ export default function RootLayout() {
     if (initialized) SplashScreen.hideAsync();
   }, [initialized]);
 
+  // po wylogowaniu czyścimy dane pobrane z serwera
+  useEffect(() => {
+    if (initialized && !isSignedIn) queryClient.clear();
+  }, [initialized, isSignedIn]);
+
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={initialized && isSignedIn}>
-        <Stack.Screen name="(app)" />
-      </Stack.Protected>
-      <Stack.Protected guard={initialized && !isSignedIn}>
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={initialized && isSignedIn}>
+          <Stack.Screen name="(app)" />
+        </Stack.Protected>
+        <Stack.Protected guard={initialized && !isSignedIn}>
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+      </Stack>
+    </QueryClientProvider>
   );
 }
