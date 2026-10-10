@@ -13,11 +13,25 @@
     "noAccount": "Don't have an account? Sign up",
     "haveAccount": "Already have an account? Log in",
     "forgotPassword": "Forgot your password?",
+    "forgot": {
+      "title": "Reset password",
+      "intro": "Enter your email address and we'll send you a code to reset your password.",
+      "sendCode": "Send code",
+      "codeSent": "We sent a code to {{email}}. Enter it below and set a new password.",
+      "code": "Code from the email",
+      "newPassword": "New password (min. 8 characters)",
+      "changePassword": "Change password",
+      "changeEmail": "Change email address",
+      "backToLogin": "Back to log in"
+    },
     "errors": {
       "invalidEmail": "Enter a valid email address",
       "shortPassword": "Password must be at least 8 characters",
       "invalidCredentials": "Incorrect email or password",
       "emailTaken": "This email is already registered",
+      "invalidCode": "The code is invalid or has expired",
+      "rateLimited": "Too many attempts. Please try again in a moment",
+      "samePassword": "The new password must be different from the old one",
       "unknown": "Something went wrong. Please try again"
     }
   }

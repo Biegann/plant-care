@@ -13,16 +13,17 @@ jest.mock("../../../shared/api/supabase", () => ({
 
 import { supabase } from "../../../shared/api/supabase";
 import {
-    mapAuthError,
-    sendPasswordResetCode,
-    signIn,
-    signUp,
-    updatePassword,
-    verifyResetCode,
+  mapAuthError,
+  requestPasswordReset,
+  resetPasswordWithCode,
+  signIn,
+  signUp,
 } from "../api/authApi";
+import { useAuthStore } from "../hooks/useSession";
 
-const mockSignIn = supabase.auth.signInWithPassword as jest.Mock;
-const mockSignUp = supabase.auth.signUp as jest.Mock;
+const auth = supabase.auth as unknown as Record<string, jest.Mock>;
+
+afterEach(() => jest.resetAllMocks());
 
 describe("mapAuthError", () => {
   test("błędne dane logowania", () => {
@@ -41,21 +42,38 @@ describe("mapAuthError", () => {
     );
   });
 
+  test("zły lub wygasły kod", () => {
+    expect(mapAuthError({ code: "otp_expired" })).toBe("invalidCode");
+    expect(mapAuthError({ message: "Token has expired or is invalid" })).toBe(
+      "invalidCode",
+    );
+  });
+
+  test("limit wysyłek", () => {
+    expect(mapAuthError({ code: "over_email_send_rate_limit" })).toBe(
+      "rateLimited",
+    );
+  });
+
+  test("to samo hasło", () => {
+    expect(mapAuthError({ code: "same_password" })).toBe("samePassword");
+  });
+
   test("nieznany błąd", () => {
     expect(mapAuthError({ message: "cokolwiek" })).toBe("unknown");
   });
 });
 
 describe("signIn i signUp", () => {
-  afterEach(() => jest.clearAllMocks());
-
   test("signIn zwraca ok, gdy nie ma błędu", async () => {
-    mockSignIn.mockResolvedValue({ error: null });
+    auth.signInWithPassword.mockResolvedValue({ error: null });
     expect(await signIn("a@b.pl", "haslo1234")).toEqual({ ok: true });
   });
 
   test("signIn zwraca kod błędu przy złych danych", async () => {
-    mockSignIn.mockResolvedValue({ error: { code: "invalid_credentials" } });
+    auth.signInWithPassword.mockResolvedValue({
+      error: { code: "invalid_credentials" },
+    });
     expect(await signIn("a@b.pl", "zlehaslo")).toEqual({
       ok: false,
       error: "invalidCredentials",
@@ -63,16 +81,16 @@ describe("signIn i signUp", () => {
   });
 
   test("signIn usuwa spacje z adresu e-mail", async () => {
-    mockSignIn.mockResolvedValue({ error: null });
+    auth.signInWithPassword.mockResolvedValue({ error: null });
     await signIn("  a@b.pl ", "haslo1234");
-    expect(mockSignIn).toHaveBeenCalledWith({
+    expect(auth.signInWithPassword).toHaveBeenCalledWith({
       email: "a@b.pl",
       password: "haslo1234",
     });
   });
 
   test("signUp zwraca emailTaken dla istniejącego konta", async () => {
-    mockSignUp.mockResolvedValue({ error: { code: "user_already_exists" } });
+    auth.signUp.mockResolvedValue({ error: { code: "user_already_exists" } });
     expect(await signUp("a@b.pl", "haslo1234")).toEqual({
       ok: false,
       error: "emailTaken",
@@ -80,46 +98,85 @@ describe("signIn i signUp", () => {
   });
 });
 
-describe("Logika resetowania hasła", () => {
-  afterEach(() => jest.clearAllMocks());
-
-  test("sendPasswordResetCode wywołuje metodę resetPasswordForEmail", async () => {
-    (supabase.auth.resetPasswordForEmail as jest.Mock).mockResolvedValue({
-      error: null,
-    });
-
-    await sendPasswordResetCode("test@example.com");
-
-    expect(supabase.auth.resetPasswordForEmail).toHaveBeenCalledWith(
-      "test@example.com",
-    );
+describe("requestPasswordReset", () => {
+  test("wysyła kod na przycięty adres e-mail", async () => {
+    auth.resetPasswordForEmail.mockResolvedValue({ error: null });
+    expect(await requestPasswordReset("  a@b.pl ")).toEqual({ ok: true });
+    expect(auth.resetPasswordForEmail).toHaveBeenCalledWith("a@b.pl");
   });
 
-  test("verifyResetCode weryfikuje kod OTP z odpowiednim typem", async () => {
-    (supabase.auth.verifyOtp as jest.Mock).mockResolvedValue({
-      data: {},
-      error: null,
+  test("zwraca rateLimited, gdy wysyłek jest za dużo", async () => {
+    auth.resetPasswordForEmail.mockResolvedValue({
+      error: { code: "over_email_send_rate_limit" },
     });
+    expect(await requestPasswordReset("a@b.pl")).toEqual({
+      ok: false,
+      error: "rateLimited",
+    });
+  });
+});
 
-    await verifyResetCode("test@example.com", "123456");
+describe("resetPasswordWithCode", () => {
+  test("weryfikuje kod, a potem zmienia hasło", async () => {
+    auth.verifyOtp.mockResolvedValue({ error: null });
+    auth.updateUser.mockResolvedValue({ error: null });
 
-    expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({
-      email: "test@example.com",
+    const result = await resetPasswordWithCode(
+      " a@b.pl ",
+      " 123456 ",
+      "noweHaslo1",
+    );
+
+    expect(result).toEqual({ ok: true });
+    expect(auth.verifyOtp).toHaveBeenCalledWith({
+      email: "a@b.pl",
       token: "123456",
       type: "recovery",
     });
+    expect(auth.updateUser).toHaveBeenCalledWith({ password: "noweHaslo1" });
   });
 
-  test("updatePassword aktualizuje hasło użytkownika", async () => {
-    (supabase.auth.updateUser as jest.Mock).mockResolvedValue({
-      data: {},
-      error: null,
+  test("na czas operacji ustawia flagę recovering, a po niej ją zeruje", async () => {
+    let recoveringDuringVerify: boolean | undefined;
+    auth.verifyOtp.mockImplementation(async () => {
+      recoveringDuringVerify = useAuthStore.getState().recovering;
+      return { error: null };
     });
+    auth.updateUser.mockResolvedValue({ error: null });
 
-    await updatePassword("NoweHaslo123!");
+    await resetPasswordWithCode("a@b.pl", "123456", "noweHaslo1");
 
-    expect(supabase.auth.updateUser).toHaveBeenCalledWith({
-      password: "NoweHaslo123!",
-    });
+    expect(recoveringDuringVerify).toBe(true);
+    expect(useAuthStore.getState().recovering).toBe(false);
+  });
+
+  test("zły kod: zwraca invalidCode i nie zmienia hasła", async () => {
+    auth.verifyOtp.mockResolvedValue({ error: { code: "otp_expired" } });
+
+    const result = await resetPasswordWithCode(
+      "a@b.pl",
+      "000000",
+      "noweHaslo1",
+    );
+
+    expect(result).toEqual({ ok: false, error: "invalidCode" });
+    expect(auth.updateUser).not.toHaveBeenCalled();
+    expect(useAuthStore.getState().recovering).toBe(false);
+  });
+
+  test("błąd zmiany hasła: wylogowuje i zwraca kod błędu", async () => {
+    auth.verifyOtp.mockResolvedValue({ error: null });
+    auth.updateUser.mockResolvedValue({ error: { code: "same_password" } });
+    auth.signOut.mockResolvedValue({ error: null });
+
+    const result = await resetPasswordWithCode(
+      "a@b.pl",
+      "123456",
+      "stareHaslo1",
+    );
+
+    expect(result).toEqual({ ok: false, error: "samePassword" });
+    expect(auth.signOut).toHaveBeenCalled();
+    expect(useAuthStore.getState().recovering).toBe(false);
   });
 });

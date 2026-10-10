@@ -4,14 +4,14 @@ import { useEffect } from "react";
 import {
   initAuthListener,
   useAuthInitialized,
-  useSession,
+  useIsSignedIn,
 } from "../modules/auth/hooks/useSession";
 import "../shared/i18n";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const session = useSession();
+  const isSignedIn = useIsSignedIn();
   const initialized = useAuthInitialized();
 
   useEffect(() => initAuthListener(), []);
@@ -22,10 +22,10 @@ export default function RootLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={initialized && !!session}>
+      <Stack.Protected guard={initialized && isSignedIn}>
         <Stack.Screen name="(app)" />
       </Stack.Protected>
-      <Stack.Protected guard={initialized && !session}>
+      <Stack.Protected guard={initialized && !isSignedIn}>
         <Stack.Screen name="(auth)" />
       </Stack.Protected>
     </Stack>

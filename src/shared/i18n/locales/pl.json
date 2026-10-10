@@ -13,11 +13,25 @@
     "noAccount": "Nie masz konta? Zarejestruj się",
     "haveAccount": "Masz już konto? Zaloguj się",
     "forgotPassword": "Nie pamiętasz hasła?",
+    "forgot": {
+      "title": "Reset hasła",
+      "intro": "Podaj adres e-mail, a wyślemy Ci kod do zresetowania hasła.",
+      "sendCode": "Wyślij kod",
+      "codeSent": "Wysłaliśmy kod na adres {{email}}. Wpisz go poniżej i ustaw nowe hasło.",
+      "code": "Kod z e-maila",
+      "newPassword": "Nowe hasło (min. 8 znaków)",
+      "changePassword": "Zmień hasło",
+      "changeEmail": "Zmień adres e-mail",
+      "backToLogin": "Wróć do logowania"
+    },
     "errors": {
       "invalidEmail": "Podaj poprawny adres e-mail",
       "shortPassword": "Hasło musi mieć co najmniej 8 znaków",
       "invalidCredentials": "Nieprawidłowy e-mail lub hasło",
       "emailTaken": "Ten adres e-mail jest już zarejestrowany",
+      "invalidCode": "Kod jest nieprawidłowy lub wygasł",
+      "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za chwilę",
+      "samePassword": "Nowe hasło musi być inne niż poprzednie",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
   }

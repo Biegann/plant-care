@@ -5,11 +5,15 @@ import { supabase } from "../../../shared/api/supabase";
 type AuthState = {
   session: Session | null;
   initialized: boolean;
+  // true podczas resetu hasła kodem: użytkownik jest już zalogowany przez Supabase,
+  // ale strażnik tras ma go jeszcze traktować jak niezalogowanego
+  recovering: boolean;
 };
 
 export const useAuthStore = create<AuthState>(() => ({
   session: null,
   initialized: false,
+  recovering: false,
 }));
 
 export function initAuthListener(): () => void {
@@ -27,3 +31,5 @@ export function initAuthListener(): () => void {
 export const useSession = () => useAuthStore((state) => state.session);
 export const useAuthInitialized = () =>
   useAuthStore((state) => state.initialized);
+export const useIsSignedIn = () =>
+  useAuthStore((state) => !!state.session && !state.recovering);

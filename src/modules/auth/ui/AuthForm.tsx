@@ -2,16 +2,16 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Text,
+  TextInput,
 } from "react-native";
 import { signIn, signUp } from "../api/authApi";
 import { CredentialErrors, validateCredentials } from "../validation";
+import { styles } from "./authStyles";
 
 type Props = { mode: "login" | "register" };
 
@@ -101,17 +101,11 @@ export function AuthForm({ mode }: Props) {
         )}
       </Pressable>
 
-      {/* --- NOWY KOD: Przycisk zapomniałem hasła (widoczny tylko przy logowaniu) --- */}
       {isLogin && (
-        <Link href="/(auth)/forgot-password" asChild>
-          <Pressable>
-            <Text style={[styles.link, { marginBottom: 8, marginTop: 16 }]}>
-              {t("auth.forgotPassword")}
-            </Text>
-          </Pressable>
+        <Link href="/forgot-password" style={styles.link}>
+          {t("auth.forgotPassword")}
         </Link>
       )}
-      {/* --- KONIEC NOWEGO KODU --- */}
 
       <Link href={isLogin ? "/register" : "/login"} style={styles.link}>
         {t(isLogin ? "auth.noAccount" : "auth.haveAccount")}
@@ -119,26 +113,3 @@ export function AuthForm({ mode }: Props) {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 24, gap: 12 },
-  title: { fontSize: 28, fontWeight: "700", marginBottom: 12 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-  },
-  error: { color: "#c0392b" },
-  button: {
-    backgroundColor: "#2e7d32",
-    borderRadius: 8,
-    padding: 14,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  link: { textAlign: "center", marginTop: 8, color: "#2e7d32" },
-});
