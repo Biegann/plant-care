@@ -10,3 +10,4 @@
 - [ ] Przełącznik języka PL/EN w ustawieniach aplikacji
 - [ ] Ograniczyć liczbę prób wpisywania kodu zaproszenia (ochrona przed zgadywaniem) i rozważyć dłuższe kody
 - [ ] Dodać przekazywanie własności ogrodu (funkcja transfer_garden: zmiana ról właściciel/członek)
+- [ ] Ekran powitalny przy pierwszym uruchomieniu (zamiast pustej zakładki Ogrody)

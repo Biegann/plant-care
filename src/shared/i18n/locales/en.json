@@ -1,4 +1,13 @@
 {
+  "tabs": { "gardens": "Gardens", "profile": "Profile" },
+  "profile": { "title": "Profile", "signedInAs": "Signed in as" },
+  "gardens": {
+    "title": "Gardens",
+    "active": "Active",
+    "loading": "Loading…",
+    "empty": "You don't have a garden yet",
+    "error": "Couldn't load your gardens"
+  },
   "common": {
     "email": "Email",
     "password": "Password",

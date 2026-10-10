@@ -1,4 +1,13 @@
 {
+  "tabs": { "gardens": "Ogrody", "profile": "Profil" },
+  "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },
+  "gardens": {
+    "title": "Ogrody",
+    "active": "Aktywny",
+    "loading": "Wczytywanie…",
+    "empty": "Nie masz jeszcze ogrodu",
+    "error": "Nie udało się wczytać ogrodów"
+  },
   "common": {
     "email": "E-mail",
     "password": "Hasło",
