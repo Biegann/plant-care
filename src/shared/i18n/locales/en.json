@@ -4,9 +4,30 @@
   "gardens": {
     "title": "Gardens",
     "active": "Active",
-    "loading": "Loading…",
     "empty": "You don't have a garden yet",
-    "error": "Couldn't load your gardens"
+    "emptyHint": "Create your first one or join with a code from someone else.",
+    "error": "Couldn't load your gardens",
+    "retry": "Try again",
+    "new": "New garden",
+    "join": "Join with a code",
+    "newTitle": "New garden",
+    "joinTitle": "Join a garden",
+    "detailsTitle": "Garden",
+    "nameHint": "Enter a garden name, e.g. Home, Balcony or Allotment.",
+    "namePlaceholder": "Garden name",
+    "create": "Create",
+    "codeHint": "Enter the code you got from the garden's owner.",
+    "codePlaceholder": "Invite code",
+    "joinSubmit": "Join",
+    "role": { "owner": "Owner", "member": "Member" },
+    "errors": {
+      "invalidName": "The garden name must be 1 to 60 characters",
+      "invalidCode": "The code is invalid or has expired",
+      "alreadyMember": "You already belong to this garden",
+      "notAllowed": "You don't have permission to do this",
+      "notAuthenticated": "Please log in again",
+      "unknown": "Something went wrong. Please try again"
+    }
   },
   "common": {
     "email": "Email",

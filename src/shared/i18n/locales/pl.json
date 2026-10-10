@@ -4,14 +4,30 @@
   "gardens": {
     "title": "Ogrody",
     "active": "Aktywny",
-    "loading": "Wczytywanie…",
     "empty": "Nie masz jeszcze ogrodu",
-    "error": "Nie udało się wczytać ogrodów"
-  },
-  "common": {
-    "email": "E-mail",
-    "password": "Hasło",
-    "loading": "Proszę czekać…"
+    "emptyHint": "Utwórz pierwszy albo dołącz kodem od drugiej osoby.",
+    "error": "Nie udało się wczytać ogrodów",
+    "retry": "Spróbuj ponownie",
+    "new": "Nowy ogród",
+    "join": "Dołącz kodem",
+    "newTitle": "Nowy ogród",
+    "joinTitle": "Dołącz do ogrodu",
+    "detailsTitle": "Ogród",
+    "nameHint": "Podaj nazwę ogrodu, np. Dom, Balkon albo Działka.",
+    "namePlaceholder": "Nazwa ogrodu",
+    "create": "Utwórz",
+    "codeHint": "Wpisz kod otrzymany od właściciela ogrodu.",
+    "codePlaceholder": "Kod zaproszenia",
+    "joinSubmit": "Dołącz",
+    "role": { "owner": "Właściciel", "member": "Członek" },
+    "errors": {
+      "invalidName": "Nazwa ogrodu musi mieć od 1 do 60 znaków",
+      "invalidCode": "Kod jest nieprawidłowy lub wygasł",
+      "alreadyMember": "Już należysz do tego ogrodu",
+      "notAllowed": "Nie masz uprawnień do tej operacji",
+      "notAuthenticated": "Zaloguj się ponownie",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie"
+    }
   },
   "auth": {
     "loginTitle": "Zaloguj się",
