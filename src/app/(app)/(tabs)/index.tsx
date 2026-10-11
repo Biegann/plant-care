@@ -1,5 +1,5 @@
-import { GardensList } from "../../../modules/garden/ui/GardensList";
+import { PlantsList } from "../../../modules/plants/ui/PlantsList";
 
-export default function GardensTab() {
-  return <GardensList />;
+export default function PlantsTab() {
+  return <PlantsList />;
 }

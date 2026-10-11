@@ -19,6 +19,14 @@ export default function AppLayout() {
         name="garden/[id]"
         options={{ title: t("gardens.detailsTitle") }}
       />
+      <Stack.Screen
+        name="plant/new"
+        options={{ title: t("plants.newTitle") }}
+      />
+      <Stack.Screen
+        name="plant/[id]"
+        options={{ title: t("plants.detailsTitle") }}
+      />
     </Stack>
   );
 }

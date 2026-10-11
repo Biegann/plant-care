@@ -11,3 +11,4 @@
 - [ ] Ograniczyć liczbę prób wpisywania kodu zaproszenia (ochrona przed zgadywaniem) i rozważyć dłuższe kody
 - [ ] Dodać przekazywanie własności ogrodu (funkcja transfer_garden: zmiana ról właściciel/członek)
 - [ ] Ekran powitalny przy pierwszym uruchomieniu (zamiast pustej zakładki Ogrody)
+- [ ] Skonfigurować uprawnienia aparatu i zdjęć w app.json (plugin expo-image-picker) przed pierwszą wersją instalacyjną

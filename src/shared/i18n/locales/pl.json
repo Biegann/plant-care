@@ -1,5 +1,19 @@
 {
-  "tabs": { "gardens": "Ogrody", "profile": "Profil" },
+  "plants": {
+    "title": "Rośliny",
+    "searchPlaceholder": "Szukaj rośliny",
+    "needGarden": "Najpierw utwórz ogród lub dołącz do istniejącego.",
+    "goToGardens": "Przejdź do ogrodów",
+    "empty": "W tym ogrodzie nie ma jeszcze roślin",
+    "emptyHint": "Dotknij +, aby dodać pierwszą.",
+    "noResults": "Brak wyników dla „{{query}}”",
+    "error": "Nie udało się wczytać roślin",
+    "retry": "Spróbuj ponownie",
+    "add": "Dodaj roślinę",
+    "newTitle": "Nowa roślina",
+    "detailsTitle": "Roślina"
+  },
+  "tabs": { "plants": "Rośliny", "gardens": "Ogrody", "profile": "Profil" },
   "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },
   "gardens": {
     "rename": "Zmień nazwę",

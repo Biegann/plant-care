@@ -12,9 +12,18 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t("tabs.gardens"),
+          title: t("tabs.plants"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="leaf-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="gardens"
+        options={{
+          title: t("tabs.gardens"),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" color={color} size={size} />
           ),
         }}
       />

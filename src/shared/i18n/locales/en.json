@@ -1,5 +1,19 @@
 {
-  "tabs": { "gardens": "Gardens", "profile": "Profile" },
+  "plants": {
+    "title": "Plants",
+    "searchPlaceholder": "Search plants",
+    "needGarden": "First create a garden or join an existing one.",
+    "goToGardens": "Go to gardens",
+    "empty": "There are no plants in this garden yet",
+    "emptyHint": "Tap + to add the first one.",
+    "noResults": "No results for \"{{query}}\"",
+    "error": "Couldn't load plants",
+    "retry": "Try again",
+    "add": "Add plant",
+    "newTitle": "New plant",
+    "detailsTitle": "Plant"
+  },
+  "tabs": { "plants": "Plants", "gardens": "Gardens", "profile": "Profile" },
   "profile": { "title": "Profile", "signedInAs": "Signed in as" },
   "gardens": {
     "rename": "Rename",
