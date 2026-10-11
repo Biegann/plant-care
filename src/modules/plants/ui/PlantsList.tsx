@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import { Screen } from "../../../shared/ui/Screen";
 import { ui } from "../../../shared/ui/styles";
+import { useCareTasks } from "../../care-schedule/hooks/useCareTasks";
+import { plantIdsNeedingCare, todayIso } from "../../care-schedule/schedule";
 import { useActiveGarden } from "../../garden/hooks/useActiveGarden";
 import { filterPlants } from "../filter";
 import { usePlants } from "../hooks/usePlants";
@@ -23,7 +25,10 @@ export function PlantsList() {
   const router = useRouter();
   const { garden, isLoading: gardenLoading } = useActiveGarden();
   const plantsQuery = usePlants(garden?.id);
+  const careQuery = useCareTasks(garden?.id);
   const [query, setQuery] = useState("");
+
+  const needingCare = plantIdsNeedingCare(careQuery.data ?? [], todayIso());
 
   const plants = plantsQuery.data;
   const visible = useMemo(
@@ -101,6 +106,7 @@ export function PlantsList() {
             renderItem={({ item }) => (
               <PlantRow
                 plant={item}
+                needsCare={needingCare.has(item.id)}
                 onPress={() => router.push(`/plant/${item.id}`)}
               />
             )}

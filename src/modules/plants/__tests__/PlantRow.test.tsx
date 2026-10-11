@@ -1,4 +1,7 @@
 jest.mock("@expo/vector-icons", () => ({ Ionicons: () => null }));
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
 jest.mock("../hooks/usePlantPhotoUrl", () => ({ usePlantPhotoUrl: jest.fn() }));
 
 import { fireEvent, render } from "@testing-library/react-native";
@@ -56,6 +59,17 @@ describe("PlantRow", () => {
     await fireEvent.press(utils.getByTestId("plant-p1"));
 
     expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  test("znacznik opieki pokazuje się tylko przy roślinie wymagającej opieki", async () => {
+    mockPhoto.mockReturnValue(null);
+    const needing = await render(
+      <PlantRow plant={plant()} needsCare onPress={jest.fn()} />,
+    );
+    expect(needing.getByTestId("plant-care-marker-p1")).toBeTruthy();
+
+    const fine = await render(<PlantRow plant={plant()} onPress={jest.fn()} />);
+    expect(fine.queryByTestId("plant-care-marker-p1")).toBeNull();
   });
 
   test("zdjęcie pokazuje się tylko, gdy jest link", async () => {

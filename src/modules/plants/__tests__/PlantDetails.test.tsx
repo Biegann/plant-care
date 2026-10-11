@@ -16,6 +16,9 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 jest.mock("@expo/vector-icons", () => ({ Ionicons: () => null }));
+jest.mock("../../care-schedule/ui/CareSection", () => ({
+  CareSection: () => null,
+}));
 jest.mock("../hooks/usePlant", () => ({ usePlant: jest.fn() }));
 jest.mock("../hooks/usePlantPhotoUrl", () => ({
   usePlantPhotoUrl: (path: string | null) => (path ? `signed:${path}` : null),

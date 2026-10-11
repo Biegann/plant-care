@@ -15,11 +15,19 @@ jest.mock("../../garden/hooks/useActiveGarden", () => ({
   useActiveGarden: jest.fn(),
 }));
 jest.mock("../hooks/usePlants", () => ({ usePlants: jest.fn() }));
+jest.mock("../../care-schedule/hooks/useCareTasks", () => ({
+  useCareTasks: jest.fn(),
+}));
+jest.mock("../../care-schedule/schedule", () => ({
+  ...jest.requireActual("../../care-schedule/schedule"),
+  todayIso: () => "2026-10-11",
+}));
 jest.mock("../hooks/usePlantPhotoUrl", () => ({
   usePlantPhotoUrl: () => null,
 }));
 
 import { fireEvent, render } from "@testing-library/react-native";
+import { useCareTasks } from "../../care-schedule/hooks/useCareTasks";
 import { useActiveGarden } from "../../garden/hooks/useActiveGarden";
 import type { Plant } from "../api/plantsApi";
 import { usePlants } from "../hooks/usePlants";
@@ -27,6 +35,7 @@ import { PlantsList } from "../ui/PlantsList";
 
 const mockGarden = useActiveGarden as jest.Mock;
 const mockPlants = usePlants as jest.Mock;
+const mockCare = useCareTasks as jest.Mock;
 
 function plant(
   id: string,
@@ -53,7 +62,9 @@ function setup(options: {
   isPending?: boolean;
   isError?: boolean;
   refetch?: jest.Mock;
+  careTasks?: unknown[];
 }) {
+  mockCare.mockReturnValue({ data: options.careTasks ?? [] });
   mockGarden.mockReturnValue({
     garden:
       "garden" in options
@@ -73,6 +84,21 @@ function setup(options: {
 afterEach(() => jest.resetAllMocks());
 
 describe("PlantsList", () => {
+  test("znacznik opieki jest tylko przy roślinach z zadaniem na dziś lub po terminie", async () => {
+    const utils = await setup({
+      plants: [plant("p1", "Aloes"), plant("p2", "Fikus"), plant("p3", "Hoya")],
+      careTasks: [
+        { plantId: "p1", nextDueOn: "2026-10-09", enabled: true },
+        { plantId: "p2", nextDueOn: "2026-10-20", enabled: true },
+        { plantId: "p3", nextDueOn: "2026-10-01", enabled: false },
+      ],
+    });
+
+    expect(utils.getByTestId("plant-care-marker-p1")).toBeTruthy();
+    expect(utils.queryByTestId("plant-care-marker-p2")).toBeNull();
+    expect(utils.queryByTestId("plant-care-marker-p3")).toBeNull();
+  });
+
   test("ładowanie ogrodu: nie pokazuje nagłówka ani przycisku dodawania", async () => {
     const utils = await setup({ gardenLoading: true });
 

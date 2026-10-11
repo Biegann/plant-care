@@ -55,6 +55,43 @@
       "unknown": "Something went wrong. Try again"
     }
   },
+  "care": {
+    "title": "Care",
+    "empty": "No care tasks",
+    "error": "Couldn't load care tasks",
+    "needsCare": "Needs care",
+    "types": {
+      "water": "Watering",
+      "fertilize": "Fertilizing",
+      "repot": "Repotting"
+    },
+    "everyDay": "every day",
+    "everyDays": "every {{count}} days",
+    "due": {
+      "today": "Due: today",
+      "tomorrow": "Due: tomorrow",
+      "inDays": "Due: in {{count}} days",
+      "overdueOne": "1 day overdue",
+      "overdueMany": "{{count}} days overdue"
+    },
+    "disabled": "Disabled",
+    "done": "Done",
+    "postpone": "Postpone 1 day",
+    "cancel": "Cancel",
+    "early": {
+      "water": "Water ahead of schedule?",
+      "fertilize": "Fertilize ahead of schedule?",
+      "repot": "Repot ahead of schedule?",
+      "other": "Do it ahead of schedule?",
+      "message": "This task is due on {{date}}. If you confirm, the next due date will be {{next}}."
+    },
+    "errors": {
+      "invalidInput": "Check the entered data",
+      "duplicateType": "This plant already has such a task",
+      "notAllowed": "You don't have permission to do this",
+      "unknown": "Something went wrong. Try again"
+    }
+  },
   "tabs": { "plants": "Plants", "gardens": "Gardens", "profile": "Profile" },
   "profile": { "title": "Profile", "signedInAs": "Signed in as" },
   "gardens": {

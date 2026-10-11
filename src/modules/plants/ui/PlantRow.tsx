@@ -1,11 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import type { Plant } from "../api/plantsApi";
 import { usePlantPhotoUrl } from "../hooks/usePlantPhotoUrl";
 
-type Props = { plant: Plant; onPress: () => void };
+type Props = {
+  plant: Plant;
+  // Czy roślina ma zadanie opieki na dziś lub po terminie
+  needsCare?: boolean;
+  onPress: () => void;
+};
 
-export function PlantRow({ plant, onPress }: Props) {
+export function PlantRow({ plant, needsCare = false, onPress }: Props) {
+  const { t } = useTranslation();
   const photoUrl = usePlantPhotoUrl(plant.photoPath);
   const subtitle = [plant.speciesName, plant.locationNote]
     .filter(Boolean)
@@ -42,6 +49,14 @@ export function PlantRow({ plant, onPress }: Props) {
           </Text>
         )}
       </View>
+      {needsCare && (
+        <View
+          testID={`plant-care-marker-${plant.id}`}
+          accessibilityLabel={t("care.needsCare")}
+        >
+          <Ionicons name="alert-circle" size={18} color="#e67e22" />
+        </View>
+      )}
       <Ionicons name="chevron-forward" size={18} color="#999" />
     </Pressable>
   );

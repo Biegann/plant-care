@@ -55,6 +55,43 @@
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
   },
+  "care": {
+    "title": "Opieka",
+    "empty": "Brak zadań opieki",
+    "error": "Nie udało się wczytać zadań opieki",
+    "needsCare": "Wymaga opieki",
+    "types": {
+      "water": "Podlewanie",
+      "fertilize": "Nawożenie",
+      "repot": "Przesadzanie"
+    },
+    "everyDay": "codziennie",
+    "everyDays": "co {{count}} dni",
+    "due": {
+      "today": "Termin: dziś",
+      "tomorrow": "Termin: jutro",
+      "inDays": "Termin: za {{count}} dni",
+      "overdueOne": "1 dzień po terminie",
+      "overdueMany": "{{count}} dni po terminie"
+    },
+    "disabled": "Wyłączone",
+    "done": "Zrobione",
+    "postpone": "Odłóż o 1 dzień",
+    "cancel": "Anuluj",
+    "early": {
+      "water": "Podlać przed terminem?",
+      "fertilize": "Nawieźć przed terminem?",
+      "repot": "Przesadzić przed terminem?",
+      "other": "Wykonać przed terminem?",
+      "message": "Termin tego zadania to {{date}}. Po potwierdzeniu następny termin wypadnie {{next}}."
+    },
+    "errors": {
+      "invalidInput": "Sprawdź wpisane dane",
+      "duplicateType": "Ta roślina ma już takie zadanie",
+      "notAllowed": "Nie masz uprawnień do tej operacji",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie"
+    }
+  },
   "tabs": { "plants": "Rośliny", "gardens": "Ogrody", "profile": "Profil" },
   "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },
   "gardens": {
