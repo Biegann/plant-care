@@ -42,4 +42,27 @@ export const ui = StyleSheet.create({
   cardTitle: { fontSize: 16, fontWeight: "600" },
   cardSubtitle: { color: "#666", fontSize: 13 },
   grow: { flex: 1 },
+  sectionTitle: { fontSize: 18, fontWeight: "600", marginTop: 12 },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    paddingVertical: 4,
+  },
+  link: { color: "#2e7d32", fontSize: 15 },
+  dangerLink: { color: "#c0392b", fontSize: 15 },
+  dangerButton: {
+    borderWidth: 1,
+    borderColor: "#c0392b",
+    borderRadius: 8,
+    padding: 14,
+    alignItems: "center",
+  },
+  dangerButtonText: { color: "#c0392b", fontSize: 16, fontWeight: "600" },
+  code: {
+    fontSize: 24,
+    fontWeight: "700",
+    letterSpacing: 2,
+    textAlign: "center",
+  },
 });
