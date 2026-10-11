@@ -10,9 +10,12 @@ export type PickPhotoResult =
   | { status: "denied" }
   | { status: "failed" };
 
+// Po wyborze telefon pokazuje ekran kadrowania do kwadratu.
 // Kompresję robi preparePhoto, więc z telefonu bierzemy zdjęcie w pełnej jakości
 const OPTIONS: ImagePicker.ImagePickerOptions = {
   mediaTypes: ["images"],
+  allowsEditing: true,
+  aspect: [1, 1],
   quality: 1,
 };
 

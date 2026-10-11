@@ -12,6 +12,13 @@
     "add": "Add plant",
     "newTitle": "New plant",
     "detailsTitle": "Plant",
+    "editTitle": "Edit plant",
+    "notFound": "Plant not found",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "deleteTitle": "Delete plant?",
+    "deleteMessage": "\"{{name}}\" will be permanently deleted together with its photo. This cannot be undone.",
     "form": {
       "name": "Name",
       "namePlaceholder": "e.g. Monstera in the living room",
@@ -36,7 +43,7 @@
       "cameraDenied": "No access to the camera. Enable it in your phone settings.",
       "failed": "Couldn't prepare the photo. Try again.",
       "notSavedTitle": "Plant saved",
-      "notSavedMessage": "Couldn't upload the photo. You can add it later by editing the plant.",
+      "notSavedMessage": "The plant is saved, but the photo couldn't be saved. Try again by editing the plant.",
       "ok": "OK"
     },
     "errors": {

@@ -49,6 +49,8 @@ describe("pickPhoto", () => {
     expect(mockPermission).not.toHaveBeenCalled();
     expect(mockLibrary).toHaveBeenCalledWith({
       mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
       quality: 1,
     });
   });

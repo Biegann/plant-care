@@ -1,13 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { PlantDetails } from "../../../modules/plants/ui/PlantDetails";
 
-export default function PlantDetailsPlaceholder() {
+export default function PlantDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-
-  return (
-    <View style={ui.screen}>
-      <Text style={ui.subtitle}>{id}</Text>
-    </View>
-  );
+  return <PlantDetails plantId={id} />;
 }

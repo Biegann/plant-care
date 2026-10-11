@@ -12,6 +12,13 @@
     "add": "Dodaj roślinę",
     "newTitle": "Nowa roślina",
     "detailsTitle": "Roślina",
+    "editTitle": "Edycja rośliny",
+    "notFound": "Nie znaleziono rośliny",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "cancel": "Anuluj",
+    "deleteTitle": "Usunąć roślinę?",
+    "deleteMessage": "Roślina „{{name}}” zostanie trwale usunięta razem ze zdjęciem. Tej operacji nie można cofnąć.",
     "form": {
       "name": "Nazwa",
       "namePlaceholder": "np. Monstera w salonie",
@@ -36,7 +43,7 @@
       "cameraDenied": "Brak dostępu do aparatu. Włącz go w ustawieniach telefonu.",
       "failed": "Nie udało się przygotować zdjęcia. Spróbuj ponownie.",
       "notSavedTitle": "Roślina zapisana",
-      "notSavedMessage": "Nie udało się wysłać zdjęcia. Możesz dodać je później w edycji rośliny.",
+      "notSavedMessage": "Dane rośliny są zapisane, ale nie udało się zapisać zdjęcia. Spróbuj ponownie w edycji rośliny.",
       "ok": "OK"
     },
     "errors": {

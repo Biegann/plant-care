@@ -27,6 +27,10 @@ export default function AppLayout() {
         name="plant/[id]"
         options={{ title: t("plants.detailsTitle") }}
       />
+      <Stack.Screen
+        name="plant/edit/[id]"
+        options={{ title: t("plants.editTitle") }}
+      />
     </Stack>
   );
 }
