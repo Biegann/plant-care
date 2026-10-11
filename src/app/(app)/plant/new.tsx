@@ -1,10 +1,5 @@
-import { Text, View } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { AddPlant } from "../../../modules/plants/ui/AddPlant";
 
-export default function NewPlantPlaceholder() {
-  return (
-    <View style={ui.screen}>
-      <Text style={ui.subtitle}>Formularz pojawi się w następnym kroku</Text>
-    </View>
-  );
+export default function NewPlantScreen() {
+  return <AddPlant />;
 }

@@ -11,7 +11,42 @@
     "retry": "Spróbuj ponownie",
     "add": "Dodaj roślinę",
     "newTitle": "Nowa roślina",
-    "detailsTitle": "Roślina"
+    "detailsTitle": "Roślina",
+    "form": {
+      "name": "Nazwa",
+      "namePlaceholder": "np. Monstera w salonie",
+      "species": "Gatunek",
+      "speciesPlaceholder": "np. Monstera deliciosa",
+      "location": "Lokalizacja",
+      "locationPlaceholder": "np. Salon, parapet",
+      "purchaseDate": "Data zakupu",
+      "pickDate": "Wybierz datę",
+      "clearDate": "Wyczyść datę",
+      "notes": "Notatki",
+      "notesPlaceholder": "Dodatkowe informacje",
+      "save": "Zapisz"
+    },
+    "photo": {
+      "add": "Dodaj zdjęcie",
+      "change": "Zmień zdjęcie",
+      "take": "Zrób zdjęcie",
+      "choose": "Wybierz z galerii",
+      "remove": "Usuń zdjęcie",
+      "cancel": "Anuluj",
+      "cameraDenied": "Brak dostępu do aparatu. Włącz go w ustawieniach telefonu.",
+      "failed": "Nie udało się przygotować zdjęcia. Spróbuj ponownie.",
+      "notSavedTitle": "Roślina zapisana",
+      "notSavedMessage": "Nie udało się wysłać zdjęcia. Możesz dodać je później w edycji rośliny.",
+      "ok": "OK"
+    },
+    "errors": {
+      "invalidName": "Nazwa musi mieć od 1 do 60 znaków",
+      "tooLong": "Tekst jest za długi",
+      "invalidDate": "Nieprawidłowa data",
+      "invalidInput": "Sprawdź wpisane dane",
+      "notAllowed": "Nie masz uprawnień do tej operacji",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie"
+    }
   },
   "tabs": { "plants": "Rośliny", "gardens": "Ogrody", "profile": "Profil" },
   "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },

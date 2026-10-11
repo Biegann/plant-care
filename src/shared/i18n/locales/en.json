@@ -11,7 +11,42 @@
     "retry": "Try again",
     "add": "Add plant",
     "newTitle": "New plant",
-    "detailsTitle": "Plant"
+    "detailsTitle": "Plant",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "e.g. Monstera in the living room",
+      "species": "Species",
+      "speciesPlaceholder": "e.g. Monstera deliciosa",
+      "location": "Location",
+      "locationPlaceholder": "e.g. Living room, windowsill",
+      "purchaseDate": "Purchase date",
+      "pickDate": "Pick a date",
+      "clearDate": "Clear date",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional information",
+      "save": "Save"
+    },
+    "photo": {
+      "add": "Add photo",
+      "change": "Change photo",
+      "take": "Take a photo",
+      "choose": "Choose from gallery",
+      "remove": "Remove photo",
+      "cancel": "Cancel",
+      "cameraDenied": "No access to the camera. Enable it in your phone settings.",
+      "failed": "Couldn't prepare the photo. Try again.",
+      "notSavedTitle": "Plant saved",
+      "notSavedMessage": "Couldn't upload the photo. You can add it later by editing the plant.",
+      "ok": "OK"
+    },
+    "errors": {
+      "invalidName": "Name must be 1 to 60 characters long",
+      "tooLong": "Text is too long",
+      "invalidDate": "Invalid date",
+      "invalidInput": "Check the entered data",
+      "notAllowed": "You don't have permission to do this",
+      "unknown": "Something went wrong. Try again"
+    }
   },
   "tabs": { "plants": "Plants", "gardens": "Gardens", "profile": "Profile" },
   "profile": { "title": "Profile", "signedInAs": "Signed in as" },
