@@ -1,4 +1,23 @@
-import { formatDisplayDate, fromIsoDate, toIsoDate } from "../date";
+import {
+    formatDisplayDate,
+    fromIsoDate,
+    isValidIsoDate,
+    toIsoDate,
+} from "../date";
+
+describe("isValidIsoDate", () => {
+  test("akceptuje prawdziwe daty", () => {
+    expect(isValidIsoDate("2026-03-12")).toBe(true);
+    expect(isValidIsoDate("2024-02-29")).toBe(true);
+  });
+
+  test("odrzuca zły format i nieistniejące daty", () => {
+    expect(isValidIsoDate("12.03.2026")).toBe(false);
+    expect(isValidIsoDate("2026-02-30")).toBe(false);
+    expect(isValidIsoDate("2026-13-01")).toBe(false);
+    expect(isValidIsoDate("")).toBe(false);
+  });
+});
 
 describe("toIsoDate", () => {
   test("dopisuje zera do miesiąca i dnia", () => {

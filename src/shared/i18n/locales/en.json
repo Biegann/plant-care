@@ -27,8 +27,6 @@
       "location": "Location",
       "locationPlaceholder": "e.g. Living room, windowsill",
       "purchaseDate": "Purchase date",
-      "pickDate": "Pick a date",
-      "clearDate": "Clear date",
       "notes": "Notes",
       "notesPlaceholder": "Additional information",
       "save": "Save"
@@ -57,13 +55,28 @@
   },
   "care": {
     "title": "Care",
+    "newTitle": "New task",
+    "editTitle": "Edit task",
+    "add": "Add task",
+    "edit": "Edit task",
+    "notFound": "Task not found",
     "empty": "No care tasks",
     "error": "Couldn't load care tasks",
     "needsCare": "Needs care",
     "types": {
       "water": "Watering",
       "fertilize": "Fertilizing",
-      "repot": "Repotting"
+      "repot": "Repotting",
+      "other": "Other"
+    },
+    "form": {
+      "type": "Type",
+      "label": "Name",
+      "labelPlaceholder": "e.g. Misting leaves",
+      "interval": "Repeat every",
+      "days": "days",
+      "nextDue": "Next due date",
+      "save": "Save"
     },
     "everyDay": "every day",
     "everyDays": "every {{count}} days",
@@ -87,6 +100,9 @@
     },
     "errors": {
       "invalidInput": "Check the entered data",
+      "invalidLabel": "Enter a name (up to 40 characters)",
+      "invalidInterval": "Enter a number of days from 1 to 730",
+      "invalidDate": "Pick a valid date",
       "duplicateType": "This plant already has such a task",
       "notAllowed": "You don't have permission to do this",
       "unknown": "Something went wrong. Try again"
@@ -146,7 +162,9 @@
   "common": {
     "email": "Email",
     "password": "Password",
-    "loading": "Please wait…"
+    "loading": "Please wait…",
+    "pickDate": "Pick a date",
+    "clearDate": "Clear date"
   },
   "auth": {
     "loginTitle": "Log in",

@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { ui } from "../../../shared/ui/styles";
 import { CareSection } from "../../care-schedule/ui/CareSection";
-import { formatDisplayDate } from "../date";
+import { formatDisplayDate } from "../../../shared/utils/date";
 import { usePlant } from "../hooks/usePlant";
 import { usePlantPhotoUrl } from "../hooks/usePlantPhotoUrl";
 import { deletePlantAndRefresh } from "../plantActions";

@@ -1,3 +1,8 @@
+const mockPush = jest.fn();
+
+jest.mock("expo-router", () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, unknown>) =>
@@ -176,5 +181,22 @@ describe("CareSection", () => {
     await fireEvent.press(utils.getByTestId("care-task-done-t1"));
 
     expect(await utils.findByText("care.errors.notAllowed")).toBeTruthy();
+  });
+
+  test("plus: otwiera formularz nowego zadania dla tej rośliny", async () => {
+    const utils = await setup([]);
+    await fireEvent.press(utils.getByTestId("care-add"));
+
+    expect(mockPush).toHaveBeenCalledWith({
+      pathname: "/care/new",
+      params: { plantId: "p1" },
+    });
+  });
+
+  test("ołówek: otwiera edycję zadania", async () => {
+    const utils = await setup([task()]);
+    await fireEvent.press(utils.getByTestId("care-task-edit-t1"));
+
+    expect(mockPush).toHaveBeenCalledWith("/care/edit/t1");
   });
 });

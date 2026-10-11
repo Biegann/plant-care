@@ -5,21 +5,32 @@ import DateTimePicker, {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import { ui } from "../../../shared/ui/styles";
-import { formatDisplayDate, fromIsoDate, toIsoDate } from "../date";
+import { ui } from "./styles";
+import { formatDisplayDate, fromIsoDate, toIsoDate } from "../utils/date";
 
 type Props = {
   // Data jako RRRR-MM-DD albo pusty tekst, gdy nie wybrano
   value: string;
   onChange: (value: string) => void;
+  // Domyślnie pole jest na daty przeszłe (zakup): bez przyszłości, z czyszczeniem
+  allowFuture?: boolean;
+  clearable?: boolean;
+  testIDPrefix?: string;
 };
 
-export function DateField({ value, onChange }: Props) {
+export function DateField({
+  value,
+  onChange,
+  allowFuture = false,
+  clearable = true,
+  testIDPrefix = "date",
+}: Props) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const today = new Date();
   const current = fromIsoDate(value) ?? today;
+  const maximumDate = allowFuture ? undefined : today;
 
   const onPress = () => {
     // Android pokazuje kalendarz jako okno systemowe, iOS jako element na ekranie
@@ -27,7 +38,7 @@ export function DateField({ value, onChange }: Props) {
       DateTimePickerAndroid.open({
         value: current,
         mode: "date",
-        maximumDate: today,
+        maximumDate,
         onValueChange: (_event, date) => onChange(toIsoDate(date)),
       });
     } else {
@@ -38,15 +49,19 @@ export function DateField({ value, onChange }: Props) {
   return (
     <View style={styles.wrapper}>
       <View style={[ui.input, styles.box]}>
-        <Pressable testID="plant-date-open" style={ui.grow} onPress={onPress}>
+        <Pressable
+          testID={`${testIDPrefix}-open`}
+          style={ui.grow}
+          onPress={onPress}
+        >
           <Text style={value ? styles.value : styles.placeholder}>
-            {value ? formatDisplayDate(value) : t("plants.form.pickDate")}
+            {value ? formatDisplayDate(value) : t("common.pickDate")}
           </Text>
         </Pressable>
-        {value !== "" && (
+        {clearable && value !== "" && (
           <Pressable
-            testID="plant-date-clear"
-            accessibilityLabel={t("plants.form.clearDate")}
+            testID={`${testIDPrefix}-clear`}
+            accessibilityLabel={t("common.clearDate")}
             hitSlop={8}
             onPress={() => onChange("")}
           >
@@ -56,11 +71,11 @@ export function DateField({ value, onChange }: Props) {
       </View>
       {open && Platform.OS !== "android" && (
         <DateTimePicker
-          testID="plant-date-picker"
+          testID={`${testIDPrefix}-picker`}
           value={current}
           mode="date"
           display="inline"
-          maximumDate={today}
+          maximumDate={maximumDate}
           onValueChange={(_event, date) => onChange(toIsoDate(date))}
         />
       )}

@@ -31,3 +31,15 @@ export function usePlantCareTasks(plantId: string) {
     refetch: query.refetch,
   };
 }
+
+// Jedno zadanie z aktywnego ogrodu (do ekranu edycji)
+export function useCareTask(taskId: string) {
+  const { garden, isLoading: gardenLoading } = useActiveGarden();
+  const query = useCareTasks(garden?.id);
+
+  return {
+    gardenId: garden?.id,
+    task: (query.data ?? []).find((task) => task.id === taskId) ?? null,
+    isLoading: gardenLoading || (!!garden && query.isPending),
+  };
+}

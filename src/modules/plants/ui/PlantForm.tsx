@@ -25,7 +25,7 @@ import {
     type PlantInput,
     type PlantInputErrors,
 } from "../validation";
-import { DateField } from "./DateField";
+import { DateField } from "../../../shared/ui/DateField";
 import { PhotoField } from "./PhotoField";
 
 type Props = {
@@ -151,7 +151,11 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
 
         <View style={styles.field}>
           <Text style={styles.label}>{t("plants.form.purchaseDate")}</Text>
-          <DateField value={purchaseDate} onChange={setPurchaseDate} />
+          <DateField
+            value={purchaseDate}
+            onChange={setPurchaseDate}
+            testIDPrefix="plant-date"
+          />
           {fieldError(errors.purchaseDate)}
         </View>
 

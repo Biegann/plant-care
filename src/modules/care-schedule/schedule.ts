@@ -1,4 +1,4 @@
-import { toIsoDate } from "../plants/date";
+import { toIsoDate } from "../../shared/utils/date";
 import type { CareType } from "./validation";
 
 // Podpowiadany interwał przy dodawaniu zadania (można go zmienić w formularzu)

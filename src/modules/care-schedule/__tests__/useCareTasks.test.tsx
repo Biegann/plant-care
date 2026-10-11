@@ -9,7 +9,11 @@ import { renderHook, waitFor } from "@testing-library/react-native";
 import type { ReactNode } from "react";
 import { useActiveGarden } from "../../garden/hooks/useActiveGarden";
 import { listCareTasks } from "../api/careApi";
-import { useCareTasks, usePlantCareTasks } from "../hooks/useCareTasks";
+import {
+    useCareTask,
+    useCareTasks,
+    usePlantCareTasks,
+} from "../hooks/useCareTasks";
 
 const mockList = listCareTasks as jest.Mock;
 const mockGarden = useActiveGarden as jest.Mock;
@@ -88,5 +92,31 @@ describe("usePlantCareTasks", () => {
     expect(result.current.tasks).toEqual([]);
     expect(result.current.isLoading).toBe(false);
     expect(mockList).not.toHaveBeenCalled();
+  });
+});
+
+describe("useCareTask", () => {
+  test("zwraca zadanie o podanym id z aktywnego ogrodu", async () => {
+    mockGarden.mockReturnValue({ garden: { id: "g1" }, isLoading: false });
+    mockList.mockResolvedValue({ ok: true, data: tasks });
+
+    const { result } = await renderHook(() => useCareTask("t3"), {
+      wrapper: createWrapper(),
+    });
+
+    await waitFor(() => expect(result.current.task).toEqual(tasks[2]));
+    expect(result.current.gardenId).toBe("g1");
+  });
+
+  test("nieznane id: brak zadania po wczytaniu", async () => {
+    mockGarden.mockReturnValue({ garden: { id: "g1" }, isLoading: false });
+    mockList.mockResolvedValue({ ok: true, data: tasks });
+
+    const { result } = await renderHook(() => useCareTask("nie-ma"), {
+      wrapper: createWrapper(),
+    });
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.task).toBeNull();
   });
 });

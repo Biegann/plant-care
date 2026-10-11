@@ -1,8 +1,17 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native";
+import {
+    ActivityIndicator,
+    Alert,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 import { ui } from "../../../shared/ui/styles";
-import { formatDisplayDate } from "../../plants/date";
+import { formatDisplayDate } from "../../../shared/utils/date";
 import type { CareResult, CareTask } from "../api/careApi";
 import {
     completeCareTaskAndRefresh,
@@ -21,6 +30,7 @@ type TaskAction = (
 // Sekcja "Opieka" na karcie rośliny: zadania z terminami i szybkimi akcjami
 export function CareSection({ plantId }: { plantId: string }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const { gardenId, tasks, isLoading, isError } = usePlantCareTasks(plantId);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [errorKey, setErrorKey] = useState<string | null>(null);
@@ -60,7 +70,19 @@ export function CareSection({ plantId }: { plantId: string }) {
 
   return (
     <View style={styles.section}>
-      <Text style={ui.sectionTitle}>{t("care.title")}</Text>
+      <View style={styles.header}>
+        <Text style={[ui.sectionTitle, ui.grow]}>{t("care.title")}</Text>
+        <Pressable
+          testID="care-add"
+          accessibilityLabel={t("care.add")}
+          hitSlop={8}
+          onPress={() =>
+            router.push({ pathname: "/care/new", params: { plantId } })
+          }
+        >
+          <Ionicons name="add-circle-outline" size={26} color="#2e7d32" />
+        </Pressable>
+      </View>
       {errorKey && <Text style={ui.error}>{t(`care.errors.${errorKey}`)}</Text>}
 
       {isLoading ? (
@@ -78,6 +100,7 @@ export function CareSection({ plantId }: { plantId: string }) {
             busy={busyId !== null}
             onDone={() => complete(task)}
             onPostpone={() => run(task, postponeCareTaskAndRefresh)}
+            onEdit={() => router.push(`/care/edit/${task.id}`)}
           />
         ))
       )}
@@ -87,4 +110,5 @@ export function CareSection({ plantId }: { plantId: string }) {
 
 const styles = StyleSheet.create({
   section: { gap: 8 },
+  header: { flexDirection: "row", alignItems: "flex-end", gap: 8 },
 });

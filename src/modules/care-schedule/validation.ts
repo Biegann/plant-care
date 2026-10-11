@@ -1,4 +1,4 @@
-import { isValidIsoDate } from "../plants/validation";
+import { isValidIsoDate } from "../../shared/utils/date";
 
 export type CareType = "water" | "fertilize" | "repot" | "other";
 export const CARE_TYPES: CareType[] = ["water", "fertilize", "repot", "other"];

@@ -15,7 +15,7 @@ jest.mock("@react-native-community/datetimepicker", () => {
 
 import { fireEvent, render } from "@testing-library/react-native";
 import { Platform } from "react-native";
-import { DateField } from "../ui/DateField";
+import { DateField } from "../DateField";
 
 const onChange = jest.fn();
 const originalOS = Platform.OS;
@@ -29,8 +29,8 @@ describe("DateField", () => {
   test("bez daty: pokazuje zachętę i nie ma przycisku czyszczenia", async () => {
     const utils = await render(<DateField value="" onChange={onChange} />);
 
-    expect(utils.getByText("plants.form.pickDate")).toBeTruthy();
-    expect(utils.queryByTestId("plant-date-clear")).toBeNull();
+    expect(utils.getByText("common.pickDate")).toBeTruthy();
+    expect(utils.queryByTestId("date-clear")).toBeNull();
   });
 
   test("z datą: pokazuje ją jako DD.MM.RRRR", async () => {
@@ -45,7 +45,7 @@ describe("DateField", () => {
     const utils = await render(
       <DateField value="2026-03-09" onChange={onChange} />,
     );
-    await fireEvent.press(utils.getByTestId("plant-date-clear"));
+    await fireEvent.press(utils.getByTestId("date-clear"));
 
     expect(onChange).toHaveBeenCalledWith("");
   });
@@ -55,7 +55,7 @@ describe("DateField", () => {
     const utils = await render(
       <DateField value="2026-03-09" onChange={onChange} />,
     );
-    await fireEvent.press(utils.getByTestId("plant-date-open"));
+    await fireEvent.press(utils.getByTestId("date-open"));
 
     const options = mockOpen.mock.calls[0][0];
     expect(options.mode).toBe("date");
@@ -69,11 +69,11 @@ describe("DateField", () => {
   test("iOS: pokazuje kalendarz na ekranie i zgłasza wybraną datę", async () => {
     Platform.OS = "ios";
     const utils = await render(<DateField value="" onChange={onChange} />);
-    expect(utils.queryByTestId("plant-date-picker")).toBeNull();
+    expect(utils.queryByTestId("date-picker")).toBeNull();
 
-    await fireEvent.press(utils.getByTestId("plant-date-open"));
+    await fireEvent.press(utils.getByTestId("date-open"));
     await fireEvent(
-      utils.getByTestId("plant-date-picker"),
+      utils.getByTestId("date-picker"),
       "valueChange",
       {},
       new Date(2026, 4, 2),

@@ -1,5 +1,5 @@
 import { supabase } from "../../../shared/api/supabase";
-import { isValidIsoDate } from "../../plants/validation";
+import { isValidIsoDate } from "../../../shared/utils/date";
 import {
     normalizeCareTaskInput,
     validateCareTaskInput,

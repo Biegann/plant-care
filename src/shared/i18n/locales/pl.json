@@ -27,8 +27,6 @@
       "location": "Lokalizacja",
       "locationPlaceholder": "np. Salon, parapet",
       "purchaseDate": "Data zakupu",
-      "pickDate": "Wybierz datę",
-      "clearDate": "Wyczyść datę",
       "notes": "Notatki",
       "notesPlaceholder": "Dodatkowe informacje",
       "save": "Zapisz"
@@ -57,13 +55,28 @@
   },
   "care": {
     "title": "Opieka",
+    "newTitle": "Nowe zadanie",
+    "editTitle": "Edycja zadania",
+    "add": "Dodaj zadanie",
+    "edit": "Edytuj zadanie",
+    "notFound": "Nie znaleziono zadania",
     "empty": "Brak zadań opieki",
     "error": "Nie udało się wczytać zadań opieki",
     "needsCare": "Wymaga opieki",
     "types": {
       "water": "Podlewanie",
       "fertilize": "Nawożenie",
-      "repot": "Przesadzanie"
+      "repot": "Przesadzanie",
+      "other": "Inne"
+    },
+    "form": {
+      "type": "Rodzaj",
+      "label": "Nazwa",
+      "labelPlaceholder": "np. Zraszanie liści",
+      "interval": "Powtarzaj co",
+      "days": "dni",
+      "nextDue": "Najbliższy termin",
+      "save": "Zapisz"
     },
     "everyDay": "codziennie",
     "everyDays": "co {{count}} dni",
@@ -87,10 +100,20 @@
     },
     "errors": {
       "invalidInput": "Sprawdź wpisane dane",
+      "invalidLabel": "Wpisz nazwę (do 40 znaków)",
+      "invalidInterval": "Wpisz liczbę dni od 1 do 730",
+      "invalidDate": "Wybierz poprawną datę",
       "duplicateType": "Ta roślina ma już takie zadanie",
       "notAllowed": "Nie masz uprawnień do tej operacji",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
+  },
+  "common": {
+    "email": "E-mail",
+    "password": "Hasło",
+    "loading": "Proszę czekać…",
+    "pickDate": "Wybierz datę",
+    "clearDate": "Wyczyść datę"
   },
   "tabs": { "plants": "Rośliny", "gardens": "Ogrody", "profile": "Profil" },
   "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },

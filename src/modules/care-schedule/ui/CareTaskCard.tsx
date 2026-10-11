@@ -20,9 +20,17 @@ type Props = {
   busy: boolean;
   onDone: () => void;
   onPostpone: () => void;
+  onEdit: () => void;
 };
 
-export function CareTaskCard({ task, today, busy, onDone, onPostpone }: Props) {
+export function CareTaskCard({
+  task,
+  today,
+  busy,
+  onDone,
+  onPostpone,
+  onEdit,
+}: Props) {
   const { t } = useTranslation();
   const days = daysUntil(task.nextDueOn, today);
   const isDue = days <= 0;
@@ -53,6 +61,15 @@ export function CareTaskCard({ task, today, busy, onDone, onPostpone }: Props) {
           {title}
         </Text>
         <Text style={styles.interval}>{interval}</Text>
+        <Pressable
+          testID={`care-task-edit-${task.id}`}
+          accessibilityLabel={t("care.edit")}
+          hitSlop={8}
+          onPress={onEdit}
+          disabled={busy}
+        >
+          <Ionicons name="create-outline" size={20} color="#2e7d32" />
+        </Pressable>
       </View>
 
       {task.enabled ? (
