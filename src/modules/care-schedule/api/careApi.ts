@@ -133,7 +133,24 @@ export async function updateCareTask(
   return { ok: true, data: null };
 }
 
-// Zmienia sam termin (używane przez "Zrobione" i "Odłóż")
+// "Zrobione": baza w jednym kroku zapisuje wpis w historii i przesuwa termin.
+// Zwraca nowy termin zadania
+export async function completeCareTask(
+  taskId: string,
+  doneOn: string,
+): Promise<CareResult<string>> {
+  if (!isValidIsoDate(doneOn)) return { ok: false, error: "invalidInput" };
+
+  const { data, error } = await supabase.rpc("complete_care_task", {
+    p_task_id: taskId,
+    p_done_on: doneOn,
+  });
+  if (error) return fail(error);
+
+  return { ok: true, data: data as string };
+}
+
+// Zmienia sam termin (używane przez "Odłóż")
 export async function setCareTaskDue(
   taskId: string,
   nextDueOn: string,

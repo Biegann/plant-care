@@ -1,31 +1,38 @@
 jest.mock("../api/careApi", () => ({
+  completeCareTask: jest.fn(),
   createCareTask: jest.fn(),
   updateCareTask: jest.fn(),
   setCareTaskDue: jest.fn(),
   deleteCareTask: jest.fn(),
 }));
+jest.mock("../api/careLogApi", () => ({ deleteCareLogEntry: jest.fn() }));
 
 import { queryClient } from "../../../shared/api/queryClient";
 import {
+    completeCareTask,
     createCareTask,
     deleteCareTask,
     setCareTaskDue,
     updateCareTask,
     type CareTask,
 } from "../api/careApi";
+import { deleteCareLogEntry } from "../api/careLogApi";
 import {
     completeCareTaskAndRefresh,
     createCareTaskAndRefresh,
+    deleteCareLogEntryAndRefresh,
     deleteCareTaskAndRefresh,
     postponeCareTaskAndRefresh,
     updateCareTaskAndRefresh,
 } from "../careActions";
 import type { CareTaskInput } from "../validation";
 
+const mockComplete = completeCareTask as jest.Mock;
 const mockCreate = createCareTask as jest.Mock;
 const mockUpdate = updateCareTask as jest.Mock;
 const mockSetDue = setCareTaskDue as jest.Mock;
 const mockDelete = deleteCareTask as jest.Mock;
+const mockDeleteEntry = deleteCareLogEntry as jest.Mock;
 
 const task = { id: "t1", plantId: "p1", intervalDays: 7 } as CareTask;
 const input: CareTaskInput = {
@@ -36,6 +43,7 @@ const input: CareTaskInput = {
 const ok = { ok: true, data: null };
 const failed = { ok: false, error: "notAllowed" };
 const refreshed = { queryKey: ["care-tasks", "g1"] };
+const logRefreshed = { queryKey: ["care-log", "p1"] };
 
 let invalidate: jest.SpyInstance;
 
@@ -70,13 +78,16 @@ describe("akcje zadań opieki", () => {
     expect(invalidate).toHaveBeenCalledWith(refreshed);
   });
 
-  test("zrobione: ustawia termin na dzień wykonania + interwał", async () => {
-    mockSetDue.mockResolvedValue(ok);
+  test("zrobione: wysyła dzień wykonania, odświeża zadania i historię rośliny", async () => {
+    mockComplete.mockResolvedValue({ ok: true, data: "2026-10-18" });
 
-    await completeCareTaskAndRefresh("g1", task, "2026-10-11");
+    const result = await completeCareTaskAndRefresh("g1", task, "2026-10-11");
 
-    expect(mockSetDue).toHaveBeenCalledWith("t1", "2026-10-18");
+    expect(mockComplete).toHaveBeenCalledWith("t1", "2026-10-11");
+    expect(mockSetDue).not.toHaveBeenCalled();
     expect(invalidate).toHaveBeenCalledWith(refreshed);
+    expect(invalidate).toHaveBeenCalledWith(logRefreshed);
+    expect(result).toEqual({ ok: true, data: "2026-10-18" });
   });
 
   test("odłożenie: ustawia termin na jutro", async () => {
@@ -97,12 +108,33 @@ describe("akcje zadań opieki", () => {
     expect(invalidate).toHaveBeenCalledWith(refreshed);
   });
 
+  test("odłożenie nie tworzy wpisu w historii", async () => {
+    mockSetDue.mockResolvedValue(ok);
+
+    await postponeCareTaskAndRefresh("g1", task, "2026-10-11");
+
+    expect(mockComplete).not.toHaveBeenCalled();
+    expect(invalidate).not.toHaveBeenCalledWith(logRefreshed);
+  });
+
+  test("usunięcie wpisu historii: usuwa i odświeża tylko historię rośliny", async () => {
+    mockDeleteEntry.mockResolvedValue(ok);
+
+    await deleteCareLogEntryAndRefresh("p1", "e1");
+
+    expect(mockDeleteEntry).toHaveBeenCalledWith("e1");
+    expect(invalidate).toHaveBeenCalledWith(logRefreshed);
+    expect(invalidate).not.toHaveBeenCalledWith(refreshed);
+  });
+
   test("błąd: zwraca go i niczego nie odświeża", async () => {
-    mockSetDue.mockResolvedValue(failed);
+    mockComplete.mockResolvedValue(failed);
+    mockDeleteEntry.mockResolvedValue(failed);
 
-    const result = await completeCareTaskAndRefresh("g1", task, "2026-10-11");
-
-    expect(result).toEqual(failed);
+    expect(await completeCareTaskAndRefresh("g1", task, "2026-10-11")).toEqual(
+      failed,
+    );
+    expect(await deleteCareLogEntryAndRefresh("p1", "e1")).toEqual(failed);
     expect(invalidate).not.toHaveBeenCalled();
   });
 });

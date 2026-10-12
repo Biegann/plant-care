@@ -25,7 +25,7 @@ type TaskAction = (
   gardenId: string,
   task: CareTask,
   today: string,
-) => Promise<CareResult>;
+) => Promise<CareResult<unknown>>;
 
 // Sekcja "Opieka" na karcie rośliny: zadania z terminami i szybkimi akcjami
 export function CareSection({ plantId }: { plantId: string }) {

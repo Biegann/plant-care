@@ -1,9 +1,10 @@
 jest.mock("../../../shared/api/supabase", () => ({
-  supabase: { from: jest.fn() },
+  supabase: { from: jest.fn(), rpc: jest.fn() },
 }));
 
 import { supabase } from "../../../shared/api/supabase";
 import {
+    completeCareTask,
     createCareTask,
     deleteCareTask,
     listCareTasks,
@@ -14,7 +15,7 @@ import {
 } from "../api/careApi";
 import type { CareTaskInput } from "../validation";
 
-const db = supabase as unknown as { from: jest.Mock };
+const db = supabase as unknown as { from: jest.Mock; rpc: jest.Mock };
 
 // Udaje łańcuch zapytań Supabase (from().select().eq()...), który na końcu zwraca wynik
 function chain(result: unknown) {
@@ -163,6 +164,37 @@ describe("updateCareTask", () => {
       ok: false,
       error: "notAllowed",
     });
+  });
+});
+
+describe("completeCareTask", () => {
+  test("wywołuje funkcję bazy i zwraca nowy termin", async () => {
+    db.rpc.mockResolvedValue({ data: "2026-10-18", error: null });
+
+    const result = await completeCareTask("t1", "2026-10-11");
+
+    expect(db.rpc).toHaveBeenCalledWith("complete_care_task", {
+      p_task_id: "t1",
+      p_done_on: "2026-10-11",
+    });
+    expect(result).toEqual({ ok: true, data: "2026-10-18" });
+  });
+
+  test("brak dostępu: zwraca notAllowed", async () => {
+    db.rpc.mockResolvedValue({ data: null, error: { code: "42501" } });
+
+    expect(await completeCareTask("t1", "2026-10-11")).toEqual({
+      ok: false,
+      error: "notAllowed",
+    });
+  });
+
+  test("niepoprawna data: nie wysyła nic do bazy", async () => {
+    expect(await completeCareTask("t1", "dziś")).toEqual({
+      ok: false,
+      error: "invalidInput",
+    });
+    expect(db.rpc).not.toHaveBeenCalled();
   });
 });
 

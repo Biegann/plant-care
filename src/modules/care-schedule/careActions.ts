@@ -1,5 +1,6 @@
 import { queryClient } from "../../shared/api/queryClient";
 import {
+    completeCareTask,
     createCareTask,
     deleteCareTask,
     setCareTaskDue,
@@ -7,11 +8,15 @@ import {
     type CareResult,
     type CareTask,
 } from "./api/careApi";
-import { nextDueAfterDone, nextDueAfterPostpone } from "./schedule";
+import { deleteCareLogEntry } from "./api/careLogApi";
+import { nextDueAfterPostpone } from "./schedule";
 import type { CareTaskInput } from "./validation";
 
 const refreshCareTasks = (gardenId: string) =>
   queryClient.invalidateQueries({ queryKey: ["care-tasks", gardenId] });
+
+const refreshCareLog = (plantId: string) =>
+  queryClient.invalidateQueries({ queryKey: ["care-log", plantId] });
 
 async function refreshOnSuccess<T>(
   gardenId: string,
@@ -37,14 +42,17 @@ export async function updateCareTaskAndRefresh(
   return refreshOnSuccess(gardenId, await updateCareTask(taskId, input));
 }
 
-// "Zrobione": następny termin to dzień wykonania + interwał
+// "Zrobione": baza zapisuje wpis w historii i ustawia termin na dzień wykonania + interwał
 export async function completeCareTaskAndRefresh(
   gardenId: string,
   task: CareTask,
   today: string,
-): Promise<CareResult> {
-  const nextDueOn = nextDueAfterDone(today, task.intervalDays);
-  return refreshOnSuccess(gardenId, await setCareTaskDue(task.id, nextDueOn));
+): Promise<CareResult<string>> {
+  const result = await completeCareTask(task.id, today);
+  if (result.ok) {
+    await Promise.all([refreshCareTasks(gardenId), refreshCareLog(task.plantId)]);
+  }
+  return result;
 }
 
 // "Odłóż o 1 dzień": termin przesuwa się na jutro
@@ -62,4 +70,14 @@ export async function deleteCareTaskAndRefresh(
   taskId: string,
 ): Promise<CareResult> {
   return refreshOnSuccess(gardenId, await deleteCareTask(taskId));
+}
+
+// Usuwa wpis z historii; termin zadania zostaje bez zmian
+export async function deleteCareLogEntryAndRefresh(
+  plantId: string,
+  entryId: string,
+): Promise<CareResult> {
+  const result = await deleteCareLogEntry(entryId);
+  if (result.ok) await refreshCareLog(plantId);
+  return result;
 }
