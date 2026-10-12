@@ -81,6 +81,11 @@
       "nextDue": "Najbliższy termin",
       "save": "Zapisz"
     },
+    "history": {
+      "title": "Historia",
+      "empty": "Brak wpisów w historii",
+      "error": "Nie udało się wczytać historii"
+    },
     "everyDay": "codziennie",
     "everyDays": "co {{count}} dni",
     "due": {

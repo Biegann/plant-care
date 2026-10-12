@@ -16,6 +16,9 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 jest.mock("@expo/vector-icons", () => ({ Ionicons: () => null }));
+jest.mock("../../care-schedule/ui/CareHistorySection", () => ({
+  CareHistorySection: () => null,
+}));
 jest.mock("../../care-schedule/ui/CareSection", () => ({
   CareSection: () => null,
 }));

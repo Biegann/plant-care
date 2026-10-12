@@ -13,6 +13,7 @@ import {
     View,
 } from "react-native";
 import { ui } from "../../../shared/ui/styles";
+import { CareHistorySection } from "../../care-schedule/ui/CareHistorySection";
 import { CareSection } from "../../care-schedule/ui/CareSection";
 import { formatDisplayDate } from "../../../shared/utils/date";
 import { usePlant } from "../hooks/usePlant";
@@ -137,6 +138,7 @@ export function PlantDetails({ plantId }: { plantId: string }) {
           )}
 
           <CareSection plantId={plant.id} />
+          <CareHistorySection plantId={plant.id} />
         </View>
       </ScrollView>
     );

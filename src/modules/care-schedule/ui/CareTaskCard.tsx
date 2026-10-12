@@ -6,7 +6,7 @@ import type { CareTask } from "../api/careApi";
 import { daysUntil } from "../schedule";
 import type { CareType } from "../validation";
 
-const ICONS: Record<CareType, ComponentProps<typeof Ionicons>["name"]> = {
+export const CARE_ICONS: Record<CareType, ComponentProps<typeof Ionicons>["name"]> = {
   water: "water-outline",
   fertilize: "flask-outline",
   repot: "flower-outline",
@@ -56,7 +56,7 @@ export function CareTaskCard({
       style={[styles.card, !task.enabled && styles.cardDisabled]}
     >
       <View style={styles.header}>
-        <Ionicons name={ICONS[task.type]} size={20} color="#2e7d32" />
+        <Ionicons name={CARE_ICONS[task.type]} size={20} color="#2e7d32" />
         <Text style={styles.title} numberOfLines={1}>
           {title}
         </Text>
