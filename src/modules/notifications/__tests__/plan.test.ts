@@ -1,5 +1,7 @@
 import {
   buildNotificationPlan,
+  firstPlanDay,
+  notificationDate,
   PLAN_DAYS,
   type NotifiableTask,
 } from "../plan";
@@ -16,6 +18,25 @@ function task(overrides: Partial<NotifiableTask> = {}): NotifiableTask {
 }
 
 const dates = (plan: { date: string }[]) => plan.map((item) => item.date);
+
+describe("notificationDate i firstPlanDay", () => {
+  const time = { hour: 9, minute: 30 };
+
+  test("chwila powiadomienia według czasu telefonu", () => {
+    expect(notificationDate("2026-10-12", time)).toEqual(
+      new Date(2026, 9, 12, 9, 30),
+    );
+  });
+
+  test("przed godziną powiadomienia plan zaczyna się dziś", () => {
+    expect(firstPlanDay(new Date(2026, 9, 12, 9, 29), time)).toBe("2026-10-12");
+  });
+
+  test("o godzinie powiadomienia lub później plan zaczyna się jutro", () => {
+    expect(firstPlanDay(new Date(2026, 9, 12, 9, 30), time)).toBe("2026-10-13");
+    expect(firstPlanDay(new Date(2026, 9, 31, 23, 0), time)).toBe("2026-11-01");
+  });
+});
 
 describe("buildNotificationPlan", () => {
   test("bez zadań: pusty plan", () => {

@@ -1,3 +1,4 @@
+import { toIsoDate } from "../../shared/utils/date";
 import { addDays, daysUntil } from "../care-schedule/schedule";
 import type { CareType } from "../care-schedule/validation";
 
@@ -24,6 +25,23 @@ export type PlannedNotification = {
   // Ile zadań nie zmieściło się na liście
   rest: number;
 };
+
+// Godzina codziennego powiadomienia według czasu telefonu
+export type NotificationTime = { hour: number; minute: number };
+
+// Chwila powiadomienia w danym dniu, według czasu telefonu
+export function notificationDate(date: string, time: NotificationTime): Date {
+  const [year, month, day] = date.split("-").map(Number);
+  return new Date(year, month - 1, day, time.hour, time.minute);
+}
+
+// Pierwszy dzień planu: dziś, a gdy dzisiejsza godzina już minęła, to jutro
+export function firstPlanDay(now: Date, time: NotificationTime): string {
+  const today = toIsoDate(now);
+  return notificationDate(today, time).getTime() > now.getTime()
+    ? today
+    : addDays(today, 1);
+}
 
 // Najpierw najdłużej zaległe, potem alfabetycznie po roślinie
 const byUrgency = (a: NotifiableTask, b: NotifiableTask) =>

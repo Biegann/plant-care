@@ -124,6 +124,13 @@
   },
   "tabs": { "plants": "Plants", "gardens": "Gardens", "profile": "Profile" },
   "profile": { "title": "Profile", "signedInAs": "Signed in as" },
+  "notifications": {
+    "channelName": "Daily reminder",
+    "title_one": "{{count}} care task for today",
+    "title_other": "{{count}} care tasks for today",
+    "bodyWithRest_one": "{{list}} and {{count}} more",
+    "bodyWithRest_other": "{{list}} and {{count}} more"
+  },
   "gardens": {
     "rename": "Rename",
     "save": "Save",

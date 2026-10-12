@@ -131,6 +131,17 @@
   },
   "tabs": { "plants": "Rośliny", "gardens": "Ogrody", "profile": "Profil" },
   "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },
+  "notifications": {
+    "channelName": "Codzienne przypomnienie",
+    "title_one": "{{count}} zadanie opieki na dziś",
+    "title_few": "{{count}} zadania opieki na dziś",
+    "title_many": "{{count}} zadań opieki na dziś",
+    "title_other": "{{count}} zadania opieki na dziś",
+    "bodyWithRest_one": "{{list}} i {{count}} inne",
+    "bodyWithRest_few": "{{list}} i {{count}} inne",
+    "bodyWithRest_many": "{{list}} i {{count}} innych",
+    "bodyWithRest_other": "{{list}} i {{count}} innych"
+  },
   "gardens": {
     "rename": "Zmień nazwę",
     "save": "Zapisz",
