@@ -4,6 +4,10 @@ jest.mock("react-i18next", () => ({
 
 jest.mock("../api/authApi", () => ({ signOut: jest.fn() }));
 
+jest.mock("../../notifications/ui/NotificationSettings", () => ({
+  NotificationSettings: () => null,
+}));
+
 jest.mock("../hooks/useSession", () => ({
   useSession: () => ({ user: { email: "anna@example.com" } }),
 }));

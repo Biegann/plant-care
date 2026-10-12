@@ -7,10 +7,12 @@ import {
   useAuthInitialized,
   useIsSignedIn,
 } from "../modules/auth/hooks/useSession";
+import { initNotificationHandler } from "../modules/notifications/scheduler";
 import { queryClient } from "../shared/api/queryClient";
 import "../shared/i18n";
 
 SplashScreen.preventAutoHideAsync();
+initNotificationHandler();
 
 export default function RootLayout() {
   const isSignedIn = useIsSignedIn();

@@ -126,6 +126,12 @@
   "profile": { "title": "Profile", "signedInAs": "Signed in as" },
   "notifications": {
     "channelName": "Daily reminder",
+    "sectionTitle": "Notifications",
+    "daily": "Daily reminder",
+    "time": "Time",
+    "denied": "Notifications are blocked in your phone settings",
+    "openSettings": "Open settings",
+    "failed": "Couldn't schedule notifications. Try again",
     "title_one": "{{count}} care task for today",
     "title_other": "{{count}} care tasks for today",
     "bodyWithRest_one": "{{list}} and {{count}} more",

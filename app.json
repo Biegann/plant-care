@@ -11,6 +11,7 @@
       "icon": "./assets/expo.icon"
     },
     "android": {
+      "package": "com.plantcare.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -36,11 +37,23 @@
       "expo-sqlite",
       "expo-secure-store",
       "expo-localization",
+      [
+        "expo-notifications",
+        {
+          "color": "#2e7d32"
+        }
+      ],
       "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "cb9c2716-a884-4747-87a3-6702bff7c8e6"
+      }
     }
   }
 }

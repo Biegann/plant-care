@@ -30,13 +30,19 @@ async function ensureChannel(channelName: string) {
   });
 }
 
+// Błędy systemu nie przerywają aplikacji, ale w trybie deweloperskim widać je w terminalu
+const report = (where: string, error: unknown) => {
+  if (__DEV__) console.warn(`[powiadomienia] ${where}:`, error);
+};
+
 const toState = (status: { granted: boolean; canAskAgain: boolean }) =>
   status.granted ? "granted" : status.canAskAgain ? "undetermined" : "denied";
 
 export async function getPermissionState(): Promise<PermissionState> {
   try {
     return toState(await Notifications.getPermissionsAsync());
-  } catch {
+  } catch (error) {
+    report("sprawdzenie zgody", error);
     return "denied";
   }
 }
@@ -48,7 +54,8 @@ export async function requestPermission(
   try {
     await ensureChannel(channelName);
     return toState(await Notifications.requestPermissionsAsync());
-  } catch {
+  } catch (error) {
+    report("prośba o zgodę", error);
     return "denied";
   }
 }
@@ -57,7 +64,8 @@ export async function cancelAllScheduled(): Promise<boolean> {
   try {
     await Notifications.cancelAllScheduledNotificationsAsync();
     return true;
-  } catch {
+  } catch (error) {
+    report("kasowanie", error);
     return false;
   }
 }
@@ -81,7 +89,8 @@ export async function replaceScheduled(
       });
     }
     return true;
-  } catch {
+  } catch (error) {
+    report("planowanie", error);
     return false;
   }
 }

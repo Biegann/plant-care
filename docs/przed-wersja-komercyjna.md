@@ -12,4 +12,7 @@
 - [ ] Dodać przekazywanie własności ogrodu (funkcja transfer_garden: zmiana ról właściciel/członek)
 - [ ] Ekran powitalny przy pierwszym uruchomieniu (zamiast pustej zakładki Ogrody)
 - [ ] Skonfigurować uprawnienia aparatu i zdjęć w app.json (plugin expo-image-picker) przed pierwszą wersją instalacyjną
-- [ ] Przejść z powiadomień lokalnych na serwerowe (push), żeby przypomnienie nie przychodziło, gdy inny członek ogrodu wykonał już zadanie. Wymaga: własnej kompilacji aplikacji zamiast Expo Go (EAS), Firebase dla Androida, tabeli z adresami urządzeń, godziny i strefy czasowej na koncie, funkcji serwerowej uruchamianej cyklicznie w Supabase
+- [ ] Dodać adres i klucz Supabase jako zmienne środowiskowe w EAS: plik `.env` nie trafia do kompilacji w chmurze, więc wersja instalacyjna (inna niż deweloperska) nie połączy się bez nich z bazą
+- [ ] Ustalić ostateczny identyfikator aplikacji na Androida (`android.package` w app.json, teraz roboczo `com.plantcare.app`); po publikacji w sklepie nie da się go zmienić
+- [ ] Własna ikona powiadomień na Androidzie (biała, przezroczyste tło, 96x96) w ustawieniach pluginu expo-notifications
+- [ ] Przejść z powiadomień lokalnych na serwerowe (push), żeby przypomnienie nie przychodziło, gdy inny członek ogrodu wykonał już zadanie. Wymaga: Firebase dla Androida, tabeli z adresami urządzeń, godziny i strefy czasowej na koncie, funkcji serwerowej uruchamianej cyklicznie w Supabase

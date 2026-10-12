@@ -133,6 +133,12 @@
   "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },
   "notifications": {
     "channelName": "Codzienne przypomnienie",
+    "sectionTitle": "Powiadomienia",
+    "daily": "Codzienne przypomnienie",
+    "time": "Godzina",
+    "denied": "Powiadomienia są zablokowane w ustawieniach telefonu",
+    "openSettings": "Otwórz ustawienia",
+    "failed": "Nie udało się zaplanować powiadomień. Spróbuj ponownie",
     "title_one": "{{count}} zadanie opieki na dziś",
     "title_few": "{{count}} zadania opieki na dziś",
     "title_many": "{{count}} zadań opieki na dziś",

@@ -29,6 +29,8 @@ const item = (day: number) => ({
 
 beforeEach(() => {
   Platform.OS = "android";
+  // Błędy systemu są celowo wypisywane w trybie deweloperskim; w testach je wyciszamy
+  jest.spyOn(console, "warn").mockImplementation(() => undefined);
 });
 
 afterEach(() => jest.resetAllMocks());
