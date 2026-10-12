@@ -84,7 +84,13 @@
     "history": {
       "title": "Historia",
       "empty": "Brak wpisów w historii",
-      "error": "Nie udało się wczytać historii"
+      "error": "Nie udało się wczytać historii",
+      "all": "Pokaż całą historię",
+      "screenTitle": "Historia opieki",
+      "titleWithName": "Historia opieki ({{name}})",
+      "delete": "Usuń wpis",
+      "deleteTitle": "Usunąć wpis?",
+      "deleteMessage": "Wpis „{{name}}” z dnia {{date}} zostanie trwale usunięty. Termin zadania się nie zmieni."
     },
     "everyDay": "codziennie",
     "everyDays": "co {{count}} dni",

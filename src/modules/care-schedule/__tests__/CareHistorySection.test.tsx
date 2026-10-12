@@ -1,10 +1,15 @@
+const mockPush = jest.fn();
+
+jest.mock("expo-router", () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 jest.mock("@expo/vector-icons", () => ({ Ionicons: () => null }));
 jest.mock("../hooks/useCareLog", () => ({ useCareLog: jest.fn() }));
 
-import { render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import type { CareLogEntry } from "../api/careLogApi";
 import { useCareLog } from "../hooks/useCareLog";
 import { CareHistorySection } from "../ui/CareHistorySection";
@@ -41,6 +46,18 @@ describe("CareHistorySection", () => {
     const utils = await setup([]);
 
     expect(utils.getByText("care.history.empty")).toBeTruthy();
+    expect(utils.queryByTestId("care-history-all")).toBeNull();
+  });
+
+  test("link przy co najmniej jednym wpisie otwiera pełną historię", async () => {
+    const utils = await setup([entry()]);
+
+    await fireEvent.press(utils.getByTestId("care-history-all"));
+
+    expect(mockPush).toHaveBeenCalledWith({
+      pathname: "/care/history/[plantId]",
+      params: { plantId: "p1" },
+    });
   });
 
   test("błąd wczytywania: pokazuje komunikat", async () => {

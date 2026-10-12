@@ -36,6 +36,10 @@ export default function AppLayout() {
         name="care/edit/[id]"
         options={{ title: t("care.editTitle") }}
       />
+      <Stack.Screen
+        name="care/history/[plantId]"
+        options={{ title: t("care.history.screenTitle") }}
+      />
     </Stack>
   );
 }

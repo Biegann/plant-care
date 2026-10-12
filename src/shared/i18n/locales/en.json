@@ -84,7 +84,13 @@
     "history": {
       "title": "History",
       "empty": "No history entries",
-      "error": "Couldn't load history"
+      "error": "Couldn't load history",
+      "all": "Show full history",
+      "screenTitle": "Care history",
+      "titleWithName": "Care history ({{name}})",
+      "delete": "Delete entry",
+      "deleteTitle": "Delete entry?",
+      "deleteMessage": "The entry “{{name}}” from {{date}} will be permanently deleted. The task's due date won't change."
     },
     "everyDay": "every day",
     "everyDays": "every {{count}} days",

@@ -1,6 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+    ActivityIndicator,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 import { ui } from "../../../shared/ui/styles";
 import { formatDisplayDate } from "../../../shared/utils/date";
 import { useCareLog } from "../hooks/useCareLog";
@@ -12,6 +19,7 @@ export const HISTORY_PREVIEW = 3;
 // Sekcja "Historia" na karcie rośliny: kilka ostatnich wykonanych zadań
 export function CareHistorySection({ plantId }: { plantId: string }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const { data, isLoading, isError } = useCareLog(plantId);
   const entries = (data ?? []).slice(0, HISTORY_PREVIEW);
 
@@ -49,6 +57,21 @@ export function CareHistorySection({ plantId }: { plantId: string }) {
             </Text>
           </View>
         ))
+      )}
+
+      {entries.length > 0 && (
+        <Pressable
+          testID="care-history-all"
+          hitSlop={8}
+          onPress={() =>
+            router.push({
+              pathname: "/care/history/[plantId]",
+              params: { plantId },
+            })
+          }
+        >
+          <Text style={ui.link}>{t("care.history.all")}</Text>
+        </Pressable>
       )}
     </View>
   );
