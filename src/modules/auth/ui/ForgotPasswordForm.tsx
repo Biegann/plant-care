@@ -2,19 +2,22 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    Text,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Text,
 } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
 import { requestPasswordReset, resetPasswordWithCode } from "../api/authApi";
 import { isValidEmail, validateResetInput } from "../validation";
-import { styles } from "./authStyles";
+import { useAuthStyles } from "./authStyles";
+import { useColors } from "../../../shared/ui/theme";
 
 export function ForgotPasswordForm() {
   const { t } = useTranslation();
+  const styles = useAuthStyles();
+  const colors = useColors();
 
   const [step, setStep] = useState<"request" | "confirm">("request");
   const [email, setEmail] = useState("");
@@ -121,7 +124,7 @@ export function ForgotPasswordForm() {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.onPrimary} />
         ) : (
           <Text style={styles.buttonText}>
             {t(

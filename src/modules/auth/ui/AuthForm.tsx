@@ -11,12 +11,15 @@ import {
 import { TextField } from "../../../shared/ui/TextField";
 import { signIn, signUp } from "../api/authApi";
 import { CredentialErrors, validateCredentials } from "../validation";
-import { styles } from "./authStyles";
+import { useAuthStyles } from "./authStyles";
+import { useColors } from "../../../shared/ui/theme";
 
 type Props = { mode: "login" | "register" };
 
 export function AuthForm({ mode }: Props) {
   const { t } = useTranslation();
+  const styles = useAuthStyles();
+  const colors = useColors();
   const isLogin = mode === "login";
 
   const [email, setEmail] = useState("");
@@ -93,7 +96,7 @@ export function AuthForm({ mode }: Props) {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.onPrimary} />
         ) : (
           <Text style={styles.buttonText}>
             {t(isLogin ? "auth.login" : "auth.register")}

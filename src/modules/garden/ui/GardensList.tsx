@@ -2,18 +2,21 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Pressable,
-    ScrollView,
-    Text,
-    View,
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
 } from "react-native";
 import { Screen } from "../../../shared/ui/Screen";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { useColors } from "../../../shared/ui/theme";
 import { useActiveGarden } from "../hooks/useActiveGarden";
 
 export function GardensList() {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
   const router = useRouter();
   const { gardens, garden, setActiveGardenId, isLoading, isError, refetch } =
     useActiveGarden();
@@ -90,7 +93,7 @@ export function GardensList() {
                 <Ionicons
                   name={isActive ? "radio-button-on" : "radio-button-off"}
                   size={22}
-                  color="#2e7d32"
+                  color={colors.primary}
                 />
                 <View style={ui.grow}>
                   <Text style={ui.cardTitle}>{item.name}</Text>
@@ -104,7 +107,11 @@ export function GardensList() {
                 hitSlop={12}
                 onPress={() => router.push(`/garden/${item.id}`)}
               >
-                <Ionicons name="chevron-forward" size={22} color="#666" />
+                <Ionicons
+                  name="chevron-forward"
+                  size={22}
+                  color={colors.textMuted}
+                />
               </Pressable>
             </View>
           );

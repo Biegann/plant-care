@@ -1,19 +1,17 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    ActivityIndicator,
-    Pressable,
-    Text,
-    View,
-} from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { useColors } from "../../../shared/ui/theme";
 import { joinAndActivate } from "../gardenActions";
 import { isValidInviteCode } from "../validation";
 
 export function JoinGardenForm() {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
   const router = useRouter();
 
   const [code, setCode] = useState("");
@@ -58,7 +56,7 @@ export function JoinGardenForm() {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.onPrimary} />
         ) : (
           <Text style={ui.buttonText}>{t("gardens.joinSubmit")}</Text>
         )}

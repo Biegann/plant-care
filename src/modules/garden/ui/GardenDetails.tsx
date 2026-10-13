@@ -2,27 +2,27 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Alert,
-    Pressable,
-    ScrollView,
-    Share,
-    Text,
-    View,
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  ScrollView,
+  Share,
+  Text,
+  View,
 } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
 import { useSession } from "../../auth/hooks/useSession";
 import {
-    createInvite,
-    type GardenMember,
-    type GardenResult,
+  createInvite,
+  type GardenMember,
+  type GardenResult,
 } from "../api/gardenApi";
 import {
-    deleteAndRefresh,
-    leaveAndRefresh,
-    removeMemberAndRefresh,
-    renameAndRefresh,
+  deleteAndRefresh,
+  leaveAndRefresh,
+  removeMemberAndRefresh,
+  renameAndRefresh,
 } from "../gardenManagement";
 import { useGardenMembers } from "../hooks/useGardenMembers";
 import { useGardens } from "../hooks/useGardens";
@@ -30,6 +30,7 @@ import { isValidGardenName } from "../validation";
 
 export function GardenDetails({ gardenId }: { gardenId: string }) {
   const { t } = useTranslation();
+  const ui = useUi();
   const router = useRouter();
   const userId = useSession()?.user.id;
   const gardensQuery = useGardens();
