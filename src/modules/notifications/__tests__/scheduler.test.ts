@@ -1,6 +1,7 @@
 jest.mock("expo-notifications", () => ({
   setNotificationHandler: jest.fn(),
   setNotificationChannelAsync: jest.fn(),
+  deleteNotificationChannelAsync: jest.fn(),
   getPermissionsAsync: jest.fn(),
   requestPermissionsAsync: jest.fn(),
   cancelAllScheduledNotificationsAsync: jest.fn(),
@@ -88,7 +89,14 @@ describe("requestPermission", () => {
     expect(mock.setNotificationChannelAsync).toHaveBeenCalledWith(CHANNEL_ID, {
       name: "Przypomnienie",
       importance: 5,
+      enableVibrate: true,
+      vibrationPattern: [0, 250],
     });
+    // stare kanały znikają z ustawień systemu
+    expect(mock.deleteNotificationChannelAsync.mock.calls).toEqual([
+      ["daily-care"],
+      ["daily-care-v2"],
+    ]);
   });
 
   test("na iOS nie tworzy kanału", async () => {

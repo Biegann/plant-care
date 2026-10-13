@@ -2,8 +2,13 @@ import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import type { NotificationMessage } from "./message";
 
-// Kanał Androida dla codziennego przypomnienia (użytkownik widzi go w ustawieniach systemu)
-export const CHANNEL_ID = "daily-care";
+// Kanał Androida dla codziennego przypomnienia (użytkownik widzi go w ustawieniach systemu).
+// Android pozwala po utworzeniu kanału zmienić tylko jego nazwę, więc zmiana
+// zachowania (np. wibracji) wymaga nowego identyfikatora
+export const CHANNEL_ID = "daily-care-v3";
+const OLD_CHANNEL_IDS = ["daily-care", "daily-care-v2"];
+// przerwa, wibracja (w milisekundach)
+const VIBRATION_PATTERN = [0, 250];
 
 export type PermissionState = "granted" | "denied" | "undetermined";
 
@@ -24,9 +29,14 @@ export function initNotificationHandler() {
 // Na Androidzie 13+ kanał musi istnieć, zanim system zapyta o zgodę
 async function ensureChannel(channelName: string) {
   if (Platform.OS !== "android") return;
+  for (const oldId of OLD_CHANNEL_IDS) {
+    await Notifications.deleteNotificationChannelAsync(oldId);
+  }
   await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
     name: channelName,
     importance: Notifications.AndroidImportance.DEFAULT,
+    enableVibrate: true,
+    vibrationPattern: VIBRATION_PATTERN,
   });
 }
 
