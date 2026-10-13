@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
 import { useActiveGarden } from "../../garden/hooks/useActiveGarden";
 import { usePlantSaved } from "../hooks/usePlantSaved";
 import { createPlantAndRefresh } from "../plantActions";
@@ -8,6 +8,7 @@ import { PlantForm } from "./PlantForm";
 
 export function AddPlant() {
   const { t } = useTranslation();
+  const ui = useUi();
   const onSaved = usePlantSaved();
   const { garden, isLoading } = useActiveGarden();
 

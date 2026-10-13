@@ -2,15 +2,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Image,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { ActionSheet, type SheetAction } from "../../../shared/ui/ActionSheet";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { pickPhoto, type PhotoSource, type PickedPhoto } from "../pickPhoto";
 
 type Props = {
@@ -22,6 +23,9 @@ type Props = {
 
 export function PhotoField({ previewUri, onPicked, onRemoved }: Props) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const [menuOpen, setMenuOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [errorKey, setErrorKey] = useState<"cameraDenied" | "failed" | null>(
@@ -47,7 +51,11 @@ export function PhotoField({ previewUri, onPicked, onRemoved }: Props) {
   };
 
   const actions: SheetAction[] = [
-    { key: "take", label: t("plants.photo.take"), onPress: () => pick("camera") },
+    {
+      key: "take",
+      label: t("plants.photo.take"),
+      onPress: () => pick("camera"),
+    },
     {
       key: "choose",
       label: t("plants.photo.choose"),
@@ -75,7 +83,7 @@ export function PhotoField({ previewUri, onPicked, onRemoved }: Props) {
         disabled={busy}
       >
         {busy ? (
-          <ActivityIndicator color="#2e7d32" />
+          <ActivityIndicator color={colors.primary} />
         ) : previewUri ? (
           <Image
             testID="plant-photo-preview"
@@ -84,7 +92,7 @@ export function PhotoField({ previewUri, onPicked, onRemoved }: Props) {
           />
         ) : (
           <>
-            <Ionicons name="camera-outline" size={28} color="#2e7d32" />
+            <Ionicons name="camera-outline" size={28} color={colors.primary} />
             <Text style={styles.hint}>{t("plants.photo.add")}</Text>
           </>
         )}
@@ -102,20 +110,22 @@ export function PhotoField({ previewUri, onPicked, onRemoved }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: { alignItems: "center", gap: 6 },
-  tile: {
-    width: 128,
-    height: 128,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    backgroundColor: "#f1f8f1",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-    overflow: "hidden",
-  },
-  image: { width: "100%", height: "100%" },
-  hint: { fontSize: 13, color: "#2e7d32" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    wrapper: { alignItems: "center", gap: 6 },
+    tile: {
+      width: 128,
+      height: 128,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: c.inputBorder,
+      backgroundColor: c.surfaceActive,
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 6,
+      overflow: "hidden",
+    },
+    image: { width: "100%", height: "100%" },
+    hint: { fontSize: 13, color: c.primary },
+  }),
+);

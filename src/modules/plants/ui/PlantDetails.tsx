@@ -3,16 +3,17 @@ import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Alert,
-    Image,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { CareHistorySection } from "../../care-schedule/ui/CareHistorySection";
 import { CareSection } from "../../care-schedule/ui/CareSection";
 import { formatDisplayDate } from "../../../shared/utils/date";
@@ -22,6 +23,9 @@ import { deletePlantAndRefresh } from "../plantActions";
 
 export function PlantDetails({ plantId }: { plantId: string }) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const router = useRouter();
   const { plant, isLoading } = usePlant(plantId);
   const photoUrl = usePlantPhotoUrl(plant?.photoPath ?? null);
@@ -63,7 +67,7 @@ export function PlantDetails({ plantId }: { plantId: string }) {
           hitSlop={8}
           onPress={() => router.push(`/plant/edit/${plant.id}`)}
         >
-          <Ionicons name="create-outline" size={24} color="#2e7d32" />
+          <Ionicons name="create-outline" size={24} color={colors.primary} />
         </Pressable>
         <Pressable
           testID="plant-delete"
@@ -71,7 +75,7 @@ export function PlantDetails({ plantId }: { plantId: string }) {
           hitSlop={8}
           onPress={confirmDelete}
         >
-          <Ionicons name="trash-outline" size={24} color="#c0392b" />
+          <Ionicons name="trash-outline" size={24} color={colors.danger} />
         </Pressable>
       </View>
     ) : null;
@@ -103,7 +107,7 @@ export function PlantDetails({ plantId }: { plantId: string }) {
           />
         ) : (
           <View style={[styles.photo, styles.photoEmpty]}>
-            <Ionicons name="leaf" size={64} color="#2e7d32" />
+            <Ionicons name="leaf" size={64} color={colors.primary} />
           </View>
         )}
 
@@ -152,19 +156,21 @@ export function PlantDetails({ plantId }: { plantId: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  headerIcons: { flexDirection: "row", alignItems: "center", gap: 20 },
-  content: { paddingBottom: 32 },
-  photo: { width: "100%", aspectRatio: 1 },
-  photoEmpty: {
-    backgroundColor: "#f1f8f1",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  body: { padding: 24, gap: 12 },
-  species: { fontSize: 16, color: "#666", fontStyle: "italic" },
-  row: { flexDirection: "row", gap: 12 },
-  label: { width: 110, fontSize: 14, color: "#666" },
-  value: { flex: 1, fontSize: 16 },
-  notes: { gap: 4 },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    headerIcons: { flexDirection: "row", alignItems: "center", gap: 20 },
+    content: { paddingBottom: 32 },
+    photo: { width: "100%", aspectRatio: 1 },
+    photoEmpty: {
+      backgroundColor: c.surfaceActive,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    body: { padding: 24, gap: 12 },
+    species: { fontSize: 16, color: c.textMuted, fontStyle: "italic" },
+    row: { flexDirection: "row", gap: 12 },
+    label: { width: 110, fontSize: 14, color: c.textMuted },
+    value: { flex: 1, fontSize: 16, color: c.text },
+    notes: { gap: 4 },
+  }),
+);

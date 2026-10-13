@@ -2,28 +2,29 @@ import { useHeaderHeight } from "expo-router/react-navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import type {
-    PhotoChange,
-    Plant,
-    PlantResult,
-    PlantSaved,
+  PhotoChange,
+  Plant,
+  PlantResult,
+  PlantSaved,
 } from "../api/plantsApi";
 import { usePlantPhotoUrl } from "../hooks/usePlantPhotoUrl";
 import type { PickedPhoto } from "../pickPhoto";
 import {
-    validatePlantInput,
-    type PlantInput,
-    type PlantInputErrors,
+  validatePlantInput,
+  type PlantInput,
+  type PlantInputErrors,
 } from "../validation";
 import { DateField } from "../../../shared/ui/DateField";
 import { PhotoField } from "./PhotoField";
@@ -40,6 +41,9 @@ type Props = {
 
 export function PlantForm({ initial, onSubmit, onSaved }: Props) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const headerHeight = useHeaderHeight();
 
   const [name, setName] = useState(initial?.name ?? "");
@@ -183,7 +187,7 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator color="#fff" />
+            <ActivityIndicator color={colors.onPrimary} />
           ) : (
             <Text style={ui.buttonText}>{t("plants.form.save")}</Text>
           )}
@@ -193,9 +197,11 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: 24, gap: 12 },
-  field: { gap: 4 },
-  label: { fontSize: 13, color: "#666" },
-  notes: { minHeight: 96, textAlignVertical: "top" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    content: { padding: 24, gap: 12 },
+    field: { gap: 4 },
+    label: { fontSize: 13, color: c.textMuted },
+    notes: { minHeight: 96, textAlignVertical: "top" },
+  }),
+);

@@ -1,4 +1,5 @@
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { createThemedStyles } from "./theme";
 
 export type SheetAction = {
   key: string;
@@ -16,6 +17,7 @@ type Props = {
 
 // Panel z opcjami wysuwany od dołu ekranu; zamyka go "Anuluj", dotknięcie tła albo przycisk wstecz
 export function ActionSheet({ visible, actions, cancelLabel, onClose }: Props) {
+  const styles = useStyles();
   return (
     <Modal
       visible={visible}
@@ -55,22 +57,24 @@ export function ActionSheet({ visible, actions, cancelLabel, onClose }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.35)",
-  },
-  sheet: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    paddingTop: 8,
-    paddingBottom: 32,
-  },
-  item: { paddingVertical: 16, paddingHorizontal: 24 },
-  label: { fontSize: 16, color: "#2e7d32" },
-  danger: { color: "#c0392b" },
-  cancel: { borderTopWidth: 1, borderTopColor: "#eee" },
-  cancelLabel: { fontSize: 16, color: "#666" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+      justifyContent: "flex-end",
+      backgroundColor: "rgba(0,0,0,0.35)",
+    },
+    sheet: {
+      backgroundColor: c.surface,
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      paddingTop: 8,
+      paddingBottom: 32,
+    },
+    item: { paddingVertical: 16, paddingHorizontal: 24 },
+    label: { fontSize: 16, color: c.primary },
+    danger: { color: c.danger },
+    cancel: { borderTopWidth: 1, borderTopColor: c.divider },
+    cancelLabel: { fontSize: 16, color: c.textMuted },
+  }),
+);

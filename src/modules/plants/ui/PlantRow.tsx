@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import type { Plant } from "../api/plantsApi";
 import { usePlantPhotoUrl } from "../hooks/usePlantPhotoUrl";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 
 type Props = {
   plant: Plant;
@@ -13,6 +14,8 @@ type Props = {
 
 export function PlantRow({ plant, needsCare = false, onPress }: Props) {
   const { t } = useTranslation();
+  const colors = useColors();
+  const styles = useStyles();
   const photoUrl = usePlantPhotoUrl(plant.photoPath);
   const subtitle = [plant.speciesName, plant.locationNote]
     .filter(Boolean)
@@ -32,7 +35,7 @@ export function PlantRow({ plant, needsCare = false, onPress }: Props) {
         />
       ) : (
         <View style={[styles.thumb, styles.thumbEmpty]}>
-          <Ionicons name="leaf" size={20} color="#2e7d32" />
+          <Ionicons name="leaf" size={20} color={colors.primary} />
         </View>
       )}
       <View style={styles.text}>
@@ -54,31 +57,33 @@ export function PlantRow({ plant, needsCare = false, onPress }: Props) {
           testID={`plant-care-marker-${plant.id}`}
           accessibilityLabel={t("care.needsCare")}
         >
-          <Ionicons name="alert-circle" size={18} color="#e67e22" />
+          <Ionicons name="alert-circle" size={18} color={colors.warning} />
         </View>
       )}
-      <Ionicons name="chevron-forward" size={18} color="#999" />
+      <Ionicons name="chevron-forward" size={18} color={colors.textFaint} />
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#ddd",
-  },
-  thumb: { width: 40, height: 40, borderRadius: 8 },
-  thumbEmpty: {
-    backgroundColor: "#e8f5e9",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: { flex: 1 },
-  name: { fontSize: 15, fontWeight: "600" },
-  subtitle: { fontSize: 12, color: "#666" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+      paddingVertical: 6,
+      paddingHorizontal: 16,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: c.border,
+    },
+    thumb: { width: 40, height: 40, borderRadius: 8 },
+    thumbEmpty: {
+      backgroundColor: c.primaryTint,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    text: { flex: 1 },
+    name: { fontSize: 15, fontWeight: "600", color: c.text },
+    subtitle: { fontSize: 12, color: c.textMuted },
+  }),
+);

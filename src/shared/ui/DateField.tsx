@@ -1,12 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker, {
-    DateTimePickerAndroid,
+  DateTimePickerAndroid,
 } from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import { ui } from "./styles";
+import { useUi } from "./styles";
 import { formatDisplayDate, fromIsoDate, toIsoDate } from "../utils/date";
+import { createThemedStyles, useColors } from "./theme";
 
 type Props = {
   // Data jako RRRR-MM-DD albo pusty tekst, gdy nie wybrano
@@ -26,6 +27,9 @@ export function DateField({
   testIDPrefix = "date",
 }: Props) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const [open, setOpen] = useState(false);
 
   const today = new Date();
@@ -65,7 +69,7 @@ export function DateField({
             hitSlop={8}
             onPress={() => onChange("")}
           >
-            <Ionicons name="close-circle" size={20} color="#888" />
+            <Ionicons name="close-circle" size={20} color={colors.textFaint} />
           </Pressable>
         )}
       </View>
@@ -83,9 +87,11 @@ export function DateField({
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: { gap: 4 },
-  box: { flexDirection: "row", alignItems: "center", gap: 8 },
-  value: { fontSize: 16 },
-  placeholder: { fontSize: 16, color: "#999" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    wrapper: { gap: 4 },
+    box: { flexDirection: "row", alignItems: "center", gap: 8 },
+    value: { fontSize: 16, color: c.text },
+    placeholder: { fontSize: 16, color: c.placeholder },
+  }),
+);

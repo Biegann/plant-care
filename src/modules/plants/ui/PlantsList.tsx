@@ -3,16 +3,17 @@ import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    FlatList,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
 import { Screen } from "../../../shared/ui/Screen";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { useCareTasks } from "../../care-schedule/hooks/useCareTasks";
 import { plantIdsNeedingCare, todayIso } from "../../care-schedule/schedule";
 import { useActiveGarden } from "../../garden/hooks/useActiveGarden";
@@ -22,6 +23,9 @@ import { PlantRow } from "./PlantRow";
 
 export function PlantsList() {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const router = useRouter();
   const { garden, isLoading: gardenLoading } = useActiveGarden();
   const plantsQuery = usePlants(garden?.id);
@@ -88,7 +92,7 @@ export function PlantsList() {
         <>
           {total > 0 && (
             <View style={styles.searchBox}>
-              <Ionicons name="search" size={16} color="#888" />
+              <Ionicons name="search" size={16} color={colors.textFaint} />
               <TextField
                 testID="plant-search"
                 style={styles.searchInput}
@@ -134,51 +138,53 @@ export function PlantsList() {
         style={styles.fab}
         onPress={() => router.push("/plant/new")}
       >
-        <Ionicons name="add" size={28} color="#fff" />
+        <Ionicons name="add" size={28} color={colors.onPrimary} />
       </Pressable>
     </Screen>
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { padding: 0, gap: 0 },
-  header: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 6,
-  },
-  title: { fontSize: 22, fontWeight: "700" },
-  garden: { flex: 1, fontSize: 13, color: "#2e7d32" },
-  searchBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginHorizontal: 16,
-    marginBottom: 6,
-    paddingHorizontal: 10,
-    height: 38,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-  },
-  searchInput: { flex: 1, fontSize: 14, paddingVertical: 0 },
-  listContent: { paddingBottom: 90 },
-  message: { padding: 16, gap: 8 },
-  emptyTitle: { fontSize: 16, fontWeight: "600" },
-  emptyHint: { fontSize: 14, color: "#666" },
-  fab: {
-    position: "absolute",
-    right: 20,
-    bottom: 20,
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: "#2e7d32",
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 4,
-  },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    screen: { padding: 0, gap: 0 },
+    header: {
+      flexDirection: "row",
+      alignItems: "baseline",
+      gap: 8,
+      paddingHorizontal: 16,
+      paddingTop: 8,
+      paddingBottom: 6,
+    },
+    title: { fontSize: 22, fontWeight: "700", color: c.text },
+    garden: { flex: 1, fontSize: 13, color: c.primary },
+    searchBox: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      marginHorizontal: 16,
+      marginBottom: 6,
+      paddingHorizontal: 10,
+      height: 38,
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 8,
+    },
+    searchInput: { flex: 1, fontSize: 14, paddingVertical: 0, color: c.text },
+    listContent: { paddingBottom: 90 },
+    message: { padding: 16, gap: 8 },
+    emptyTitle: { fontSize: 16, fontWeight: "600", color: c.text },
+    emptyHint: { fontSize: 14, color: c.textMuted },
+    fab: {
+      position: "absolute",
+      right: 20,
+      bottom: 20,
+      width: 52,
+      height: 52,
+      borderRadius: 26,
+      backgroundColor: c.primary,
+      alignItems: "center",
+      justifyContent: "center",
+      elevation: 4,
+    },
+  }),
+);
