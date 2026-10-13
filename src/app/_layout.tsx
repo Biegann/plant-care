@@ -6,6 +6,7 @@ import {
   initAuthListener,
   useAuthInitialized,
   useIsSignedIn,
+  useSignedInUserId,
 } from "../modules/auth/hooks/useSession";
 import { useNotificationSync } from "../modules/notifications/hooks/useNotificationSync";
 import { initNotificationHandler } from "../modules/notifications/scheduler";
@@ -17,10 +18,11 @@ initNotificationHandler();
 
 export default function RootLayout() {
   const isSignedIn = useIsSignedIn();
+  const userId = useSignedInUserId();
   const initialized = useAuthInitialized();
 
   useEffect(() => initAuthListener(), []);
-  useNotificationSync(initialized, isSignedIn);
+  useNotificationSync(initialized, userId);
 
   useEffect(() => {
     if (initialized) SplashScreen.hideAsync();

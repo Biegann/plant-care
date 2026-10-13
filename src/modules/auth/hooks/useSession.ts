@@ -33,3 +33,7 @@ export const useAuthInitialized = () =>
   useAuthStore((state) => state.initialized);
 export const useIsSignedIn = () =>
   useAuthStore((state) => !!state.session && !state.recovering);
+export const useSignedInUserId = () =>
+  useAuthStore((state) =>
+    state.session && !state.recovering ? state.session.user.id : null,
+  );
