@@ -8,9 +8,9 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TextInput,
     View,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { ui } from "../../../shared/ui/styles";
 import { DateField } from "../../../shared/ui/DateField";
 import type { CareResult, CareTask } from "../api/careApi";
@@ -151,7 +151,7 @@ export function CareTaskForm({
         {type === "other" && (
           <View style={styles.field}>
             <Text style={styles.label}>{t("care.form.label")}</Text>
-            <TextInput
+            <TextField
               testID="care-label-input"
               style={ui.input}
               placeholder={t("care.form.labelPlaceholder")}
@@ -166,7 +166,7 @@ export function CareTaskForm({
         <View style={styles.field}>
           <Text style={styles.label}>{t("care.form.interval")}</Text>
           <View style={styles.intervalRow}>
-            <TextInput
+            <TextField
               testID="care-interval-input"
               style={[ui.input, styles.intervalInput]}
               keyboardType="number-pad"

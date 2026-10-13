@@ -7,8 +7,8 @@ import {
   Platform,
   Pressable,
   Text,
-  TextInput,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { signIn, signUp } from "../api/authApi";
 import { CredentialErrors, validateCredentials } from "../validation";
 import { styles } from "./authStyles";
@@ -51,7 +51,7 @@ export function AuthForm({ mode }: Props) {
         {t(isLogin ? "auth.loginTitle" : "auth.registerTitle")}
       </Text>
 
-      <TextInput
+      <TextField
         testID="email-input"
         style={styles.input}
         placeholder={t("common.email")}
@@ -67,7 +67,7 @@ export function AuthForm({ mode }: Props) {
         </Text>
       )}
 
-      <TextInput
+      <TextField
         testID="password-input"
         style={styles.input}
         placeholder={t("common.password")}

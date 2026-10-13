@@ -8,9 +8,9 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TextInput,
     View,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { ui } from "../../../shared/ui/styles";
 import type {
     PhotoChange,
@@ -112,7 +112,7 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
 
         <View style={styles.field}>
           <Text style={styles.label}>{t("plants.form.name")}</Text>
-          <TextInput
+          <TextField
             testID="plant-name-input"
             style={ui.input}
             placeholder={t("plants.form.namePlaceholder")}
@@ -125,7 +125,7 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
 
         <View style={styles.field}>
           <Text style={styles.label}>{t("plants.form.species")}</Text>
-          <TextInput
+          <TextField
             testID="plant-species-input"
             style={ui.input}
             placeholder={t("plants.form.speciesPlaceholder")}
@@ -138,7 +138,7 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
 
         <View style={styles.field}>
           <Text style={styles.label}>{t("plants.form.location")}</Text>
-          <TextInput
+          <TextField
             testID="plant-location-input"
             style={ui.input}
             placeholder={t("plants.form.locationPlaceholder")}
@@ -161,7 +161,7 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
 
         <View style={styles.field}>
           <Text style={styles.label}>{t("plants.form.notes")}</Text>
-          <TextInput
+          <TextField
             testID="plant-notes-input"
             style={[ui.input, styles.notes]}
             placeholder={t("plants.form.notesPlaceholder")}

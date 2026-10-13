@@ -8,9 +8,9 @@ import {
     Pressable,
     StyleSheet,
     Text,
-    TextInput,
     View,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { Screen } from "../../../shared/ui/Screen";
 import { ui } from "../../../shared/ui/styles";
 import { useCareTasks } from "../../care-schedule/hooks/useCareTasks";
@@ -89,7 +89,7 @@ export function PlantsList() {
           {total > 0 && (
             <View style={styles.searchBox}>
               <Ionicons name="search" size={16} color="#888" />
-              <TextInput
+              <TextField
                 testID="plant-search"
                 style={styles.searchInput}
                 placeholder={t("plants.searchPlaceholder")}

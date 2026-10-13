@@ -8,9 +8,9 @@ import {
     ScrollView,
     Share,
     Text,
-    TextInput,
     View,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { ui } from "../../../shared/ui/styles";
 import { useSession } from "../../auth/hooks/useSession";
 import {
@@ -163,7 +163,7 @@ export function GardenDetails({ gardenId }: { gardenId: string }) {
     <ScrollView contentContainerStyle={{ padding: 24, gap: 12 }}>
       {editing ? (
         <View style={{ gap: 12 }}>
-          <TextInput
+          <TextField
             testID="rename-input"
             style={ui.input}
             value={name}

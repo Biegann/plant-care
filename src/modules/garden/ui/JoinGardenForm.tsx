@@ -5,9 +5,9 @@ import {
     ActivityIndicator,
     Pressable,
     Text,
-    TextInput,
     View,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { ui } from "../../../shared/ui/styles";
 import { joinAndActivate } from "../gardenActions";
 import { isValidInviteCode } from "../validation";
@@ -39,7 +39,7 @@ export function JoinGardenForm() {
   return (
     <View style={ui.screen}>
       <Text style={ui.subtitle}>{t("gardens.codeHint")}</Text>
-      <TextInput
+      <TextField
         testID="garden-code-input"
         style={ui.input}
         placeholder={t("gardens.codePlaceholder")}

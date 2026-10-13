@@ -5,9 +5,9 @@ import {
     ActivityIndicator,
     Pressable,
     Text,
-    TextInput,
     View,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { ui } from "../../../shared/ui/styles";
 import { createAndActivate } from "../gardenActions";
 import { isValidGardenName } from "../validation";
@@ -39,7 +39,7 @@ export function CreateGardenForm() {
   return (
     <View style={ui.screen}>
       <Text style={ui.subtitle}>{t("gardens.nameHint")}</Text>
-      <TextInput
+      <TextField
         testID="garden-name-input"
         style={ui.input}
         placeholder={t("gardens.namePlaceholder")}

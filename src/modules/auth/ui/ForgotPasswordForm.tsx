@@ -7,8 +7,8 @@ import {
     Platform,
     Pressable,
     Text,
-    TextInput,
 } from "react-native";
+import { TextField } from "../../../shared/ui/TextField";
 import { requestPasswordReset, resetPasswordWithCode } from "../api/authApi";
 import { isValidEmail, validateResetInput } from "../validation";
 import { styles } from "./authStyles";
@@ -74,7 +74,7 @@ export function ForgotPasswordForm() {
       {step === "request" ? (
         <>
           <Text style={styles.info}>{t("auth.forgot.intro")}</Text>
-          <TextInput
+          <TextField
             testID="forgot-email-input"
             style={styles.input}
             placeholder={t("common.email")}
@@ -90,7 +90,7 @@ export function ForgotPasswordForm() {
           <Text style={styles.info}>
             {t("auth.forgot.codeSent", { email: email.trim() })}
           </Text>
-          <TextInput
+          <TextField
             testID="forgot-code-input"
             style={styles.input}
             placeholder={t("auth.forgot.code")}
@@ -98,7 +98,7 @@ export function ForgotPasswordForm() {
             value={code}
             onChangeText={setCode}
           />
-          <TextInput
+          <TextField
             testID="forgot-password-input"
             style={styles.input}
             placeholder={t("auth.forgot.newPassword")}
