@@ -6,6 +6,7 @@ jest.mock("../api/careApi", () => ({
   deleteCareTask: jest.fn(),
 }));
 jest.mock("../api/careLogApi", () => ({ deleteCareLogEntry: jest.fn() }));
+jest.mock("../../notifications/sync", () => ({ syncNotifications: jest.fn() }));
 
 import { queryClient } from "../../../shared/api/queryClient";
 import {
@@ -16,6 +17,7 @@ import {
     updateCareTask,
     type CareTask,
 } from "../api/careApi";
+import { syncNotifications } from "../../notifications/sync";
 import { deleteCareLogEntry } from "../api/careLogApi";
 import {
     completeCareTaskAndRefresh,
@@ -56,6 +58,36 @@ beforeEach(() => {
 afterEach(() => {
   invalidate.mockRestore();
   jest.resetAllMocks();
+});
+
+describe("przeliczanie powiadomień", () => {
+  const mockSync = syncNotifications as jest.Mock;
+
+  test("udana zmiana zadania przelicza plan powiadomień", async () => {
+    mockCreate.mockResolvedValue({ ok: true, data: "t1" });
+    mockComplete.mockResolvedValue({ ok: true, data: "2026-10-19" });
+    mockSetDue.mockResolvedValue(ok);
+    mockUpdate.mockResolvedValue(ok);
+    mockDelete.mockResolvedValue(ok);
+
+    await createCareTaskAndRefresh("g1", "p1", input);
+    await completeCareTaskAndRefresh("g1", task, "2026-10-12");
+    await postponeCareTaskAndRefresh("g1", task, "2026-10-12");
+    await updateCareTaskAndRefresh("g1", "t1", input);
+    await deleteCareTaskAndRefresh("g1", "t1");
+
+    expect(mockSync).toHaveBeenCalledTimes(5);
+  });
+
+  test("nieudana zmiana i usunięcie wpisu historii nie ruszają planu", async () => {
+    mockUpdate.mockResolvedValue(failed);
+    mockDeleteEntry.mockResolvedValue(ok);
+
+    await updateCareTaskAndRefresh("g1", "t1", input);
+    await deleteCareLogEntryAndRefresh("p1", "e1");
+
+    expect(mockSync).not.toHaveBeenCalled();
+  });
 });
 
 describe("akcje zadań opieki", () => {

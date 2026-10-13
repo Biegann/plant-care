@@ -4,6 +4,8 @@ jest.mock("expo-notifications", () => ({
   getPermissionsAsync: jest.fn(),
   requestPermissionsAsync: jest.fn(),
   cancelAllScheduledNotificationsAsync: jest.fn(),
+  cancelScheduledNotificationAsync: jest.fn(),
+  getAllScheduledNotificationsAsync: jest.fn(),
   scheduleNotificationAsync: jest.fn(),
   AndroidImportance: { DEFAULT: 5 },
   SchedulableTriggerInputTypes: { DATE: "date" },
@@ -118,6 +120,24 @@ describe("replaceScheduled", () => {
     expect(await replaceScheduled([], "Kanał")).toBe(true);
     expect(mock.cancelAllScheduledNotificationsAsync).toHaveBeenCalledTimes(1);
     expect(mock.scheduleNotificationAsync).not.toHaveBeenCalled();
+  });
+
+  test("z keepOverdueAt zostawia powiadomienia, których godzina już minęła", async () => {
+    const now = new Date(2026, 9, 12, 9, 5);
+    mock.getAllScheduledNotificationsAsync.mockResolvedValue([
+      { identifier: "spóźnione", trigger: { value: item(12).date.getTime() } },
+      { identifier: "jutro", trigger: { value: item(13).date.getTime() } },
+      { identifier: "nieznane", trigger: null },
+    ]);
+
+    expect(await replaceScheduled([item(13)], "Kanał", now)).toBe(true);
+
+    expect(mock.cancelAllScheduledNotificationsAsync).not.toHaveBeenCalled();
+    expect(mock.cancelScheduledNotificationAsync.mock.calls).toEqual([
+      ["jutro"],
+      ["nieznane"],
+    ]);
+    expect(mock.scheduleNotificationAsync).toHaveBeenCalledTimes(1);
   });
 
   test("błąd systemu: zwraca false zamiast rzucać", async () => {

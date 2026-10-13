@@ -124,6 +124,38 @@ describe("syncNotifications", () => {
     expect(items).toHaveLength(30);
   });
 
+  test("godzina minęła, a na dziś jest zadanie: nie kasuje spóźnionego powiadomienia", async () => {
+    settings({ hour: 7, minute: 0 });
+    mockList.mockResolvedValue({
+      ok: true,
+      data: [{ ...water, nextDueOn: "2026-10-12" }],
+    });
+
+    await syncNotifications(morning);
+
+    expect(mockReplace.mock.calls[0][2]).toBe(morning);
+  });
+
+  test("godzina minęła, ale na dziś nie ma zadań: kasuje cały stary plan", async () => {
+    settings({ hour: 7, minute: 0 });
+
+    await syncNotifications(morning);
+
+    expect(mockReplace.mock.calls[0]).toHaveLength(2);
+  });
+
+  test("godzina jeszcze nie minęła: kasuje cały stary plan", async () => {
+    settings();
+    mockList.mockResolvedValue({
+      ok: true,
+      data: [{ ...water, nextDueOn: "2026-10-12" }],
+    });
+
+    await syncNotifications(morning);
+
+    expect(mockReplace.mock.calls[0]).toHaveLength(2);
+  });
+
   test("brak zadań: zapisuje pusty plan (kasuje stare powiadomienia)", async () => {
     settings();
     mockList.mockResolvedValue({ ok: true, data: [] });

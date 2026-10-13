@@ -70,14 +70,29 @@ export async function cancelAllScheduled(): Promise<boolean> {
   }
 }
 
-// Zastępuje cały dotychczasowy plan nowym
+// Kasuje tylko powiadomienia na później niż `since`. Te, których godzina już minęła,
+// zostają: Android dostarcza je z kilkuminutowym opóźnieniem
+async function cancelLaterThan(since: Date) {
+  const all = await Notifications.getAllScheduledNotificationsAsync();
+  for (const { identifier, trigger } of all) {
+    const time = (trigger as { value?: unknown } | null)?.value;
+    // Nieznany format terminu: kasujemy, żeby nie zostawić śmieci
+    if (typeof time === "number" && time <= since.getTime()) continue;
+    await Notifications.cancelScheduledNotificationAsync(identifier);
+  }
+}
+
+// Zastępuje dotychczasowy plan nowym. Z `keepOverdueAt` zostawia powiadomienia,
+// których godzina minęła przed tą chwilą, a które jeszcze nie dotarły
 export async function replaceScheduled(
   items: ScheduledItem[],
   channelName: string,
+  keepOverdueAt?: Date,
 ): Promise<boolean> {
   try {
     await ensureChannel(channelName);
-    await Notifications.cancelAllScheduledNotificationsAsync();
+    if (keepOverdueAt) await cancelLaterThan(keepOverdueAt);
+    else await Notifications.cancelAllScheduledNotificationsAsync();
     for (const item of items) {
       await Notifications.scheduleNotificationAsync({
         content: { title: item.title, body: item.body },

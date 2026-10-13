@@ -1,4 +1,5 @@
 import { queryClient } from "../../shared/api/queryClient";
+import { syncNotifications } from "../notifications/sync";
 import {
     completeCareTask,
     createCareTask,
@@ -12,8 +13,11 @@ import { deleteCareLogEntry } from "./api/careLogApi";
 import { nextDueAfterPostpone } from "./schedule";
 import type { CareTaskInput } from "./validation";
 
-const refreshCareTasks = (gardenId: string) =>
-  queryClient.invalidateQueries({ queryKey: ["care-tasks", gardenId] });
+// Każda zmiana zadań zmienia też plan powiadomień; przeliczamy go w tle, bez czekania
+const refreshCareTasks = (gardenId: string) => {
+  void syncNotifications();
+  return queryClient.invalidateQueries({ queryKey: ["care-tasks", gardenId] });
+};
 
 const refreshCareLog = (plantId: string) =>
   queryClient.invalidateQueries({ queryKey: ["care-log", plantId] });

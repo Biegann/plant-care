@@ -16,3 +16,4 @@
 - [ ] Ustalić ostateczny identyfikator aplikacji na Androida (`android.package` w app.json, teraz roboczo `com.plantcare.app`); po publikacji w sklepie nie da się go zmienić
 - [ ] Własna ikona powiadomień na Androidzie (biała, przezroczyste tło, 96x96) w ustawieniach pluginu expo-notifications
 - [ ] Przejść z powiadomień lokalnych na serwerowe (push), żeby przypomnienie nie przychodziło, gdy inny członek ogrodu wykonał już zadanie. Wymaga: Firebase dla Androida, tabeli z adresami urządzeń, godziny i strefy czasowej na koncie, funkcji serwerowej uruchamianej cyklicznie w Supabase
+- [ ] Rozważyć dokładną godzinę powiadomień na Androidzie (uprawnienie `SCHEDULE_EXACT_ALARM` w app.json + nowa kompilacja; sprawdzić, czy użytkownik musi je sam włączyć w ustawieniach systemu). Teraz Android opóźnia powiadomienie o kilka minut

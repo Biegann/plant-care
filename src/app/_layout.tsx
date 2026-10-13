@@ -7,6 +7,7 @@ import {
   useAuthInitialized,
   useIsSignedIn,
 } from "../modules/auth/hooks/useSession";
+import { useNotificationSync } from "../modules/notifications/hooks/useNotificationSync";
 import { initNotificationHandler } from "../modules/notifications/scheduler";
 import { queryClient } from "../shared/api/queryClient";
 import "../shared/i18n";
@@ -19,6 +20,7 @@ export default function RootLayout() {
   const initialized = useAuthInitialized();
 
   useEffect(() => initAuthListener(), []);
+  useNotificationSync(initialized, isSignedIn);
 
   useEffect(() => {
     if (initialized) SplashScreen.hideAsync();

@@ -1,4 +1,5 @@
 import i18n from "../../shared/i18n";
+import { toIsoDate } from "../../shared/utils/date";
 import { listNotifiableTasks } from "./api/notificationsApi";
 import { buildMessage } from "./message";
 import {
@@ -40,13 +41,20 @@ export async function syncNotifications(now = new Date()): Promise<SyncOutcome> 
   const time = { hour, minute };
   const t = (key: string, options?: Record<string, unknown>) =>
     i18n.t(key, options);
-  const items = buildNotificationPlan(tasks.data, firstPlanDay(now, time)).map(
-    (planned) => ({
-      ...buildMessage(planned, t),
-      date: notificationDate(planned.date, time),
-    }),
-  );
+  const today = toIsoDate(now);
+  const firstDay = firstPlanDay(now, time);
+  const items = buildNotificationPlan(tasks.data, firstDay).map((planned) => ({
+    ...buildMessage(planned, t),
+    date: notificationDate(planned.date, time),
+  }));
 
-  const saved = await replaceScheduled(items, t("notifications.channelName"));
+  // Dzisiejsza godzina minęła, a na dziś nadal jest coś do zrobienia: dzisiejsze
+  // powiadomienie mogło jeszcze nie dotrzeć (Android się spóźnia), więc go nie kasujemy
+  const keepOverdue =
+    firstDay !== today && buildNotificationPlan(tasks.data, today, 1).length > 0;
+  const channelName = t("notifications.channelName");
+  const saved = keepOverdue
+    ? await replaceScheduled(items, channelName, now)
+    : await replaceScheduled(items, channelName);
   return saved ? "scheduled" : "failed";
 }

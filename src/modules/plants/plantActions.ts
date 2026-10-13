@@ -1,4 +1,5 @@
 import { queryClient } from "../../shared/api/queryClient";
+import { syncNotifications } from "../notifications/sync";
 import {
     createPlant,
     deletePlant,
@@ -29,7 +30,11 @@ export async function updatePlantAndRefresh(
   photo: PhotoChange,
 ): Promise<PlantResult<PlantSaved>> {
   const result = await updatePlant(plant, input, photo);
-  if (result.ok) await refreshPlants(plant.gardenId);
+  if (result.ok) {
+    // Nazwa rośliny jest w treści powiadomień
+    void syncNotifications();
+    await refreshPlants(plant.gardenId);
+  }
   return result;
 }
 
@@ -37,6 +42,10 @@ export async function deletePlantAndRefresh(
   plant: Plant,
 ): Promise<PlantResult> {
   const result = await deletePlant(plant);
-  if (result.ok) await refreshPlants(plant.gardenId);
+  if (result.ok) {
+    // Razem z rośliną znikają jej zadania
+    void syncNotifications();
+    await refreshPlants(plant.gardenId);
+  }
   return result;
 }

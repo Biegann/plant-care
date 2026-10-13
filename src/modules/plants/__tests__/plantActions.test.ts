@@ -3,8 +3,10 @@ jest.mock("../api/plantsApi", () => ({
   updatePlant: jest.fn(),
   deletePlant: jest.fn(),
 }));
+jest.mock("../../notifications/sync", () => ({ syncNotifications: jest.fn() }));
 
 import { queryClient } from "../../../shared/api/queryClient";
+import { syncNotifications } from "../../notifications/sync";
 import {
     createPlant,
     deletePlant,
@@ -40,6 +42,32 @@ beforeEach(() => {
 afterEach(() => {
   invalidate.mockRestore();
   jest.resetAllMocks();
+});
+
+describe("przeliczanie powiadomień", () => {
+  const mockSync = syncNotifications as jest.Mock;
+  const saved = { ok: true, data: { id: "p1", photoFailed: false } };
+
+  test("zmiana i usunięcie rośliny przeliczają plan, dodanie nie", async () => {
+    mockCreate.mockResolvedValue(saved);
+    mockUpdate.mockResolvedValue(saved);
+    mockDelete.mockResolvedValue({ ok: true, data: null });
+
+    await createPlantAndRefresh("g1", { name: "Monstera" });
+    expect(mockSync).not.toHaveBeenCalled();
+
+    await updatePlantAndRefresh(plant, { name: "Nowa" }, undefined);
+    await deletePlantAndRefresh(plant);
+    expect(mockSync).toHaveBeenCalledTimes(2);
+  });
+
+  test("nieudana zmiana nie rusza planu", async () => {
+    mockUpdate.mockResolvedValue({ ok: false, error: "notAllowed" });
+
+    await updatePlantAndRefresh(plant, { name: "Nowa" }, undefined);
+
+    expect(mockSync).not.toHaveBeenCalled();
+  });
 });
 
 describe("createPlantAndRefresh", () => {
