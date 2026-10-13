@@ -7,8 +7,10 @@ jest.mock("../api/gardenApi", () => ({
   leaveGarden: jest.fn(),
   removeMember: jest.fn(),
 }));
+jest.mock("../../notifications/sync", () => ({ syncNotifications: jest.fn() }));
 
 import { queryClient } from "../../../shared/api/queryClient";
+import { syncNotifications } from "../../notifications/sync";
 import {
     deleteGarden,
     leaveGarden,
@@ -27,6 +29,7 @@ const mockRename = renameGarden as jest.Mock;
 const mockDelete = deleteGarden as jest.Mock;
 const mockLeave = leaveGarden as jest.Mock;
 const mockRemove = removeMember as jest.Mock;
+const mockSync = syncNotifications as jest.Mock;
 
 const success = { ok: true, data: null };
 const failure = { ok: false, error: "notAllowed" };
@@ -50,6 +53,7 @@ describe("renameAndRefresh", () => {
     mockRename.mockResolvedValue(success);
     expect(await renameAndRefresh("g1", "Nowa")).toEqual(success);
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ["gardens"] });
+    expect(mockSync).not.toHaveBeenCalled();
   });
 
   test("po błędzie niczego nie odświeża", async () => {
@@ -73,11 +77,18 @@ describe("deleteAndRefresh", () => {
     expect(useGardenStore.getState().activeGardenId).toBe("g1");
   });
 
+  test("po sukcesie przelicza plan powiadomień", async () => {
+    mockDelete.mockResolvedValue(success);
+    await deleteAndRefresh("g2");
+    expect(mockSync).toHaveBeenCalledTimes(1);
+  });
+
   test("po błędzie niczego nie zmienia", async () => {
     mockDelete.mockResolvedValue(failure);
     expect(await deleteAndRefresh("g1")).toEqual(failure);
     expect(useGardenStore.getState().activeGardenId).toBe("g1");
     expect(invalidate).not.toHaveBeenCalled();
+    expect(mockSync).not.toHaveBeenCalled();
   });
 });
 
@@ -87,6 +98,18 @@ describe("leaveAndRefresh", () => {
     await leaveAndRefresh("g1");
     expect(useGardenStore.getState().activeGardenId).toBeNull();
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ["gardens"] });
+  });
+
+  test("po sukcesie przelicza plan powiadomień", async () => {
+    mockLeave.mockResolvedValue(success);
+    await leaveAndRefresh("g1");
+    expect(mockSync).toHaveBeenCalledTimes(1);
+  });
+
+  test("po błędzie nie przelicza planu powiadomień", async () => {
+    mockLeave.mockResolvedValue(failure);
+    expect(await leaveAndRefresh("g1")).toEqual(failure);
+    expect(mockSync).not.toHaveBeenCalled();
   });
 });
 

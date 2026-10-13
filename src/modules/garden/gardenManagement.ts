@@ -1,4 +1,5 @@
 import { queryClient } from "../../shared/api/queryClient";
+import { syncNotifications } from "../notifications/sync";
 import {
     deleteGarden,
     leaveGarden,
@@ -18,6 +19,14 @@ function forgetIfActive(gardenId: string) {
   if (store.activeGardenId === gardenId) store.setActiveGardenId(null);
 }
 
+// Ogród zniknął z konta: sprzątamy wybór, listę i plan powiadomień
+// (zadania z tego ogrodu nie mają już przypominać)
+async function afterGardenGone(gardenId: string) {
+  forgetIfActive(gardenId);
+  await refreshGardens();
+  void syncNotifications();
+}
+
 export async function renameAndRefresh(
   gardenId: string,
   name: string,
@@ -31,19 +40,13 @@ export async function deleteAndRefresh(
   gardenId: string,
 ): Promise<GardenResult> {
   const result = await deleteGarden(gardenId);
-  if (result.ok) {
-    forgetIfActive(gardenId);
-    await refreshGardens();
-  }
+  if (result.ok) await afterGardenGone(gardenId);
   return result;
 }
 
 export async function leaveAndRefresh(gardenId: string): Promise<GardenResult> {
   const result = await leaveGarden(gardenId);
-  if (result.ok) {
-    forgetIfActive(gardenId);
-    await refreshGardens();
-  }
+  if (result.ok) await afterGardenGone(gardenId);
   return result;
 }
 
