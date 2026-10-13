@@ -1,5 +1,5 @@
-import { PlantsList } from "../../../modules/plants/ui/PlantsList";
+import { TodayList } from "../../../modules/today/ui/TodayList";
 
-export default function PlantsTab() {
-  return <PlantsList />;
+export default function TodayTab() {
+  return <TodayList />;
 }

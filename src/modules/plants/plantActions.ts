@@ -14,6 +14,13 @@ import type { PlantInput } from "./validation";
 const refreshPlants = (gardenId: string) =>
   queryClient.invalidateQueries({ queryKey: ["plants", gardenId] });
 
+// Ekran "Dziś" pokazuje nazwę rośliny przy zadaniu
+const refreshPlantsAndToday = (gardenId: string) =>
+  Promise.all([
+    refreshPlants(gardenId),
+    queryClient.invalidateQueries({ queryKey: ["today-tasks"] }),
+  ]);
+
 export async function createPlantAndRefresh(
   gardenId: string,
   input: PlantInput,
@@ -33,7 +40,7 @@ export async function updatePlantAndRefresh(
   if (result.ok) {
     // Nazwa rośliny jest w treści powiadomień
     void syncNotifications();
-    await refreshPlants(plant.gardenId);
+    await refreshPlantsAndToday(plant.gardenId);
   }
   return result;
 }
@@ -45,7 +52,7 @@ export async function deletePlantAndRefresh(
   if (result.ok) {
     // Razem z rośliną znikają jej zadania
     void syncNotifications();
-    await refreshPlants(plant.gardenId);
+    await refreshPlantsAndToday(plant.gardenId);
   }
   return result;
 }

@@ -13,10 +13,14 @@ import { deleteCareLogEntry } from "./api/careLogApi";
 import { nextDueAfterPostpone } from "./schedule";
 import type { CareTaskInput } from "./validation";
 
-// Każda zmiana zadań zmienia też plan powiadomień; przeliczamy go w tle, bez czekania
+// Każda zmiana zadań zmienia też plan powiadomień; przeliczamy go w tle, bez czekania.
+// Odświeżamy listę ogrodu i ekran "Dziś" (zadania ze wszystkich ogrodów)
 const refreshCareTasks = (gardenId: string) => {
   void syncNotifications();
-  return queryClient.invalidateQueries({ queryKey: ["care-tasks", gardenId] });
+  return Promise.all([
+    queryClient.invalidateQueries({ queryKey: ["care-tasks", gardenId] }),
+    queryClient.invalidateQueries({ queryKey: ["today-tasks"] }),
+  ]);
 };
 
 const refreshCareLog = (plantId: string) =>

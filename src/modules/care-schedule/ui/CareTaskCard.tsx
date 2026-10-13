@@ -3,6 +3,7 @@ import type { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { CareTask } from "../api/careApi";
+import { dueText } from "../dueText";
 import { daysUntil } from "../schedule";
 import type { CareType } from "../validation";
 
@@ -42,14 +43,6 @@ export function CareTaskCard({
       ? t("care.everyDay")
       : t("care.everyDays", { count: task.intervalDays });
 
-  const dueText = () => {
-    if (days < -1) return t("care.due.overdueMany", { count: -days });
-    if (days === -1) return t("care.due.overdueOne");
-    if (days === 0) return t("care.due.today");
-    if (days === 1) return t("care.due.tomorrow");
-    return t("care.due.inDays", { count: days });
-  };
-
   return (
     <View
       testID={`care-task-${task.id}`}
@@ -82,7 +75,7 @@ export function CareTaskCard({
               days === 0 && styles.today,
             ]}
           >
-            {dueText()}
+            {dueText(days, t)}
           </Text>
           <View style={styles.actions}>
             <Pressable

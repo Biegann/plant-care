@@ -105,6 +105,7 @@ describe("updatePlantAndRefresh", () => {
 
     expect(mockUpdate).toHaveBeenCalledWith(plant, { name: "Nowa" }, "remove");
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ["plants", "g1"] });
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: ["today-tasks"] });
   });
 
   test("po błędzie nie odświeża", async () => {
@@ -123,6 +124,7 @@ describe("deletePlantAndRefresh", () => {
     await deletePlantAndRefresh(plant);
 
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ["plants", "g1"] });
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: ["today-tasks"] });
   });
 
   test("po błędzie nie odświeża", async () => {

@@ -129,7 +129,23 @@
     "pickDate": "Wybierz datę",
     "clearDate": "Wyczyść datę"
   },
-  "tabs": { "plants": "Rośliny", "gardens": "Ogrody", "profile": "Profil" },
+  "tabs": {
+    "today": "Dziś",
+    "plants": "Rośliny",
+    "gardens": "Ogrody",
+    "profile": "Profil"
+  },
+  "today": {
+    "title": "Dziś",
+    "count_one": "{{count}} zadanie",
+    "count_few": "{{count}} zadania",
+    "count_many": "{{count}} zadań",
+    "count_other": "{{count}} zadania",
+    "empty": "Na dziś wszystko zrobione",
+    "postponeShort": "+1 d",
+    "error": "Nie udało się wczytać zadań",
+    "retry": "Spróbuj ponownie"
+  },
   "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },
   "notifications": {
     "channelName": "Codzienne przypomnienie",

@@ -122,7 +122,21 @@
       "unknown": "Something went wrong. Try again"
     }
   },
-  "tabs": { "plants": "Plants", "gardens": "Gardens", "profile": "Profile" },
+  "tabs": {
+    "today": "Today",
+    "plants": "Plants",
+    "gardens": "Gardens",
+    "profile": "Profile"
+  },
+  "today": {
+    "title": "Today",
+    "count_one": "{{count}} task",
+    "count_other": "{{count}} tasks",
+    "empty": "All done for today",
+    "postponeShort": "+1 d",
+    "error": "Could not load tasks",
+    "retry": "Try again"
+  },
   "profile": { "title": "Profile", "signedInAs": "Signed in as" },
   "notifications": {
     "channelName": "Daily reminder",

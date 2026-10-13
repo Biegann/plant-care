@@ -1,9 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { useTodayTasks } from "../../../modules/today/hooks/useTodayTasks";
 
 export default function TabsLayout() {
   const { t } = useTranslation();
+  // Plakietka na zakładce "Dziś": liczba zadań na dziś i zaległych
+  const dueCount = useTodayTasks().data?.length ?? 0;
 
   return (
     <Tabs
@@ -11,6 +14,16 @@ export default function TabsLayout() {
     >
       <Tabs.Screen
         name="index"
+        options={{
+          title: t("tabs.today"),
+          tabBarBadge: dueCount > 0 ? dueCount : undefined,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="today-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="plants"
         options={{
           title: t("tabs.plants"),
           tabBarIcon: ({ color, size }) => (

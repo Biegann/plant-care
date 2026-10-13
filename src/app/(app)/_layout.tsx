@@ -1,8 +1,10 @@
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { useNotificationTap } from "../../modules/notifications/hooks/useNotificationTap";
 
 export default function AppLayout() {
   const { t } = useTranslation();
+  useNotificationTap();
 
   return (
     <Stack screenOptions={{ headerTintColor: "#2e7d32" }}>

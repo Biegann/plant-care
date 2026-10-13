@@ -110,6 +110,14 @@ describe("akcje zadań opieki", () => {
     expect(invalidate).toHaveBeenCalledWith(refreshed);
   });
 
+  test("zmiana zadania odświeża też ekran „Dziś”", async () => {
+    mockSetDue.mockResolvedValue(ok);
+
+    await postponeCareTaskAndRefresh("g1", task, "2026-10-11");
+
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: ["today-tasks"] });
+  });
+
   test("zrobione: wysyła dzień wykonania, odświeża zadania i historię rośliny", async () => {
     mockComplete.mockResolvedValue({ ok: true, data: "2026-10-18" });
 
