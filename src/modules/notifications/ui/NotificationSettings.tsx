@@ -13,7 +13,8 @@ import {
     Text,
     View,
 } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { getPermissionState, requestPermission } from "../scheduler";
 import { useNotificationStore } from "../store/notificationStore";
 import { syncNotifications } from "../sync";
@@ -23,6 +24,9 @@ const pad = (value: number) => String(value).padStart(2, "0");
 // Sekcja "Powiadomienia" w Profilu: włącznik codziennego przypomnienia i jego godzina
 export function NotificationSettings() {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const { enabled, hour, minute, hydrated, setEnabled, setTime } =
     useNotificationStore();
   const [busy, setBusy] = useState(false);
@@ -119,8 +123,8 @@ export function NotificationSettings() {
           value={enabled}
           onValueChange={toggle}
           disabled={!hydrated || busy}
-          trackColor={{ true: "#a5d6a7" }}
-          thumbColor={enabled ? "#2e7d32" : undefined}
+          trackColor={{ true: colors.primarySoft }}
+          thumbColor={enabled ? colors.primary : undefined}
         />
       </View>
 
@@ -162,8 +166,10 @@ export function NotificationSettings() {
   );
 }
 
-const styles = StyleSheet.create({
-  section: { gap: 4 },
-  label: { fontSize: 16 },
-  hint: { gap: 4 },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    section: { gap: 4 },
+    label: { fontSize: 16, color: c.text },
+    hint: { gap: 4 },
+  }),
+);

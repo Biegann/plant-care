@@ -1,68 +1,84 @@
 import { StyleSheet } from "react-native";
+import { createThemedStyles, lightPalette, type Palette } from "./theme";
 
-export const ui = StyleSheet.create({
-  screen: { flex: 1, padding: 24, gap: 12 },
-  title: { fontSize: 28, fontWeight: "700" },
-  subtitle: { color: "#666", fontSize: 14 },
-  error: { color: "#c0392b" },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: "#2e7d32",
-    borderRadius: 8,
-    padding: 14,
-    alignItems: "center",
-  },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  secondaryButton: {
-    borderWidth: 1,
-    borderColor: "#2e7d32",
-    borderRadius: 8,
-    padding: 14,
-    alignItems: "center",
-  },
-  secondaryButtonText: { color: "#2e7d32", fontSize: 16, fontWeight: "600" },
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    padding: 14,
-    gap: 12,
-  },
-  cardActive: { borderColor: "#2e7d32", backgroundColor: "#f1f8f1" },
-  cardMain: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
-  cardTitle: { fontSize: 16, fontWeight: "600" },
-  cardSubtitle: { color: "#666", fontSize: 13 },
-  grow: { flex: 1 },
-  sectionTitle: { fontSize: 18, fontWeight: "600", marginTop: 12 },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingVertical: 4,
-  },
-  link: { color: "#2e7d32", fontSize: 15 },
-  dangerLink: { color: "#c0392b", fontSize: 15 },
-  dangerButton: {
-    borderWidth: 1,
-    borderColor: "#c0392b",
-    borderRadius: 8,
-    padding: 14,
-    alignItems: "center",
-  },
-  dangerButtonText: { color: "#c0392b", fontSize: 16, fontWeight: "600" },
-  code: {
-    fontSize: 24,
-    fontWeight: "700",
-    letterSpacing: 2,
-    textAlign: "center",
-  },
-});
+const makeUi = (c: Palette) =>
+  StyleSheet.create({
+    screen: { flex: 1, padding: 24, gap: 12, backgroundColor: c.background },
+    text: { color: c.text },
+    title: { fontSize: 28, fontWeight: "700", color: c.text },
+    subtitle: { color: c.textMuted, fontSize: 14 },
+    error: { color: c.danger },
+    input: {
+      borderWidth: 1,
+      borderColor: c.inputBorder,
+      borderRadius: 8,
+      padding: 12,
+      fontSize: 16,
+      color: c.text,
+    },
+    button: {
+      backgroundColor: c.primary,
+      borderRadius: 8,
+      padding: 14,
+      alignItems: "center",
+    },
+    buttonDisabled: { opacity: 0.6 },
+    buttonText: { color: c.onPrimary, fontSize: 16, fontWeight: "600" },
+    secondaryButton: {
+      borderWidth: 1,
+      borderColor: c.primary,
+      borderRadius: 8,
+      padding: 14,
+      alignItems: "center",
+    },
+    secondaryButtonText: { color: c.primary, fontSize: 16, fontWeight: "600" },
+    card: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 10,
+      padding: 14,
+      gap: 12,
+    },
+    cardActive: { borderColor: c.primary, backgroundColor: c.surfaceActive },
+    cardMain: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
+    cardTitle: { fontSize: 16, fontWeight: "600", color: c.text },
+    cardSubtitle: { color: c.textMuted, fontSize: 13 },
+    grow: { flex: 1 },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      marginTop: 12,
+      color: c.text,
+    },
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+      paddingVertical: 4,
+    },
+    link: { color: c.primary, fontSize: 15 },
+    dangerLink: { color: c.danger, fontSize: 15 },
+    dangerButton: {
+      borderWidth: 1,
+      borderColor: c.danger,
+      borderRadius: 8,
+      padding: 14,
+      alignItems: "center",
+    },
+    dangerButtonText: { color: c.danger, fontSize: 16, fontWeight: "600" },
+    code: {
+      fontSize: 24,
+      fontWeight: "700",
+      letterSpacing: 2,
+      textAlign: "center",
+      color: c.text,
+    },
+  });
+
+// Wspólne style w kolorach aktualnego motywu
+export const useUi = createThemedStyles(makeUi);
+
+// Tylko jasny motyw: dla ekranów, które nie przeszły jeszcze na useUi
+export const ui = makeUi(lightPalette);

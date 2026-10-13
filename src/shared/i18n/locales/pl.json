@@ -146,7 +146,10 @@
     "error": "Nie udało się wczytać zadań",
     "retry": "Spróbuj ponownie"
   },
-  "profile": { "title": "Profil", "signedInAs": "Zalogowano jako" },
+  "profile": {
+    "title": "Profil",
+    "signedInAs": "Zalogowano jako"
+  },
   "notifications": {
     "channelName": "Codzienne przypomnienie",
     "sectionTitle": "Powiadomienia",
@@ -203,7 +206,10 @@
     "codeHint": "Wpisz kod otrzymany od właściciela ogrodu.",
     "codePlaceholder": "Kod zaproszenia",
     "joinSubmit": "Dołącz",
-    "role": { "owner": "Właściciel", "member": "Członek" },
+    "role": {
+      "owner": "Właściciel",
+      "member": "Członek"
+    },
     "errors": {
       "invalidName": "Nazwa ogrodu musi mieć od 1 do 60 znaków",
       "invalidCode": "Kod jest nieprawidłowy lub wygasł",
@@ -243,5 +249,11 @@
       "samePassword": "Nowe hasło musi być inne niż poprzednie",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
+  },
+  "theme": {
+    "sectionTitle": "Wygląd",
+    "system": "Systemowy",
+    "light": "Jasny",
+    "dark": "Ciemny"
   }
 }

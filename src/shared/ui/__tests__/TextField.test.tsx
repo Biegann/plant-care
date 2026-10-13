@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
-import { PLACEHOLDER_COLOR, TextField } from "../TextField";
+import { TextField } from "../TextField";
+import { lightPalette } from "../theme";
 
 describe("TextField", () => {
   test("podpowiedź ma kolor ustawiony przez aplikację", async () => {
@@ -7,7 +8,7 @@ describe("TextField", () => {
 
     const field = screen.getByTestId("field");
     expect(field.props.placeholder).toBe("Monstera");
-    expect(field.props.placeholderTextColor).toBe(PLACEHOLDER_COLOR);
+    expect(field.props.placeholderTextColor).toBe(lightPalette.placeholder);
   });
 
   test("kolor podpowiedzi można nadpisać", async () => {

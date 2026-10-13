@@ -8,6 +8,10 @@ jest.mock("../../notifications/ui/NotificationSettings", () => ({
   NotificationSettings: () => null,
 }));
 
+jest.mock("../../theme/ui/ThemeSettings", () => ({
+  ThemeSettings: () => null,
+}));
+
 jest.mock("../hooks/useSession", () => ({
   useSession: () => ({ user: { email: "anna@example.com" } }),
 }));

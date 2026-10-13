@@ -137,7 +137,10 @@
     "error": "Could not load tasks",
     "retry": "Try again"
   },
-  "profile": { "title": "Profile", "signedInAs": "Signed in as" },
+  "profile": {
+    "title": "Profile",
+    "signedInAs": "Signed in as"
+  },
   "notifications": {
     "channelName": "Daily reminder",
     "sectionTitle": "Notifications",
@@ -190,7 +193,10 @@
     "codeHint": "Enter the code you got from the garden's owner.",
     "codePlaceholder": "Invite code",
     "joinSubmit": "Join",
-    "role": { "owner": "Owner", "member": "Member" },
+    "role": {
+      "owner": "Owner",
+      "member": "Member"
+    },
     "errors": {
       "invalidName": "The garden name must be 1 to 60 characters",
       "invalidCode": "The code is invalid or has expired",
@@ -237,5 +243,11 @@
       "samePassword": "The new password must be different from the old one",
       "unknown": "Something went wrong. Please try again"
     }
+  },
+  "theme": {
+    "sectionTitle": "Appearance",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
   }
 }

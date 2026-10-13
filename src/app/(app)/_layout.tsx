@@ -1,13 +1,15 @@
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useNotificationTap } from "../../modules/notifications/hooks/useNotificationTap";
+import { useColors } from "../../shared/ui/theme";
 
 export default function AppLayout() {
   const { t } = useTranslation();
   useNotificationTap();
+  const colors = useColors();
 
   return (
-    <Stack screenOptions={{ headerTintColor: "#2e7d32" }}>
+    <Stack screenOptions={{ headerTintColor: colors.primary }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
         name="garden/new"

@@ -1,10 +1,10 @@
 import { TextInput, type TextInputProps } from "react-native";
+import { useColors } from "./theme";
 
-// Systemowy kolor podpowiedzi bywa prawie biały (np. w ciemnym motywie telefonu),
-// a tło aplikacji jest białe, więc ustawiamy go sami
-export const PLACEHOLDER_COLOR = "#757575";
-
-// Pole tekstowe aplikacji: zwykły TextInput z czytelną podpowiedzią
+// Pole tekstowe aplikacji: zwykły TextInput z czytelną podpowiedzią.
+// Systemowy kolor podpowiedzi nie pasuje do naszego tła, więc ustawiamy go sami
 export function TextField(props: TextInputProps) {
-  return <TextInput placeholderTextColor={PLACEHOLDER_COLOR} {...props} />;
+  const colors = useColors();
+
+  return <TextInput placeholderTextColor={colors.placeholder} {...props} />;
 }
