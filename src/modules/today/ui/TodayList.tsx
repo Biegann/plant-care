@@ -3,20 +3,21 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    AppState,
-    Pressable,
-    SectionList,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  AppState,
+  Pressable,
+  SectionList,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { Screen } from "../../../shared/ui/Screen";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import type { CareResult, CareTask } from "../../care-schedule/api/careApi";
 import {
-    completeCareTaskAndRefresh,
-    postponeCareTaskAndRefresh,
+  completeCareTaskAndRefresh,
+  postponeCareTaskAndRefresh,
 } from "../../care-schedule/careActions";
 import { todayIso } from "../../care-schedule/schedule";
 import { useGardenStore } from "../../garden/store/gardenStore";
@@ -34,6 +35,9 @@ type TaskAction = (
 // Ekran "Dziś": zadania na dziś i zaległe ze wszystkich ogrodów
 export function TodayList() {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const { data, isPending, isError, refetch } = useTodayTasks();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
@@ -100,7 +104,10 @@ export function TodayList() {
       </View>
 
       {errorKey && (
-        <Text testID="today-action-error" style={[ui.error, styles.actionError]}>
+        <Text
+          testID="today-action-error"
+          style={[ui.error, styles.actionError]}
+        >
           {t(`care.errors.${errorKey}`)}
         </Text>
       )}
@@ -150,7 +157,11 @@ export function TodayList() {
           contentContainerStyle={styles.listContent}
           ListEmptyComponent={
             <View testID="today-empty" style={styles.empty}>
-              <Ionicons name="checkmark-circle-outline" size={48} color="#2e7d32" />
+              <Ionicons
+                name="checkmark-circle-outline"
+                size={48}
+                color={colors.primary}
+              />
               <Text style={styles.emptyTitle}>{t("today.empty")}</Text>
             </View>
           }
@@ -160,31 +171,33 @@ export function TodayList() {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { padding: 0, gap: 0 },
-  header: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    justifyContent: "space-between",
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 6,
-  },
-  title: { fontSize: 22, fontWeight: "700" },
-  count: { fontSize: 13, color: "#2e7d32" },
-  garden: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#666",
-    textTransform: "uppercase",
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 4,
-  },
-  listContent: { flexGrow: 1, paddingBottom: 24 },
-  message: { padding: 16, gap: 8 },
-  actionError: { paddingHorizontal: 16, paddingBottom: 6 },
-  empty: { flex: 1, alignItems: "center", justifyContent: "center", gap: 8 },
-  emptyTitle: { fontSize: 16, fontWeight: "600" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    screen: { padding: 0, gap: 0 },
+    header: {
+      flexDirection: "row",
+      alignItems: "baseline",
+      justifyContent: "space-between",
+      gap: 8,
+      paddingHorizontal: 16,
+      paddingTop: 8,
+      paddingBottom: 6,
+    },
+    title: { fontSize: 22, fontWeight: "700", color: c.text },
+    count: { fontSize: 13, color: c.primary },
+    garden: {
+      fontSize: 12,
+      fontWeight: "700",
+      color: c.textMuted,
+      textTransform: "uppercase",
+      paddingHorizontal: 16,
+      paddingTop: 12,
+      paddingBottom: 4,
+    },
+    listContent: { flexGrow: 1, paddingBottom: 24 },
+    message: { padding: 16, gap: 8 },
+    actionError: { paddingHorizontal: 16, paddingBottom: 6 },
+    empty: { flex: 1, alignItems: "center", justifyContent: "center", gap: 8 },
+    emptyTitle: { fontSize: 16, fontWeight: "600", color: c.text },
+  }),
+);

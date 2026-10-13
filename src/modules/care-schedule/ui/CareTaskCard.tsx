@@ -6,8 +6,12 @@ import type { CareTask } from "../api/careApi";
 import { dueText } from "../dueText";
 import { daysUntil } from "../schedule";
 import type { CareType } from "../validation";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 
-export const CARE_ICONS: Record<CareType, ComponentProps<typeof Ionicons>["name"]> = {
+export const CARE_ICONS: Record<
+  CareType,
+  ComponentProps<typeof Ionicons>["name"]
+> = {
   water: "water-outline",
   fertilize: "flask-outline",
   repot: "flower-outline",
@@ -33,6 +37,8 @@ export function CareTaskCard({
   onEdit,
 }: Props) {
   const { t } = useTranslation();
+  const colors = useColors();
+  const styles = useStyles();
   const days = daysUntil(task.nextDueOn, today);
   const isDue = days <= 0;
 
@@ -49,7 +55,11 @@ export function CareTaskCard({
       style={[styles.card, !task.enabled && styles.cardDisabled]}
     >
       <View style={styles.header}>
-        <Ionicons name={CARE_ICONS[task.type]} size={20} color="#2e7d32" />
+        <Ionicons
+          name={CARE_ICONS[task.type]}
+          size={20}
+          color={colors.primary}
+        />
         <Text style={styles.title} numberOfLines={1}>
           {title}
         </Text>
@@ -61,7 +71,7 @@ export function CareTaskCard({
           onPress={onEdit}
           disabled={busy}
         >
-          <Ionicons name="create-outline" size={20} color="#2e7d32" />
+          <Ionicons name="create-outline" size={20} color={colors.primary} />
         </Pressable>
       </View>
 
@@ -107,36 +117,38 @@ export function CareTaskCard({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    padding: 12,
-    gap: 8,
-  },
-  cardDisabled: { opacity: 0.6 },
-  header: { flexDirection: "row", alignItems: "center", gap: 8 },
-  title: { flex: 1, fontSize: 16, fontWeight: "600" },
-  interval: { fontSize: 13, color: "#666" },
-  due: { fontSize: 14, color: "#666" },
-  overdue: { color: "#c0392b", fontWeight: "600" },
-  today: { color: "#2e7d32", fontWeight: "600" },
-  actions: { flexDirection: "row", gap: 8 },
-  button: {
-    backgroundColor: "#2e7d32",
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-  },
-  buttonText: { color: "#fff", fontSize: 14, fontWeight: "600" },
-  secondaryButton: {
-    borderWidth: 1,
-    borderColor: "#2e7d32",
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-  },
-  secondaryButtonText: { color: "#2e7d32", fontSize: 14, fontWeight: "600" },
-  buttonDisabled: { opacity: 0.6 },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    card: {
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 10,
+      padding: 12,
+      gap: 8,
+    },
+    cardDisabled: { opacity: 0.6 },
+    header: { flexDirection: "row", alignItems: "center", gap: 8 },
+    title: { flex: 1, fontSize: 16, fontWeight: "600", color: c.text },
+    interval: { fontSize: 13, color: c.textMuted },
+    due: { fontSize: 14, color: c.textMuted },
+    overdue: { color: c.danger, fontWeight: "600" },
+    today: { color: c.primary, fontWeight: "600" },
+    actions: { flexDirection: "row", gap: 8 },
+    button: {
+      backgroundColor: c.primary,
+      borderRadius: 8,
+      paddingVertical: 8,
+      paddingHorizontal: 14,
+    },
+    buttonText: { color: c.onPrimary, fontSize: 14, fontWeight: "600" },
+    secondaryButton: {
+      borderWidth: 1,
+      borderColor: c.primary,
+      borderRadius: 8,
+      paddingVertical: 8,
+      paddingHorizontal: 14,
+    },
+    secondaryButtonText: { color: c.primary, fontSize: 14, fontWeight: "600" },
+    buttonDisabled: { opacity: 0.6 },
+  }),
+);

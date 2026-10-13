@@ -3,20 +3,27 @@ import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Alert,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { ui } from "../../../shared/ui/styles";
-import { deleteCareTaskAndRefresh, updateCareTaskAndRefresh } from "../careActions";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
+import {
+  deleteCareTaskAndRefresh,
+  updateCareTaskAndRefresh,
+} from "../careActions";
 import { useCareTask } from "../hooks/useCareTasks";
 import { CareTaskForm } from "./CareTaskForm";
 
 export function EditCareTask({ taskId }: { taskId: string }) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const router = useRouter();
   const { gardenId, task, isLoading } = useCareTask(taskId);
   const [busy, setBusy] = useState(false);
@@ -57,7 +64,7 @@ export function EditCareTask({ taskId }: { taskId: string }) {
         hitSlop={8}
         onPress={confirmDelete}
       >
-        <Ionicons name="trash-outline" size={24} color="#c0392b" />
+        <Ionicons name="trash-outline" size={24} color={colors.danger} />
       </Pressable>
     ) : null;
 
@@ -105,6 +112,8 @@ export function EditCareTask({ taskId }: { taskId: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  error: { paddingHorizontal: 24, paddingTop: 16 },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    error: { paddingHorizontal: 24, paddingTop: 16 },
+  }),
+);

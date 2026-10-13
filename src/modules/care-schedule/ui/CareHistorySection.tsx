@@ -2,13 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { formatDisplayDate } from "../../../shared/utils/date";
 import { useCareLog } from "../hooks/useCareLog";
 import { CARE_ICONS } from "./CareTaskCard";
@@ -19,6 +20,9 @@ export const HISTORY_PREVIEW = 3;
 // Sekcja "Historia" na karcie rośliny: kilka ostatnich wykonanych zadań
 export function CareHistorySection({ plantId }: { plantId: string }) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const router = useRouter();
   const { data, isLoading, isError } = useCareLog(plantId);
   const entries = (data ?? []).slice(0, HISTORY_PREVIEW);
@@ -40,7 +44,11 @@ export function CareHistorySection({ plantId }: { plantId: string }) {
             testID={`care-log-${entry.id}`}
             style={styles.row}
           >
-            <Ionicons name={CARE_ICONS[entry.type]} size={18} color="#2e7d32" />
+            <Ionicons
+              name={CARE_ICONS[entry.type]}
+              size={18}
+              color={colors.primary}
+            />
             <Text style={styles.title} numberOfLines={1}>
               {entry.type === "other"
                 ? entry.customLabel
@@ -77,10 +85,12 @@ export function CareHistorySection({ plantId }: { plantId: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  section: { gap: 8 },
-  row: { flexDirection: "row", alignItems: "center", gap: 8 },
-  title: { flex: 1, fontSize: 15 },
-  // Długa nazwa osoby jest ucinana, żeby nie wypchnęła rodzaju zadania
-  meta: { maxWidth: "60%", fontSize: 13, color: "#666" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    section: { gap: 8 },
+    row: { flexDirection: "row", alignItems: "center", gap: 8 },
+    title: { flex: 1, fontSize: 15, color: c.text },
+    // Długa nazwa osoby jest ucinana, żeby nie wypchnęła rodzaju zadania
+    meta: { maxWidth: "60%", fontSize: 13, color: c.textMuted },
+  }),
+);

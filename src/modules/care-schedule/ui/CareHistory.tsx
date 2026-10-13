@@ -3,15 +3,16 @@ import { Stack } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Alert,
-    FlatList,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { formatDisplayDate } from "../../../shared/utils/date";
 import { usePlant } from "../../plants/hooks/usePlant";
 import type { CareLogEntry } from "../api/careLogApi";
@@ -25,12 +26,18 @@ export const TITLE_NAME_MAX = 16;
 export function shortenName(name: string, max = TITLE_NAME_MAX): string {
   const chars = Array.from(name);
   if (chars.length <= max) return name;
-  return `${chars.slice(0, max - 1).join("").trimEnd()}…`;
+  return `${chars
+    .slice(0, max - 1)
+    .join("")
+    .trimEnd()}…`;
 }
 
 // Ekran pełnej historii opieki jednej rośliny, z usuwaniem wpisów
 export function CareHistory({ plantId }: { plantId: string }) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const { plant } = usePlant(plantId);
   const { data, isLoading, isError } = useCareLog(plantId);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -104,7 +111,11 @@ export function CareHistory({ plantId }: { plantId: string }) {
         }
         renderItem={({ item }) => (
           <View testID={`care-history-${item.id}`} style={styles.row}>
-            <Ionicons name={CARE_ICONS[item.type]} size={20} color="#2e7d32" />
+            <Ionicons
+              name={CARE_ICONS[item.type]}
+              size={20}
+              color={colors.primary}
+            />
             <View style={ui.grow}>
               <Text style={styles.title} numberOfLines={1}>
                 {entryName(item)}
@@ -127,7 +138,7 @@ export function CareHistory({ plantId }: { plantId: string }) {
               disabled={busyId !== null}
               style={busyId !== null && ui.buttonDisabled}
             >
-              <Ionicons name="trash-outline" size={20} color="#c0392b" />
+              <Ionicons name="trash-outline" size={20} color={colors.danger} />
             </Pressable>
           </View>
         )}
@@ -143,8 +154,10 @@ export function CareHistory({ plantId }: { plantId: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  list: { padding: 24, gap: 14 },
-  row: { flexDirection: "row", alignItems: "center", gap: 12 },
-  title: { fontSize: 16, fontWeight: "600" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    list: { padding: 24, gap: 14 },
+    row: { flexDirection: "row", alignItems: "center", gap: 12 },
+    title: { fontSize: 16, fontWeight: "600", color: c.text },
+  }),
+);

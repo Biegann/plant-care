@@ -3,19 +3,20 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    Alert,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { formatDisplayDate } from "../../../shared/utils/date";
 import type { CareResult, CareTask } from "../api/careApi";
 import {
-    completeCareTaskAndRefresh,
-    postponeCareTaskAndRefresh,
+  completeCareTaskAndRefresh,
+  postponeCareTaskAndRefresh,
 } from "../careActions";
 import { usePlantCareTasks } from "../hooks/useCareTasks";
 import { daysUntil, nextDueAfterDone, todayIso } from "../schedule";
@@ -30,6 +31,9 @@ type TaskAction = (
 // Sekcja "Opieka" na karcie rośliny: zadania z terminami i szybkimi akcjami
 export function CareSection({ plantId }: { plantId: string }) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const router = useRouter();
   const { gardenId, tasks, isLoading, isError } = usePlantCareTasks(plantId);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -80,7 +84,11 @@ export function CareSection({ plantId }: { plantId: string }) {
             router.push({ pathname: "/care/new", params: { plantId } })
           }
         >
-          <Ionicons name="add-circle-outline" size={26} color="#2e7d32" />
+          <Ionicons
+            name="add-circle-outline"
+            size={26}
+            color={colors.primary}
+          />
         </Pressable>
       </View>
       {errorKey && <Text style={ui.error}>{t(`care.errors.${errorKey}`)}</Text>}
@@ -108,7 +116,9 @@ export function CareSection({ plantId }: { plantId: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  section: { gap: 8 },
-  header: { flexDirection: "row", alignItems: "flex-end", gap: 8 },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    section: { gap: 8 },
+    header: { flexDirection: "row", alignItems: "flex-end", gap: 8 },
+  }),
+);

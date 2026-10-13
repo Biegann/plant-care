@@ -5,6 +5,7 @@ import { dueText } from "../../care-schedule/dueText";
 import { daysUntil } from "../../care-schedule/schedule";
 import { CARE_ICONS } from "../../care-schedule/ui/CareTaskCard";
 import type { TodayTask } from "../api/todayApi";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 
 type Props = {
   item: TodayTask;
@@ -26,6 +27,8 @@ export function TodayRow({
   onPostpone,
 }: Props) {
   const { t } = useTranslation();
+  const colors = useColors();
+  const styles = useStyles();
   const { task, plantName } = item;
   const days = daysUntil(task.nextDueOn, today);
   const label =
@@ -40,7 +43,11 @@ export function TodayRow({
         style={styles.main}
         onPress={onPress}
       >
-        <Ionicons name={CARE_ICONS[task.type]} size={20} color="#2e7d32" />
+        <Ionicons
+          name={CARE_ICONS[task.type]}
+          size={20}
+          color={colors.primary}
+        />
         <View style={styles.text}>
           <Text style={styles.title} numberOfLines={1}>
             {label}
@@ -62,7 +69,7 @@ export function TodayRow({
         onPress={onDone}
         disabled={busy}
       >
-        <Ionicons name="checkmark" size={20} color="#fff" />
+        <Ionicons name="checkmark" size={20} color={colors.onPrimary} />
       </Pressable>
       <Pressable
         testID={`today-task-postpone-${task.id}`}
@@ -78,40 +85,42 @@ export function TodayRow({
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#ddd",
-  },
-  main: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
-  text: { flex: 1 },
-  title: { fontSize: 15, fontWeight: "600" },
-  plant: { fontWeight: "400" },
-  due: { fontSize: 12 },
-  overdue: { color: "#c0392b", fontWeight: "600" },
-  today: { color: "#2e7d32" },
-  done: {
-    width: 40,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: "#2e7d32",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  postpone: {
-    width: 44,
-    height: 36,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#2e7d32",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  postponeText: { color: "#2e7d32", fontSize: 13, fontWeight: "600" },
-  disabled: { opacity: 0.6 },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      paddingVertical: 6,
+      paddingHorizontal: 16,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: c.border,
+    },
+    main: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
+    text: { flex: 1 },
+    title: { fontSize: 15, fontWeight: "600", color: c.text },
+    plant: { fontWeight: "400" },
+    due: { fontSize: 12, color: c.text },
+    overdue: { color: c.danger, fontWeight: "600" },
+    today: { color: c.primary },
+    done: {
+      width: 40,
+      height: 36,
+      borderRadius: 8,
+      backgroundColor: c.primary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    postpone: {
+      width: 44,
+      height: 36,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: c.primary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    postponeText: { color: c.primary, fontSize: 13, fontWeight: "600" },
+    disabled: { opacity: 0.6 },
+  }),
+);

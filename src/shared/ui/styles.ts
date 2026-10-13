@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { createThemedStyles, lightPalette, type Palette } from "./theme";
+import { createThemedStyles, type Palette } from "./theme";
 
 const makeUi = (c: Palette) =>
   StyleSheet.create({
@@ -79,6 +79,3 @@ const makeUi = (c: Palette) =>
 
 // Wspólne style w kolorach aktualnego motywu
 export const useUi = createThemedStyles(makeUi);
-
-// Tylko jasny motyw: dla ekranów, które nie przeszły jeszcze na useUi
-export const ui = makeUi(lightPalette);

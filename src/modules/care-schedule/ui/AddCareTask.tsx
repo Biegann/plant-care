@@ -1,13 +1,14 @@
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View } from "react-native";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
 import { createCareTaskAndRefresh } from "../careActions";
 import { usePlantCareTasks } from "../hooks/useCareTasks";
 import { CareTaskForm } from "./CareTaskForm";
 
 export function AddCareTask({ plantId }: { plantId: string }) {
   const { t } = useTranslation();
+  const ui = useUi();
   const router = useRouter();
   const { gardenId, tasks, isLoading, isError } = usePlantCareTasks(plantId);
 

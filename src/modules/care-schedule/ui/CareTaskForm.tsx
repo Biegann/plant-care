@@ -2,26 +2,27 @@ import { useHeaderHeight } from "expo-router/react-navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
-import { ui } from "../../../shared/ui/styles";
+import { useUi } from "../../../shared/ui/styles";
+import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { DateField } from "../../../shared/ui/DateField";
 import type { CareResult, CareTask } from "../api/careApi";
 import { DEFAULT_INTERVAL_DAYS, todayIso } from "../schedule";
 import {
-    CARE_TYPES,
-    MAX_LABEL_LENGTH,
-    validateCareTaskInput,
-    type CareTaskInput,
-    type CareTaskInputErrors,
-    type CareType,
+  CARE_TYPES,
+  MAX_LABEL_LENGTH,
+  validateCareTaskInput,
+  type CareTaskInput,
+  type CareTaskInputErrors,
+  type CareType,
 } from "../validation";
 
 type Props = {
@@ -40,6 +41,9 @@ export function CareTaskForm({
   onSaved,
 }: Props) {
   const { t } = useTranslation();
+  const ui = useUi();
+  const colors = useColors();
+  const styles = useStyles();
   const headerHeight = useHeaderHeight();
 
   // "Inne" można dodawać wielokrotnie, więc nigdy nie jest zajęte
@@ -78,7 +82,9 @@ export function CareTaskForm({
       type,
       customLabel,
       // Tylko same cyfry; wszystko inne walidacja odrzuci jako NaN
-      intervalDays: /^\d+$/.test(intervalText.trim()) ? Number(intervalText) : NaN,
+      intervalDays: /^\d+$/.test(intervalText.trim())
+        ? Number(intervalText)
+        : NaN,
       nextDueOn,
       enabled: initial?.enabled ?? true,
     };
@@ -201,7 +207,7 @@ export function CareTaskForm({
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator color="#fff" />
+            <ActivityIndicator color={colors.onPrimary} />
           ) : (
             <Text style={ui.buttonText}>{t("care.form.save")}</Text>
           )}
@@ -211,24 +217,26 @@ export function CareTaskForm({
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: 24, gap: 12 },
-  field: { gap: 4 },
-  label: { fontSize: 13, color: "#666" },
-  fixedType: { fontSize: 16, fontWeight: "600" },
-  chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  chip: {
-    borderWidth: 1,
-    borderColor: "#2e7d32",
-    borderRadius: 16,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-  },
-  chipSelected: { backgroundColor: "#2e7d32" },
-  chipTaken: { opacity: 0.35 },
-  chipText: { color: "#2e7d32", fontSize: 14, fontWeight: "600" },
-  chipTextSelected: { color: "#fff" },
-  intervalRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  intervalInput: { width: 80, textAlign: "center" },
-  unit: { fontSize: 16, color: "#666" },
-});
+const useStyles = createThemedStyles((c) =>
+  StyleSheet.create({
+    content: { padding: 24, gap: 12 },
+    field: { gap: 4 },
+    label: { fontSize: 13, color: c.textMuted },
+    fixedType: { fontSize: 16, fontWeight: "600", color: c.text },
+    chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+    chip: {
+      borderWidth: 1,
+      borderColor: c.primary,
+      borderRadius: 16,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+    },
+    chipSelected: { backgroundColor: c.primary },
+    chipTaken: { opacity: 0.35 },
+    chipText: { color: c.primary, fontSize: 14, fontWeight: "600" },
+    chipTextSelected: { color: c.onPrimary },
+    intervalRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+    intervalInput: { width: 80, textAlign: "center" },
+    unit: { fontSize: 16, color: c.textMuted },
+  }),
+);
