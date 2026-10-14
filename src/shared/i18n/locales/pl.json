@@ -309,5 +309,34 @@
       "notAllowed": "Nie masz dostępu do tej rośliny",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie."
     }
+  },
+  "species": {
+    "tipsTitle": "Wskazówki",
+    "fromList": "Gatunek z listy",
+    "light": {
+      "low": "Cień lub słabe światło",
+      "medium": "Półcień, światło rozproszone",
+      "bright": "Jasne, rozproszone światło (bez ostrego słońca)",
+      "direct": "Pełne słońce"
+    },
+    "watering": {
+      "line": "Podlewanie co ok. {{days}} dni, {{hint}}",
+      "topDry": "gdy wierzch ziemi przeschnie",
+      "halfDry": "gdy połowa ziemi przeschnie",
+      "fullyDry": "gdy ziemia całkiem wyschnie",
+      "keepMoist": "ziemia ma być stale lekko wilgotna",
+      "orchid": "gdy korzenie zrobią się srebrzyste"
+    },
+    "fertilize": "Nawożenie co ok. {{days}} dni wiosną i latem",
+    "humidity": {
+      "low": "Znosi suche powietrze",
+      "medium": "Średnia wilgotność powietrza",
+      "high": "Lubi wysoką wilgotność (zraszanie)"
+    },
+    "toxic": {
+      "yes": "Trująca dla kotów i psów",
+      "no": "Nie jest znana jako trująca dla kotów i psów"
+    },
+    "disclaimer": "Typowe zalecenia, dopasuj je do swojej rośliny."
   }
 }

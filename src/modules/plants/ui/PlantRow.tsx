@@ -4,6 +4,10 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import type { Plant } from "../api/plantsApi";
 import { usePlantPhotoUrl } from "../hooks/usePlantPhotoUrl";
 import { createThemedStyles, useColors } from "../../../shared/ui/theme";
+import {
+  speciesLabel,
+  useSpeciesLanguage,
+} from "../../species/useSpeciesLanguage";
 
 type Props = {
   plant: Plant;
@@ -17,7 +21,8 @@ export function PlantRow({ plant, needsCare = false, onPress }: Props) {
   const colors = useColors();
   const styles = useStyles();
   const photoUrl = usePlantPhotoUrl(plant.photoPath);
-  const subtitle = [plant.speciesName, plant.locationNote]
+  const language = useSpeciesLanguage();
+  const subtitle = [speciesLabel(plant, language), plant.locationNote]
     .filter(Boolean)
     .join(" · ");
 

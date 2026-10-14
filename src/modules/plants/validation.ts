@@ -1,8 +1,11 @@
 import { isValidIsoDate } from "../../shared/utils/date";
+import { findSpecies } from "../species/data";
 
 export type PlantInput = {
   name: string;
   speciesName?: string;
+  // Klucz gatunku z wbudowanej listy, gdy wybrano go z podpowiedzi
+  speciesKey?: string | null;
   locationNote?: string;
   purchaseDate?: string;
   notes?: string;
@@ -36,6 +39,7 @@ export function validatePlantInput(input: PlantInput): PlantInputErrors {
 export type NormalizedPlantInput = {
   name: string;
   speciesName: string | null;
+  speciesKey: string | null;
   locationNote: string | null;
   purchaseDate: string | null;
   notes: string | null;
@@ -50,6 +54,8 @@ export function normalizePlantInput(input: PlantInput): NormalizedPlantInput {
   return {
     name: input.name.trim(),
     speciesName: clean(input.speciesName),
+    // Klucz spoza listy (np. usunięty z niej gatunek) traktujemy jak brak klucza
+    speciesKey: findSpecies(input.speciesKey)?.key ?? null,
     locationNote: clean(input.locationNote),
     purchaseDate: clean(input.purchaseDate),
     notes: clean(input.notes),

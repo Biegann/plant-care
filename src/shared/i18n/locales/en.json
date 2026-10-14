@@ -303,5 +303,34 @@
       "notAllowed": "You don't have access to this plant",
       "unknown": "Something went wrong. Please try again."
     }
+  },
+  "species": {
+    "tipsTitle": "Care tips",
+    "fromList": "Species from the list",
+    "light": {
+      "low": "Shade or low light",
+      "medium": "Partial shade, diffused light",
+      "bright": "Bright, indirect light (no harsh sun)",
+      "direct": "Full sun"
+    },
+    "watering": {
+      "line": "Water about every {{days}} days, {{hint}}",
+      "topDry": "when the topsoil dries out",
+      "halfDry": "when half of the soil dries out",
+      "fullyDry": "when the soil is completely dry",
+      "keepMoist": "keep the soil slightly moist",
+      "orchid": "when the roots turn silvery"
+    },
+    "fertilize": "Fertilize about every {{days}} days in spring and summer",
+    "humidity": {
+      "low": "Tolerates dry air",
+      "medium": "Average humidity",
+      "high": "Likes high humidity (misting)"
+    },
+    "toxic": {
+      "yes": "Toxic to cats and dogs",
+      "no": "Not known to be toxic to cats and dogs"
+    },
+    "disclaimer": "Typical guidance, adjust it to your plant."
   }
 }

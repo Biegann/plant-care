@@ -28,6 +28,11 @@ import {
 } from "../validation";
 import { DateField } from "../../../shared/ui/DateField";
 import { PhotoField } from "./PhotoField";
+import { SpeciesField } from "../../species/ui/SpeciesField";
+import {
+  speciesLabel,
+  useSpeciesLanguage,
+} from "../../species/useSpeciesLanguage";
 
 type Props = {
   // Roślina do edycji; bez niej formularz jest pusty (dodawanie)
@@ -47,7 +52,14 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
   const headerHeight = useHeaderHeight();
 
   const [name, setName] = useState(initial?.name ?? "");
-  const [speciesName, setSpeciesName] = useState(initial?.speciesName ?? "");
+  const language = useSpeciesLanguage();
+  // Gatunek z listy pokazujemy w bieżącym języku aplikacji
+  const [speciesName, setSpeciesName] = useState(
+    initial ? (speciesLabel(initial, language) ?? "") : "",
+  );
+  const [speciesKey, setSpeciesKey] = useState<string | null>(
+    initial?.speciesKey ?? null,
+  );
   const [locationNote, setLocationNote] = useState(initial?.locationNote ?? "");
   const [purchaseDate, setPurchaseDate] = useState(initial?.purchaseDate ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
@@ -77,6 +89,7 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
     const input: PlantInput = {
       name,
       speciesName,
+      speciesKey,
       locationNote,
       purchaseDate,
       notes,
@@ -129,13 +142,14 @@ export function PlantForm({ initial, onSubmit, onSaved }: Props) {
 
         <View style={styles.field}>
           <Text style={styles.label}>{t("plants.form.species")}</Text>
-          <TextField
-            testID="plant-species-input"
-            style={ui.input}
+          <SpeciesField
+            name={speciesName}
+            speciesKey={speciesKey}
+            onChange={(name, key) => {
+              setSpeciesName(name);
+              setSpeciesKey(key);
+            }}
             placeholder={t("plants.form.speciesPlaceholder")}
-            maxLength={80}
-            value={speciesName}
-            onChangeText={setSpeciesName}
           />
           {fieldError(errors.speciesName)}
         </View>

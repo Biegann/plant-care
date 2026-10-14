@@ -2,6 +2,8 @@ import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View } from "react-native";
 import { useUi } from "../../../shared/ui/styles";
+import { usePlant } from "../../plants/hooks/usePlant";
+import { speciesIntervals } from "../../species/data";
 import { createCareTaskAndRefresh } from "../careActions";
 import { usePlantCareTasks } from "../hooks/useCareTasks";
 import { CareTaskForm } from "./CareTaskForm";
@@ -11,6 +13,7 @@ export function AddCareTask({ plantId }: { plantId: string }) {
   const ui = useUi();
   const router = useRouter();
   const { gardenId, tasks, isLoading, isError } = usePlantCareTasks(plantId);
+  const { plant } = usePlant(plantId);
 
   // Formularz potrzebuje listy zadań od razu, bo z niej wynika domyślny rodzaj
   if (isLoading) {
@@ -32,6 +35,7 @@ export function AddCareTask({ plantId }: { plantId: string }) {
   return (
     <CareTaskForm
       takenTypes={tasks.map((task) => task.type)}
+      suggestedIntervals={speciesIntervals(plant?.speciesKey)}
       onSubmit={(input) => createCareTaskAndRefresh(gardenId, plantId, input)}
       onSaved={() => router.back()}
     />

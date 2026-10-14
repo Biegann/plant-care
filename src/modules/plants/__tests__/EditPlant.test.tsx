@@ -35,6 +35,7 @@ const plant: Plant = {
   gardenId: "g1",
   name: "Monstera",
   speciesName: null,
+  speciesKey: null,
   locationNote: "Salon",
   purchaseDate: null,
   notes: null,

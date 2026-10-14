@@ -17,6 +17,7 @@ function plant(overrides: Partial<Plant> = {}): Plant {
     gardenId: "g1",
     name: "Monstera",
     speciesName: "Monstera deliciosa",
+    speciesKey: null,
     locationNote: "Salon",
     purchaseDate: null,
     notes: null,

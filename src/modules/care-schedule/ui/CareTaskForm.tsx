@@ -30,6 +30,8 @@ type Props = {
   initial?: CareTask;
   // Rodzaje, które roślina już ma (nie można ich dodać drugi raz)
   takenTypes?: CareType[];
+  // Podpowiedzi interwałów zamiast ogólnych (np. z gatunku rośliny)
+  suggestedIntervals?: Partial<Record<CareType, number>>;
   onSubmit: (input: CareTaskInput) => Promise<CareResult<unknown>>;
   onSaved: () => void;
 };
@@ -37,6 +39,7 @@ type Props = {
 export function CareTaskForm({
   initial,
   takenTypes = [],
+  suggestedIntervals,
   onSubmit,
   onSaved,
 }: Props) {
@@ -51,12 +54,15 @@ export function CareTaskForm({
     candidate !== "other" && takenTypes.includes(candidate);
   const firstFree = CARE_TYPES.find((candidate) => !isTaken(candidate));
 
+  const suggested = (candidate: CareType) =>
+    suggestedIntervals?.[candidate] ?? DEFAULT_INTERVAL_DAYS[candidate];
+
   const [type, setType] = useState<CareType>(
     initial?.type ?? firstFree ?? "other",
   );
   const [customLabel, setCustomLabel] = useState(initial?.customLabel ?? "");
   const [intervalText, setIntervalText] = useState(
-    String(initial?.intervalDays ?? DEFAULT_INTERVAL_DAYS[type]),
+    String(initial?.intervalDays ?? suggested(type)),
   );
   // Po ręcznej zmianie interwału wybór rodzaju już go nie nadpisuje
   const [intervalEdited, setIntervalEdited] = useState(false);
@@ -67,7 +73,7 @@ export function CareTaskForm({
 
   const chooseType = (chosen: CareType) => {
     setType(chosen);
-    if (!intervalEdited) setIntervalText(String(DEFAULT_INTERVAL_DAYS[chosen]));
+    if (!intervalEdited) setIntervalText(String(suggested(chosen)));
   };
 
   const changeInterval = (text: string) => {

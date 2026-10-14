@@ -30,6 +30,7 @@ const plant: Plant = {
   gardenId: "g1",
   name: "Monstera",
   speciesName: "Monstera deliciosa",
+  speciesKey: null,
   locationNote: "Salon",
   purchaseDate: "2025-05-20",
   notes: "Podlewać rzadko",
@@ -74,6 +75,7 @@ describe("PlantForm", () => {
         {
           name: "Fikus",
           speciesName: "Ficus elastica",
+          speciesKey: null,
           locationNote: "Biuro",
           purchaseDate: "",
           notes: "Od Ani",

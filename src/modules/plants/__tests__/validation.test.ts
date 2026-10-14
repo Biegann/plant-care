@@ -43,9 +43,21 @@ describe("normalizePlantInput", () => {
     ).toEqual({
       name: "Monstera",
       speciesName: null,
+      speciesKey: null,
       locationNote: null,
       purchaseDate: "2026-03-12",
       notes: null,
     });
+  });
+
+  test("klucz gatunku: znany zostaje, nieznany zamienia na null", () => {
+    expect(
+      normalizePlantInput({ name: "A", speciesKey: "ficus-elastica" })
+        .speciesKey,
+    ).toBe("ficus-elastica");
+    expect(
+      normalizePlantInput({ name: "A", speciesKey: "nie-ma-takiego" })
+        .speciesKey,
+    ).toBeNull();
   });
 });

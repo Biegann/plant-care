@@ -16,6 +16,11 @@ import { useUi } from "../../../shared/ui/styles";
 import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { CareHistorySection } from "../../care-schedule/ui/CareHistorySection";
 import { JournalSection } from "../../journal/ui/JournalSection";
+import { SpeciesTips } from "../../species/ui/SpeciesTips";
+import {
+  speciesLabel,
+  useSpeciesLanguage,
+} from "../../species/useSpeciesLanguage";
 import { CareSection } from "../../care-schedule/ui/CareSection";
 import { formatDisplayDate } from "../../../shared/utils/date";
 import { usePlant } from "../hooks/usePlant";
@@ -30,6 +35,8 @@ export function PlantDetails({ plantId }: { plantId: string }) {
   const router = useRouter();
   const { plant, isLoading } = usePlant(plantId);
   const photoUrl = usePlantPhotoUrl(plant?.photoPath ?? null);
+  const language = useSpeciesLanguage();
+  const species = plant ? speciesLabel(plant, language) : null;
   const [busy, setBusy] = useState(false);
   const [errorKey, setErrorKey] = useState<string | null>(null);
 
@@ -114,9 +121,7 @@ export function PlantDetails({ plantId }: { plantId: string }) {
 
         <View style={styles.body}>
           <Text style={ui.title}>{plant.name}</Text>
-          {plant.speciesName && (
-            <Text style={styles.species}>{plant.speciesName}</Text>
-          )}
+          {species && <Text style={styles.species}>{species}</Text>}
           {errorKey && (
             <Text style={ui.error}>{t(`plants.errors.${errorKey}`)}</Text>
           )}
@@ -142,6 +147,7 @@ export function PlantDetails({ plantId }: { plantId: string }) {
             </View>
           )}
 
+          <SpeciesTips speciesKey={plant.speciesKey} />
           <CareSection plantId={plant.id} />
           <CareHistorySection plantId={plant.id} />
           <JournalSection plantId={plant.id} />

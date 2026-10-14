@@ -15,20 +15,26 @@ jest.mock("@react-native-community/datetimepicker", () => ({
 }));
 jest.mock("../hooks/useCareTasks", () => ({ usePlantCareTasks: jest.fn() }));
 jest.mock("../careActions", () => ({ createCareTaskAndRefresh: jest.fn() }));
+jest.mock("../../plants/hooks/usePlant", () => ({ usePlant: jest.fn() }));
 jest.mock("../schedule", () => ({
   ...jest.requireActual("../schedule"),
   todayIso: () => "2026-10-11",
 }));
 
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import { usePlant } from "../../plants/hooks/usePlant";
 import { createCareTaskAndRefresh } from "../careActions";
 import { usePlantCareTasks } from "../hooks/useCareTasks";
 import { AddCareTask } from "../ui/AddCareTask";
 
 const mockTasks = usePlantCareTasks as jest.Mock;
 const mockCreate = createCareTaskAndRefresh as jest.Mock;
+const mockPlant = usePlant as jest.Mock;
 
-function setup(extra: Record<string, unknown> = {}) {
+function setup(extra: Record<string, unknown> = {}, speciesKey?: string) {
+  mockPlant.mockReturnValue({
+    plant: { id: "p1", speciesKey: speciesKey ?? null },
+  });
   mockTasks.mockReturnValue({
     gardenId: "g1",
     tasks: [],
@@ -69,6 +75,15 @@ describe("AddCareTask", () => {
       type: "fertilize",
       intervalDays: 30,
     });
+  });
+
+  test("roślina z gatunkiem z listy: interwały z gatunku", async () => {
+    // Kaktus: podlewanie co 21 dni, nawożenie co 60
+    const utils = await setup({}, "cactaceae");
+
+    expect(utils.getByTestId("care-interval-input").props.value).toBe("21");
+    await fireEvent.press(utils.getByTestId("care-type-fertilize"));
+    expect(utils.getByTestId("care-interval-input").props.value).toBe("60");
   });
 
   test("błąd zapisu: zostaje na ekranie z komunikatem", async () => {

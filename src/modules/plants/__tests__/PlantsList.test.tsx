@@ -47,6 +47,7 @@ function plant(
     gardenId: "g1",
     name,
     speciesName,
+    speciesKey: null,
     locationNote: null,
     purchaseDate: null,
     notes: null,

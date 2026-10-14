@@ -15,6 +15,7 @@ export type Plant = {
   gardenId: string;
   name: string;
   speciesName: string | null;
+  speciesKey: string | null;
   locationNote: string | null;
   purchaseDate: string | null;
   notes: string | null;
@@ -51,6 +52,7 @@ type PlantRow = {
   garden_id: string;
   name: string;
   species_name: string | null;
+  species_key: string | null;
   location_note: string | null;
   purchase_date: string | null;
   notes: string | null;
@@ -64,6 +66,7 @@ export function toPlant(row: PlantRow): Plant {
     gardenId: row.garden_id,
     name: row.name,
     speciesName: row.species_name,
+    speciesKey: row.species_key,
     locationNote: row.location_note,
     purchaseDate: row.purchase_date,
     notes: row.notes,
@@ -75,6 +78,7 @@ export function toPlant(row: PlantRow): Plant {
 const toColumns = (input: NormalizedPlantInput) => ({
   name: input.name,
   species_name: input.speciesName,
+  species_key: input.speciesKey,
   location_note: input.locationNote,
   purchase_date: input.purchaseDate,
   notes: input.notes,
