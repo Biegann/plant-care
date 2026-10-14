@@ -13,6 +13,7 @@ import { useNotificationSync } from "../modules/notifications/hooks/useNotificat
 import { initNotificationHandler } from "../modules/notifications/scheduler";
 import "../modules/language/store/languageStore";
 import "../modules/theme/store/themeStore";
+import { useWelcomeStore } from "../modules/welcome/store/welcomeStore";
 import { queryClient } from "../shared/api/queryClient";
 import "../shared/i18n";
 import { darkPalette, useIsDark } from "../shared/ui/theme";
@@ -39,13 +40,20 @@ export default function RootLayout() {
   const userId = useSignedInUserId();
   const initialized = useAuthInitialized();
   const isDark = useIsDark();
+  const welcomeHydrated = useWelcomeStore((state) => state.hydrated);
 
   useEffect(() => initAuthListener(), []);
   useNotificationSync(initialized, userId);
 
+  // Splash czeka też na flagę powitania, żeby nie mignęło komuś, kto je już widział
   useEffect(() => {
-    if (initialized) SplashScreen.hideAsync();
-  }, [initialized]);
+    if (initialized && welcomeHydrated) SplashScreen.hideAsync();
+  }, [initialized, welcomeHydrated]);
+
+  // Kto już się logował na tym telefonie, nie potrzebuje powitania po wylogowaniu
+  useEffect(() => {
+    if (welcomeHydrated && isSignedIn) useWelcomeStore.getState().markSeen();
+  }, [welcomeHydrated, isSignedIn]);
 
   // po wylogowaniu czyścimy dane pobrane z serwera
   useEffect(() => {

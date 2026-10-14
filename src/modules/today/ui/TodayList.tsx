@@ -20,10 +20,12 @@ import {
   postponeCareTaskAndRefresh,
 } from "../../care-schedule/careActions";
 import { todayIso } from "../../care-schedule/schedule";
+import { useGardens } from "../../garden/hooks/useGardens";
 import { useGardenStore } from "../../garden/store/gardenStore";
 import type { TodayTask } from "../api/todayApi";
 import { groupByGarden } from "../groups";
 import { useTodayTasks } from "../hooks/useTodayTasks";
+import { FirstSteps } from "./FirstSteps";
 import { TodayRow } from "./TodayRow";
 
 type TaskAction = (
@@ -39,6 +41,8 @@ export function TodayList() {
   const colors = useColors();
   const styles = useStyles();
   const { data, isPending, isError, refetch } = useTodayTasks();
+  // Dopiero wczytana, pusta lista ogrodów (nie w trakcie ładowania)
+  const hasNoGarden = useGardens().data?.length === 0;
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -112,7 +116,9 @@ export function TodayList() {
         </Text>
       )}
 
-      {isPending ? (
+      {hasNoGarden ? (
+        <FirstSteps />
+      ) : isPending ? (
         <ActivityIndicator />
       ) : isError ? (
         <View style={styles.message}>

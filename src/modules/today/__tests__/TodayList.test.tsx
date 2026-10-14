@@ -19,6 +19,7 @@ jest.mock("react-i18next", () => ({
 }));
 jest.mock("@expo/vector-icons", () => ({ Ionicons: () => null }));
 jest.mock("../hooks/useTodayTasks", () => ({ useTodayTasks: jest.fn() }));
+jest.mock("../../garden/hooks/useGardens", () => ({ useGardens: jest.fn() }));
 jest.mock("../../care-schedule/schedule", () => ({
   ...jest.requireActual("../../care-schedule/schedule"),
   todayIso: () => "2026-10-14",
@@ -31,6 +32,7 @@ import {
     completeCareTaskAndRefresh,
     postponeCareTaskAndRefresh,
 } from "../../care-schedule/careActions";
+import { useGardens } from "../../garden/hooks/useGardens";
 import { useGardenStore } from "../../garden/store/gardenStore";
 import type { TodayTask } from "../api/todayApi";
 import { useTodayTasks } from "../hooks/useTodayTasks";
@@ -42,6 +44,7 @@ const mockComplete = completeCareTaskAndRefresh as jest.Mock;
 const mockPostpone = postponeCareTaskAndRefresh as jest.Mock;
 const mockStore = useGardenStore.getState as jest.Mock;
 const mockSetActive = jest.fn();
+const mockGardens = useGardens as jest.Mock;
 
 const item = (
   id: string,
@@ -80,6 +83,7 @@ beforeEach(() => {
     .spyOn(AppState, "addEventListener")
     .mockReturnValue({ remove: jest.fn() } as never);
   mockStore.mockReturnValue({ setActiveGardenId: mockSetActive });
+  mockGardens.mockReturnValue({ data: [{ id: "g1", name: "Dom" }] });
 });
 
 afterEach(() => {
@@ -253,5 +257,25 @@ describe("TodayList", () => {
     onChange("active");
 
     expect(refetch).toHaveBeenCalledTimes(1);
+  });
+
+  test("bez ogrodu pokazuje pierwsze kroki zamiast pustej listy", async () => {
+    mockGardens.mockReturnValue({ data: [] });
+    setup({ data: [] });
+
+    const screen = await render(<TodayList />);
+
+    expect(screen.getByTestId("today-first-steps")).toBeTruthy();
+    expect(screen.queryByTestId("today-empty")).toBeNull();
+  });
+
+  test("podczas wczytywania ogrodów nie pokazuje pierwszych kroków", async () => {
+    mockGardens.mockReturnValue({ data: undefined });
+    setup({ data: [] });
+
+    const screen = await render(<TodayList />);
+
+    expect(screen.queryByTestId("today-first-steps")).toBeNull();
+    expect(screen.getByTestId("today-empty")).toBeTruthy();
   });
 });

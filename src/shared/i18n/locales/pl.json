@@ -137,6 +137,10 @@
   },
   "today": {
     "title": "Dziś",
+    "firstSteps": {
+      "title": "Witaj w Plant Care!",
+      "text": "Zacznij od ogrodu: utwórz własny albo dołącz do ogrodu drugiej osoby kodem zaproszenia."
+    },
     "count_one": "{{count}} zadanie",
     "count_few": "{{count}} zadania",
     "count_many": "{{count}} zadań",
@@ -261,5 +265,15 @@
     "system": "Systemowy",
     "pl": "Polski",
     "en": "English"
+  },
+  "welcome": {
+    "title": "Plant Care",
+    "tagline": "Twoje rośliny pod dobrą opieką",
+    "features": {
+      "shared": "Wspólny ogród z domownikami i bliskimi",
+      "reminders": "Przypomnienia o podlewaniu, nawożeniu i przesadzaniu",
+      "history": "Historia opieki nad każdą rośliną"
+    },
+    "start": "Zaczynamy"
   }
 }

@@ -130,6 +130,10 @@
   },
   "today": {
     "title": "Today",
+    "firstSteps": {
+      "title": "Welcome to Plant Care!",
+      "text": "Start with a garden: create your own or join someone else's with an invite code."
+    },
     "count_one": "{{count}} task",
     "count_other": "{{count}} tasks",
     "empty": "All done for today",
@@ -255,5 +259,15 @@
     "system": "System",
     "pl": "Polski",
     "en": "English"
+  },
+  "welcome": {
+    "title": "Plant Care",
+    "tagline": "Your plants in good hands",
+    "features": {
+      "shared": "A shared garden with your household and friends",
+      "reminders": "Reminders for watering, fertilizing and repotting",
+      "history": "Care history for every plant"
+    },
+    "start": "Get started"
   }
 }
