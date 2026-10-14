@@ -249,5 +249,11 @@
     "system": "System",
     "light": "Light",
     "dark": "Dark"
+  },
+  "language": {
+    "sectionTitle": "Language",
+    "system": "System",
+    "pl": "Polski",
+    "en": "English"
   }
 }

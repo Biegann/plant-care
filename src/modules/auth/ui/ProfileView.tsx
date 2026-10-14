@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
 import { NotificationSettings } from "../../notifications/ui/NotificationSettings";
+import { LanguageSettings } from "../../language/ui/LanguageSettings";
 import { ThemeSettings } from "../../theme/ui/ThemeSettings";
 import { Screen } from "../../../shared/ui/Screen";
 import { useUi } from "../../../shared/ui/styles";
@@ -21,6 +22,7 @@ export function ProfileView() {
       </Text>
       <NotificationSettings />
       <ThemeSettings />
+      <LanguageSettings />
       <Pressable
         testID="logout-button"
         style={ui.button}

@@ -11,6 +11,7 @@ import {
 } from "../modules/auth/hooks/useSession";
 import { useNotificationSync } from "../modules/notifications/hooks/useNotificationSync";
 import { initNotificationHandler } from "../modules/notifications/scheduler";
+import "../modules/language/store/languageStore";
 import "../modules/theme/store/themeStore";
 import { queryClient } from "../shared/api/queryClient";
 import "../shared/i18n";

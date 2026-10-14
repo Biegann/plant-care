@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { ChoiceChips } from "../../../shared/ui/ChoiceChips";
 import { useUi } from "../../../shared/ui/styles";
-import { createThemedStyles } from "../../../shared/ui/theme";
 import { useThemeStore, type ThemePreference } from "../store/themeStore";
 
 const OPTIONS: ThemePreference[] = ["system", "light", "dark"];
@@ -10,49 +10,17 @@ const OPTIONS: ThemePreference[] = ["system", "light", "dark"];
 export function ThemeSettings() {
   const { t } = useTranslation();
   const ui = useUi();
-  const styles = useStyles();
   const { preference, setPreference } = useThemeStore();
 
   return (
-    <View style={styles.section}>
+    <View style={{ gap: 8 }}>
       <Text style={ui.sectionTitle}>{t("theme.sectionTitle")}</Text>
-      <View style={styles.chips}>
-        {OPTIONS.map((option) => {
-          const selected = option === preference;
-          return (
-            <Pressable
-              key={option}
-              testID={`theme-${option}`}
-              accessibilityState={{ selected }}
-              style={[styles.chip, selected && styles.chipSelected]}
-              onPress={() => setPreference(option)}
-            >
-              <Text
-                style={[styles.chipText, selected && styles.chipTextSelected]}
-              >
-                {t(`theme.${option}`)}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
+      <ChoiceChips
+        options={OPTIONS.map((value) => ({ value, label: t(`theme.${value}`) }))}
+        selected={preference}
+        onSelect={setPreference}
+        testIDPrefix="theme"
+      />
     </View>
   );
 }
-
-const useStyles = createThemedStyles((c) =>
-  StyleSheet.create({
-    section: { gap: 8 },
-    chips: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-    chip: {
-      borderWidth: 1,
-      borderColor: c.primary,
-      borderRadius: 16,
-      paddingVertical: 6,
-      paddingHorizontal: 12,
-    },
-    chipSelected: { backgroundColor: c.primary },
-    chipText: { color: c.primary, fontSize: 14, fontWeight: "600" },
-    chipTextSelected: { color: c.onPrimary },
-  }),
-);

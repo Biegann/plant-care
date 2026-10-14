@@ -255,5 +255,11 @@
     "system": "Systemowy",
     "light": "Jasny",
     "dark": "Ciemny"
+  },
+  "language": {
+    "sectionTitle": "Język",
+    "system": "Systemowy",
+    "pl": "Polski",
+    "en": "English"
   }
 }

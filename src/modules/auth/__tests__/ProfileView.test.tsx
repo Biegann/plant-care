@@ -12,6 +12,10 @@ jest.mock("../../theme/ui/ThemeSettings", () => ({
   ThemeSettings: () => null,
 }));
 
+jest.mock("../../language/ui/LanguageSettings", () => ({
+  LanguageSettings: () => null,
+}));
+
 jest.mock("../hooks/useSession", () => ({
   useSession: () => ({ user: { email: "anna@example.com" } }),
 }));
