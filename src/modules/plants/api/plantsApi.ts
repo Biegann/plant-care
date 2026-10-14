@@ -200,7 +200,22 @@ export async function updatePlant(
   return { ok: true, data: { id: plant.id, photoFailed: !attached } };
 }
 
+// Ścieżki zdjęć z dziennika rośliny. Wpisy kasuje baza razem z rośliną,
+// ale pliki trzeba usunąć samemu, więc zbieramy je przed usunięciem
+async function listJournalPhotoPaths(plantId: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("plant_journal")
+    .select("photo_path")
+    .eq("plant_id", plantId)
+    .not("photo_path", "is", null);
+  if (error) return [];
+  return ((data ?? []) as { photo_path: string }[]).map(
+    (row) => row.photo_path,
+  );
+}
+
 export async function deletePlant(plant: Plant): Promise<PlantResult> {
+  const journalPhotos = await listJournalPhotoPaths(plant.id);
   const { error, count } = await supabase
     .from("plants")
     .delete({ count: "exact" })
@@ -208,6 +223,10 @@ export async function deletePlant(plant: Plant): Promise<PlantResult> {
   if (error) return fail(error);
   if ((count ?? 0) === 0) return { ok: false, error: "notAllowed" };
 
-  if (plant.photoPath) await removePhoto(plant.photoPath);
+  const photos = plant.photoPath
+    ? [plant.photoPath, ...journalPhotos]
+    : journalPhotos;
+  if (photos.length > 0)
+    await supabase.storage.from(PHOTO_BUCKET).remove(photos);
   return { ok: true, data: null };
 }

@@ -19,6 +19,9 @@ jest.mock("@expo/vector-icons", () => ({ Ionicons: () => null }));
 jest.mock("../../care-schedule/ui/CareHistorySection", () => ({
   CareHistorySection: () => null,
 }));
+jest.mock("../../journal/ui/JournalSection", () => ({
+  JournalSection: () => null,
+}));
 jest.mock("../../care-schedule/ui/CareSection", () => ({
   CareSection: () => null,
 }));

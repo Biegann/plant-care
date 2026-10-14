@@ -14,23 +14,12 @@ import {
 import { useUi } from "../../../shared/ui/styles";
 import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { formatDisplayDate } from "../../../shared/utils/date";
+import { shortenName } from "../../../shared/utils/text";
 import { usePlant } from "../../plants/hooks/usePlant";
 import type { CareLogEntry } from "../api/careLogApi";
 import { deleteCareLogEntryAndRefresh } from "../careActions";
 import { useCareLog } from "../hooks/useCareLog";
 import { CARE_ICONS } from "./CareTaskCard";
-
-// Tyle znaków nazwy rośliny mieści się w tytule ekranu, reszta to wielokropek
-export const TITLE_NAME_MAX = 16;
-
-export function shortenName(name: string, max = TITLE_NAME_MAX): string {
-  const chars = Array.from(name);
-  if (chars.length <= max) return name;
-  return `${chars
-    .slice(0, max - 1)
-    .join("")
-    .trimEnd()}…`;
-}
 
 // Ekran pełnej historii opieki jednej rośliny, z usuwaniem wpisów
 export function CareHistory({ plantId }: { plantId: string }) {

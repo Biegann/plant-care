@@ -43,7 +43,7 @@ describe("PhotoField", () => {
     await fireEvent.press(utils.getByTestId("sheet-action-take"));
 
     await waitFor(() => expect(onPicked).toHaveBeenCalledWith(photo));
-    expect(mockPick).toHaveBeenCalledWith("camera");
+    expect(mockPick).toHaveBeenCalledWith("camera", { square: true });
     expect(utils.queryByTestId("sheet-action-take")).toBeNull();
   });
 
@@ -64,7 +64,7 @@ describe("PhotoField", () => {
     await fireEvent.press(utils.getByTestId("sheet-action-choose"));
 
     expect(await utils.findByText("plants.photo.failed")).toBeTruthy();
-    expect(mockPick).toHaveBeenCalledWith("gallery");
+    expect(mockPick).toHaveBeenCalledWith("gallery", { square: true });
   });
 
   test("rezygnacja z wyboru: nic nie zgłasza i nie pokazuje błędu", async () => {
@@ -96,5 +96,21 @@ describe("PhotoField", () => {
 
     expect(utils.queryByTestId("sheet-action-take")).toBeNull();
     expect(mockPick).not.toHaveBeenCalled();
+  });
+
+  test("square=false: wybiera zdjęcie bez kadrowania", async () => {
+    mockPick.mockResolvedValue({ status: "canceled" });
+    const utils = await render(
+      <PhotoField
+        previewUri={null}
+        onPicked={onPicked}
+        onRemoved={onRemoved}
+        square={false}
+      />,
+    );
+    await fireEvent.press(utils.getByTestId("plant-photo-field"));
+    await fireEvent.press(utils.getByTestId("sheet-action-choose"));
+
+    expect(mockPick).toHaveBeenCalledWith("gallery", { square: false });
   });
 });

@@ -10,16 +10,24 @@ export type PickPhotoResult =
   | { status: "denied" }
   | { status: "failed" };
 
-// Po wyborze telefon pokazuje ekran kadrowania do kwadratu.
+// Z kadrowaniem telefon pokazuje po wyborze ekran przycinania do kwadratu.
 // Kompresję robi preparePhoto, więc z telefonu bierzemy zdjęcie w pełnej jakości
-const OPTIONS: ImagePicker.ImagePickerOptions = {
+const SQUARE_OPTIONS: ImagePicker.ImagePickerOptions = {
   mediaTypes: ["images"],
   allowsEditing: true,
   aspect: [1, 1],
   quality: 1,
 };
+const FREE_OPTIONS: ImagePicker.ImagePickerOptions = {
+  mediaTypes: ["images"],
+  quality: 1,
+};
 
-export async function pickPhoto(source: PhotoSource): Promise<PickPhotoResult> {
+export async function pickPhoto(
+  source: PhotoSource,
+  { square = true }: { square?: boolean } = {},
+): Promise<PickPhotoResult> {
+  const OPTIONS = square ? SQUARE_OPTIONS : FREE_OPTIONS;
   try {
     if (source === "camera") {
       const permission = await ImagePicker.requestCameraPermissionsAsync();

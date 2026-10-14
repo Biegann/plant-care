@@ -28,7 +28,8 @@ import { usePlant } from "../../plants/hooks/usePlant";
 import type { CareLogEntry } from "../api/careLogApi";
 import { deleteCareLogEntryAndRefresh } from "../careActions";
 import { useCareLog } from "../hooks/useCareLog";
-import { CareHistory, shortenName } from "../ui/CareHistory";
+import { shortenName } from "../../../shared/utils/text";
+import { CareHistory } from "../ui/CareHistory";
 
 const mockPlant = usePlant as jest.Mock;
 const mockLog = useCareLog as jest.Mock;

@@ -15,6 +15,7 @@ import {
 import { useUi } from "../../../shared/ui/styles";
 import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { CareHistorySection } from "../../care-schedule/ui/CareHistorySection";
+import { JournalSection } from "../../journal/ui/JournalSection";
 import { CareSection } from "../../care-schedule/ui/CareSection";
 import { formatDisplayDate } from "../../../shared/utils/date";
 import { usePlant } from "../hooks/usePlant";
@@ -143,6 +144,7 @@ export function PlantDetails({ plantId }: { plantId: string }) {
 
           <CareSection plantId={plant.id} />
           <CareHistorySection plantId={plant.id} />
+          <JournalSection plantId={plant.id} />
         </View>
       </ScrollView>
     );

@@ -10,8 +10,9 @@ export function computeResize(
   return width >= height ? { width: max } : { height: max };
 }
 
-// Ścieżka pliku: <id ogrodu>/<unikalna nazwa>.jpg (pierwszy fragment decyduje o dostępie)
-export function newPhotoPath(gardenId: string): string {
+// Ścieżka pliku: <id ogrodu>/[<folder>/]<unikalna nazwa>.jpg
+// (pierwszy fragment decyduje o dostępie; folder np. "journal" dla zdjęć z dziennika)
+export function newPhotoPath(gardenId: string, folder?: string): string {
   const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
-  return `${gardenId}/${id}.jpg`;
+  return folder ? `${gardenId}/${folder}/${id}.jpg` : `${gardenId}/${id}.jpg`;
 }

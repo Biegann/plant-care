@@ -36,6 +36,7 @@ function chain(result: unknown) {
     "update",
     "delete",
     "single",
+    "not",
   ].forEach((method) => {
     builder[method] = jest.fn(() => builder);
   });
@@ -249,16 +250,40 @@ describe("updatePlant", () => {
 });
 
 describe("deletePlant", () => {
-  test("usuwa roślinę, a potem jej zdjęcie", async () => {
-    db.from.mockReturnValueOnce(chain({ error: null, count: 1 }));
+  test("usuwa roślinę, a potem jej zdjęcie i zdjęcia z dziennika", async () => {
+    db.from
+      .mockReturnValueOnce(
+        chain({ data: [{ photo_path: "g1/journal/a.jpg" }], error: null }),
+      )
+      .mockReturnValueOnce(chain({ error: null, count: 1 }));
     storage.remove.mockResolvedValue({ error: null });
 
     expect(await deletePlant(plant)).toEqual({ ok: true, data: null });
-    expect(storage.remove).toHaveBeenCalledWith(["g1/old.jpg"]);
+    expect(db.from).toHaveBeenNthCalledWith(1, "plant_journal");
+    expect(storage.remove).toHaveBeenCalledWith([
+      "g1/old.jpg",
+      "g1/journal/a.jpg",
+    ]);
   });
 
-  test("0 usuniętych wierszy: brak uprawnień i plik zostaje", async () => {
-    db.from.mockReturnValueOnce(chain({ error: null, count: 0 }));
+  test("roślina bez zdjęć: nie woła usuwania plików", async () => {
+    db.from
+      .mockReturnValueOnce(chain({ data: [], error: null }))
+      .mockReturnValueOnce(chain({ error: null, count: 1 }));
+
+    expect(await deletePlant({ ...plant, photoPath: null })).toEqual({
+      ok: true,
+      data: null,
+    });
+    expect(storage.remove).not.toHaveBeenCalled();
+  });
+
+  test("0 usuniętych wierszy: brak uprawnień i pliki zostają", async () => {
+    db.from
+      .mockReturnValueOnce(
+        chain({ data: [{ photo_path: "g1/journal/a.jpg" }], error: null }),
+      )
+      .mockReturnValueOnce(chain({ error: null, count: 0 }));
 
     expect(await deletePlant(plant)).toEqual({
       ok: false,

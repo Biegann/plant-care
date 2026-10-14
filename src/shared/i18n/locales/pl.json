@@ -275,5 +275,39 @@
       "history": "Historia opieki nad każdą rośliną"
     },
     "start": "Zaczynamy"
+  },
+  "journal": {
+    "title": "Dziennik",
+    "titleWithName": "Dziennik: {{name}}",
+    "add": "+ Wpis",
+    "empty": "Brak wpisów w dzienniku",
+    "error": "Nie udało się wczytać dziennika",
+    "all": "Pokaż cały dziennik",
+    "photoOnly": "Zdjęcie",
+    "newTitle": "Nowy wpis",
+    "editTitle": "Edycja wpisu",
+    "entryTitle": "Wpis w dzienniku",
+    "notFound": "Nie znaleziono wpisu",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "cancel": "Anuluj",
+    "deleteTitle": "Usunąć wpis?",
+    "deleteMessage": "Wpis z {{date}} zostanie trwale usunięty razem ze zdjęciem.",
+    "form": {
+      "date": "Data",
+      "note": "Notatka",
+      "notePlaceholder": "Co się zmieniło? Np. nowy liść, przycięcie",
+      "save": "Zapisz"
+    },
+    "errors": {
+      "empty": "Dodaj notatkę albo zdjęcie",
+      "noteTooLong": "Notatka może mieć najwyżej 500 znaków",
+      "invalidDate": "Nieprawidłowa data",
+      "futureDate": "Data nie może być z przyszłości",
+      "invalidInput": "Sprawdź dane wpisu",
+      "photoUpload": "Nie udało się wysłać zdjęcia. Sprawdź połączenie i spróbuj ponownie.",
+      "notAllowed": "Nie masz dostępu do tej rośliny",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   }
 }

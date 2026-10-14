@@ -19,9 +19,16 @@ type Props = {
   previewUri: string | null;
   onPicked: (photo: PickedPhoto) => void;
   onRemoved: () => void;
+  // false: bez kadrowania do kwadratu (dziennik); podgląd i tak jest kwadratowy
+  square?: boolean;
 };
 
-export function PhotoField({ previewUri, onPicked, onRemoved }: Props) {
+export function PhotoField({
+  previewUri,
+  onPicked,
+  onRemoved,
+  square = true,
+}: Props) {
   const { t } = useTranslation();
   const ui = useUi();
   const colors = useColors();
@@ -36,7 +43,7 @@ export function PhotoField({ previewUri, onPicked, onRemoved }: Props) {
     setMenuOpen(false);
     setErrorKey(null);
     setBusy(true);
-    const result = await pickPhoto(source);
+    const result = await pickPhoto(source, { square });
     setBusy(false);
 
     if (result.status === "picked") onPicked(result.photo);

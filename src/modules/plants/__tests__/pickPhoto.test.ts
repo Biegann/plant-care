@@ -68,4 +68,16 @@ describe("pickPhoto", () => {
 
     expect(await pickPhoto("gallery")).toEqual({ status: "failed" });
   });
+
+  test("bez kadrowania: nie pokazuje ekranu przycinania do kwadratu", async () => {
+    mockLibrary.mockResolvedValue({ canceled: false, assets: [asset] });
+    mockPrepare.mockResolvedValue(data);
+
+    await pickPhoto("gallery", { square: false });
+
+    expect(mockLibrary).toHaveBeenCalledWith({
+      mediaTypes: ["images"],
+      quality: 1,
+    });
+  });
 });

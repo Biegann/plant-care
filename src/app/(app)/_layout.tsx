@@ -44,6 +44,22 @@ export default function AppLayout() {
         name="care/history/[plantId]"
         options={{ title: t("care.history.screenTitle") }}
       />
+      <Stack.Screen
+        name="journal/new"
+        options={{ title: t("journal.newTitle") }}
+      />
+      <Stack.Screen
+        name="journal/all/[plantId]"
+        options={{ title: t("journal.title") }}
+      />
+      <Stack.Screen
+        name="journal/entry/[id]"
+        options={{ title: t("journal.entryTitle") }}
+      />
+      <Stack.Screen
+        name="journal/edit/[id]"
+        options={{ title: t("journal.editTitle") }}
+      />
     </Stack>
   );
 }

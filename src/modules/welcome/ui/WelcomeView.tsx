@@ -25,7 +25,7 @@ export function WelcomeView() {
   const markSeen = useWelcomeStore((state) => state.markSeen);
 
   return (
-    <Screen style={styles.screen}>
+    <Screen style={styles.screen} bottomInset>
       <View style={styles.hero}>
         <Ionicons name="leaf" size={64} color={colors.primary} />
         <Text style={styles.title}>{t("welcome.title")}</Text>
@@ -35,7 +35,9 @@ export function WelcomeView() {
         {FEATURES.map(({ key, icon }) => (
           <View key={key} style={styles.feature}>
             <Ionicons name={icon} size={26} color={colors.primary} />
-            <Text style={styles.featureText}>{t(`welcome.features.${key}`)}</Text>
+            <Text style={styles.featureText}>
+              {t(`welcome.features.${key}`)}
+            </Text>
           </View>
         ))}
       </View>

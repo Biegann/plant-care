@@ -269,5 +269,39 @@
       "history": "Care history for every plant"
     },
     "start": "Get started"
+  },
+  "journal": {
+    "title": "Journal",
+    "titleWithName": "Journal: {{name}}",
+    "add": "+ Entry",
+    "empty": "No journal entries yet",
+    "error": "Could not load the journal",
+    "all": "Show full journal",
+    "photoOnly": "Photo",
+    "newTitle": "New entry",
+    "editTitle": "Edit entry",
+    "entryTitle": "Journal entry",
+    "notFound": "Entry not found",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "deleteTitle": "Delete entry?",
+    "deleteMessage": "The entry from {{date}} will be permanently deleted along with its photo.",
+    "form": {
+      "date": "Date",
+      "note": "Note",
+      "notePlaceholder": "What changed? E.g. a new leaf, pruning",
+      "save": "Save"
+    },
+    "errors": {
+      "empty": "Add a note or a photo",
+      "noteTooLong": "A note can have at most 500 characters",
+      "invalidDate": "Invalid date",
+      "futureDate": "The date cannot be in the future",
+      "invalidInput": "Check the entry details",
+      "photoUpload": "Could not upload the photo. Check your connection and try again.",
+      "notAllowed": "You don't have access to this plant",
+      "unknown": "Something went wrong. Please try again."
+    }
   }
 }

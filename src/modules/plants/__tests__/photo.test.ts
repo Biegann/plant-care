@@ -23,4 +23,10 @@ describe("newPhotoPath", () => {
     expect(first).toMatch(/^g1\/[a-z0-9]+\.jpg$/);
     expect(first).not.toBe(second);
   });
+
+  test("z folderem: plik trafia do podfolderu w folderze ogrodu", () => {
+    expect(newPhotoPath("g1", "journal")).toMatch(
+      /^g1\/journal\/[a-z0-9]+\.jpg$/,
+    );
+  });
 });
