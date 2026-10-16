@@ -23,6 +23,7 @@ import {
   leaveAndRefresh,
   removeMemberAndRefresh,
   renameAndRefresh,
+  transferAndRefresh,
 } from "../gardenManagement";
 import { useGardenMembers } from "../hooks/useGardenMembers";
 import { useGardens } from "../hooks/useGardens";
@@ -120,6 +121,28 @@ export function GardenDetails({ gardenId }: { gardenId: string }) {
           style: "destructive",
           onPress: () =>
             run(() => removeMemberAndRefresh(gardenId, member.userId)),
+        },
+      ],
+    );
+
+  const confirmTransfer = (member: GardenMember) =>
+    Alert.alert(
+      t("gardens.transferTitle"),
+      t("gardens.transferMessage", {
+        name: member.displayName ?? "",
+        garden: garden.name,
+      }),
+      [
+        { text: t("gardens.cancel"), style: "cancel" },
+        {
+          text: t("gardens.transfer"),
+          style: "destructive",
+          onPress: () =>
+            run(
+              () => transferAndRefresh(gardenId, member.userId),
+              // stary kod zaproszenia baza skasowała
+              () => setInviteCode(null),
+            ),
         },
       ],
     );
@@ -222,12 +245,21 @@ export function GardenDetails({ gardenId }: { gardenId: string }) {
                 </Text>
               </View>
               {isOwner && member.role === "member" && (
-                <Pressable
-                  testID={`remove-member-${member.userId}`}
-                  onPress={() => confirmRemove(member)}
-                >
-                  <Text style={ui.dangerLink}>{t("gardens.remove")}</Text>
-                </Pressable>
+                <>
+                  <Pressable
+                    testID={`transfer-owner-${member.userId}`}
+                    onPress={() => confirmTransfer(member)}
+                    disabled={busy}
+                  >
+                    <Text style={ui.link}>{t("gardens.transfer")}</Text>
+                  </Pressable>
+                  <Pressable
+                    testID={`remove-member-${member.userId}`}
+                    onPress={() => confirmRemove(member)}
+                  >
+                    <Text style={ui.dangerLink}>{t("gardens.remove")}</Text>
+                  </Pressable>
+                </>
               )}
             </View>
           );

@@ -5,6 +5,7 @@ import {
     leaveGarden,
     removeMember,
     renameGarden,
+    transferOwnership,
     type GardenResult,
 } from "./api/gardenApi";
 import { useGardenStore } from "./store/gardenStore";
@@ -56,5 +57,17 @@ export async function removeMemberAndRefresh(
 ): Promise<GardenResult> {
   const result = await removeMember(gardenId, userId);
   if (result.ok) await refreshMembers(gardenId);
+  return result;
+}
+
+// Zmieniają się role obu osób, więc odświeżamy i listę ogrodów (moja rola),
+// i listę członków
+export async function transferAndRefresh(
+  gardenId: string,
+  newOwnerId: string,
+): Promise<GardenResult> {
+  const result = await transferOwnership(gardenId, newOwnerId);
+  if (result.ok)
+    await Promise.all([refreshGardens(), refreshMembers(gardenId)]);
   return result;
 }

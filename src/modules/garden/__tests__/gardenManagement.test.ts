@@ -6,6 +6,7 @@ jest.mock("../api/gardenApi", () => ({
   deleteGarden: jest.fn(),
   leaveGarden: jest.fn(),
   removeMember: jest.fn(),
+  transferOwnership: jest.fn(),
 }));
 jest.mock("../../notifications/sync", () => ({ syncNotifications: jest.fn() }));
 
@@ -16,12 +17,14 @@ import {
     leaveGarden,
     removeMember,
     renameGarden,
+    transferOwnership,
 } from "../api/gardenApi";
 import {
     deleteAndRefresh,
     leaveAndRefresh,
     removeMemberAndRefresh,
     renameAndRefresh,
+    transferAndRefresh,
 } from "../gardenManagement";
 import { useGardenStore } from "../store/gardenStore";
 
@@ -126,6 +129,26 @@ describe("removeMemberAndRefresh", () => {
   test("po błędzie niczego nie odświeża", async () => {
     mockRemove.mockResolvedValue(failure);
     expect(await removeMemberAndRefresh("g1", "u2")).toEqual(failure);
+    expect(invalidate).not.toHaveBeenCalled();
+  });
+});
+
+describe("transferAndRefresh", () => {
+  const mockTransfer = transferOwnership as jest.Mock;
+
+  test("po sukcesie odświeża ogrody i członków", async () => {
+    mockTransfer.mockResolvedValue(success);
+    await transferAndRefresh("g1", "u2");
+    expect(mockTransfer).toHaveBeenCalledWith("g1", "u2");
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: ["gardens"] });
+    expect(invalidate).toHaveBeenCalledWith({
+      queryKey: ["garden-members", "g1"],
+    });
+  });
+
+  test("po błędzie niczego nie odświeża", async () => {
+    mockTransfer.mockResolvedValue(failure);
+    expect(await transferAndRefresh("g1", "u2")).toEqual(failure);
     expect(invalidate).not.toHaveBeenCalled();
   });
 });

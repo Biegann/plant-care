@@ -22,6 +22,7 @@ export type GardenErrorCode =
   | "alreadyMember"
   | "notAllowed"
   | "notAuthenticated"
+  | "notMember"
   | "photosNotRemoved"
   | "unknown";
 export type GardenResult<T = null> =
@@ -35,6 +36,7 @@ export function mapGardenError(error: DbError): GardenErrorCode {
   if (message === "invalid_code") return "invalidCode";
   if (message === "already_member") return "alreadyMember";
   if (message === "not_owner") return "notAllowed";
+  if (message === "not_member") return "notMember";
   if (message === "not_authenticated") return "notAuthenticated";
   if (error.code === "23514") return "invalidName";
   return "unknown";
@@ -239,6 +241,18 @@ export async function removeMember(
     .eq("user_id", userId);
   if (error) return fail(error);
   return (count ?? 0) > 0 ? ok : { ok: false, error: "notAllowed" };
+}
+
+export async function transferOwnership(
+  gardenId: string,
+  newOwnerId: string,
+): Promise<GardenResult> {
+  const { error } = await supabase.rpc("transfer_garden_ownership", {
+    p_garden_id: gardenId,
+    p_new_owner_id: newOwnerId,
+  });
+  if (error) return fail(error);
+  return ok;
 }
 
 export async function leaveGarden(gardenId: string): Promise<GardenResult> {

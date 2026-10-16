@@ -15,6 +15,7 @@ import {
     mapGardenError,
     mergeMembers,
     toGardens,
+    transferOwnership,
 } from "../api/gardenApi";
 
 const db = supabase as unknown as {
@@ -49,6 +50,7 @@ describe("mapGardenError", () => {
     expect(mapGardenError({ message: "invalid_code" })).toBe("invalidCode");
     expect(mapGardenError({ message: "already_member" })).toBe("alreadyMember");
     expect(mapGardenError({ message: "not_owner" })).toBe("notAllowed");
+    expect(mapGardenError({ message: "not_member" })).toBe("notMember");
     expect(mapGardenError({ message: "not_authenticated" })).toBe(
       "notAuthenticated",
     );
@@ -371,6 +373,28 @@ describe("deleteGarden i leaveGarden", () => {
     expect(await leaveGarden("garden-1")).toEqual({
       ok: false,
       error: "notAllowed",
+    });
+  });
+});
+
+describe("transferOwnership", () => {
+  test("wywołuje funkcję bazy z ogrodem i nowym właścicielem", async () => {
+    db.rpc.mockResolvedValue({ data: null, error: null });
+    expect(await transferOwnership("garden-1", "user-2")).toEqual({
+      ok: true,
+      data: null,
+    });
+    expect(db.rpc).toHaveBeenCalledWith("transfer_garden_ownership", {
+      p_garden_id: "garden-1",
+      p_new_owner_id: "user-2",
+    });
+  });
+
+  test("osoba spoza ogrodu daje notMember", async () => {
+    db.rpc.mockResolvedValue({ data: null, error: { message: "not_member" } });
+    expect(await transferOwnership("garden-1", "user-9")).toEqual({
+      ok: false,
+      error: "notMember",
     });
   });
 });

@@ -18,6 +18,7 @@ jest.mock("../gardenManagement", () => ({
   deleteAndRefresh: jest.fn(),
   leaveAndRefresh: jest.fn(),
   removeMemberAndRefresh: jest.fn(),
+  transferAndRefresh: jest.fn(),
 }));
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
@@ -28,6 +29,7 @@ import {
     leaveAndRefresh,
     removeMemberAndRefresh,
     renameAndRefresh,
+    transferAndRefresh,
 } from "../gardenManagement";
 import { useGardenMembers } from "../hooks/useGardenMembers";
 import { useGardens } from "../hooks/useGardens";
@@ -40,6 +42,7 @@ const mockDelete = deleteAndRefresh as jest.Mock;
 const mockLeave = leaveAndRefresh as jest.Mock;
 const mockRemove = removeMemberAndRefresh as jest.Mock;
 const mockRename = renameAndRefresh as jest.Mock;
+const mockTransfer = transferAndRefresh as jest.Mock;
 
 const members = [
   { userId: "u1", displayName: "Anna", role: "owner", joinedAt: "1" },
@@ -94,6 +97,8 @@ describe("GardenDetails", () => {
     expect(utils.getByText("Bartek")).toBeTruthy();
     expect(utils.getByTestId("remove-member-u2")).toBeTruthy();
     expect(utils.queryByTestId("remove-member-u1")).toBeNull();
+    expect(utils.getByTestId("transfer-owner-u2")).toBeTruthy();
+    expect(utils.queryByTestId("transfer-owner-u1")).toBeNull();
     expect(utils.getByTestId("rename-button")).toBeTruthy();
     expect(utils.getByTestId("generate-code")).toBeTruthy();
     expect(utils.getByTestId("delete-garden")).toBeTruthy();
@@ -105,6 +110,7 @@ describe("GardenDetails", () => {
 
     expect(utils.getByText("Bartek")).toBeTruthy();
     expect(utils.queryByTestId("remove-member-u2")).toBeNull();
+    expect(utils.queryByTestId("transfer-owner-u2")).toBeNull();
     expect(utils.queryByTestId("rename-button")).toBeNull();
     expect(utils.queryByTestId("generate-code")).toBeNull();
     expect(utils.queryByTestId("delete-garden")).toBeNull();
@@ -169,6 +175,32 @@ describe("GardenDetails", () => {
 
     expect(mockRemove).toHaveBeenCalledWith("g1", "u2");
     expect(mockBack).not.toHaveBeenCalled();
+  });
+
+  test("przekazanie własności po potwierdzeniu chowa stary kod", async () => {
+    mockInvite.mockResolvedValue({ ok: true, data: "ABCD1234EF" });
+    mockTransfer.mockResolvedValue({ ok: true, data: null });
+    const utils = await setup("owner");
+    await fireEvent.press(utils.getByTestId("generate-code"));
+    expect(await utils.findByTestId("invite-code")).toBeTruthy();
+
+    await fireEvent.press(utils.getByTestId("transfer-owner-u2"));
+    expect(alertSpy.mock.calls[0][1]).toContain('"name":"Bartek"');
+    await confirmAlert();
+
+    expect(mockTransfer).toHaveBeenCalledWith("g1", "u2");
+    expect(utils.queryByTestId("invite-code")).toBeNull();
+    expect(mockBack).not.toHaveBeenCalled();
+  });
+
+  test("błąd przekazania: pokazuje komunikat", async () => {
+    mockTransfer.mockResolvedValue({ ok: false, error: "notMember" });
+    const utils = await setup("owner");
+
+    await fireEvent.press(utils.getByTestId("transfer-owner-u2"));
+    await confirmAlert();
+
+    expect(await utils.findByText("gardens.errors.notMember")).toBeTruthy();
   });
 
   test("zmiana nazwy: zapisuje nową nazwę i zamyka edycję", async () => {

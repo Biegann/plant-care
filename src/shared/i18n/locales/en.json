@@ -167,6 +167,9 @@
     "remove": "Remove",
     "removeMemberTitle": "Remove member?",
     "removeMemberMessage": "{{name}} will lose access to this garden.",
+    "transfer": "Transfer",
+    "transferTitle": "Transfer ownership?",
+    "transferMessage": "{{name}} will become the owner of “{{garden}}”. You will become a member. Only the new owner can undo this by transferring ownership back.",
     "invite": "Invitation",
     "generateCode": "Generate code",
     "newCode": "Generate new code",
@@ -207,6 +210,7 @@
       "alreadyMember": "You already belong to this garden",
       "notAllowed": "You don't have permission to do this",
       "notAuthenticated": "Please log in again",
+      "notMember": "This person is no longer a member of the garden",
       "photosNotRemoved": "Couldn't delete the garden's photos. Check your connection and try again",
       "unknown": "Something went wrong. Please try again"
     }

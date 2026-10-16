@@ -180,6 +180,9 @@
     "remove": "Usuń",
     "removeMemberTitle": "Usunąć członka?",
     "removeMemberMessage": "{{name}} straci dostęp do tego ogrodu.",
+    "transfer": "Przekaż",
+    "transferTitle": "Przekazać własność?",
+    "transferMessage": "Właścicielem ogrodu „{{garden}}” zostanie {{name}}. Ty zostaniesz członkiem. Cofnąć to może tylko nowy właściciel, przekazując własność z powrotem.",
     "invite": "Zaproszenie",
     "generateCode": "Wygeneruj kod",
     "newCode": "Wygeneruj nowy kod",
@@ -220,6 +223,7 @@
       "alreadyMember": "Już należysz do tego ogrodu",
       "notAllowed": "Nie masz uprawnień do tej operacji",
       "notAuthenticated": "Zaloguj się ponownie",
+      "notMember": "Ta osoba nie należy już do ogrodu",
       "photosNotRemoved": "Nie udało się usunąć zdjęć ogrodu. Sprawdź połączenie i spróbuj ponownie",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
