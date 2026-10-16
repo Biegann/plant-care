@@ -1,5 +1,6 @@
 import { supabase } from "../../../shared/api/supabase";
 import { useAuthStore } from "../../auth/hooks/useSession";
+import { PHOTO_BUCKET } from "../../plants/api/plantsApi";
 import {
     isValidGardenName,
     isValidInviteCode,
@@ -21,6 +22,7 @@ export type GardenErrorCode =
   | "alreadyMember"
   | "notAllowed"
   | "notAuthenticated"
+  | "photosNotRemoved"
   | "unknown";
 export type GardenResult<T = null> =
   | { ok: true; data: T }
@@ -101,7 +103,74 @@ export async function renameGarden(
   return (count ?? 0) > 0 ? ok : { ok: false, error: "notAllowed" };
 }
 
+// Wszystkie pliki z folderu ogrodu (zdjęcia roślin i, w podfolderze, dziennika).
+// Storage zwraca listę porcjami; podfoldery mają id równe null.
+const LIST_PAGE = 1000;
+
+async function listFolderFiles(folder: string): Promise<string[] | null> {
+  const paths: string[] = [];
+  const subfolders: string[] = [];
+  for (let offset = 0; ; offset += LIST_PAGE) {
+    const { data, error } = await supabase.storage
+      .from(PHOTO_BUCKET)
+      .list(folder, { limit: LIST_PAGE, offset });
+    if (error) return null;
+    const items = data ?? [];
+    for (const item of items) {
+      if (item.id === null) subfolders.push(`${folder}/${item.name}`);
+      else paths.push(`${folder}/${item.name}`);
+    }
+    if (items.length < LIST_PAGE) break;
+  }
+  for (const subfolder of subfolders) {
+    const nested = await listFolderFiles(subfolder);
+    if (nested === null) return null;
+    paths.push(...nested);
+  }
+  return paths;
+}
+
+// Pliki trzeba skasować przed usunięciem ogrodu: potem reguły Storage
+// już nie wpuszczą, bo nikt nie jest członkiem nieistniejącego ogrodu
+export async function removeGardenPhotos(
+  gardenId: string,
+): Promise<GardenResult> {
+  const paths = await listFolderFiles(gardenId);
+  if (paths === null) return { ok: false, error: "photosNotRemoved" };
+  for (let start = 0; start < paths.length; start += LIST_PAGE) {
+    const { error } = await supabase.storage
+      .from(PHOTO_BUCKET)
+      .remove(paths.slice(start, start + LIST_PAGE));
+    if (error) return { ok: false, error: "photosNotRemoved" };
+  }
+  return ok;
+}
+
+async function isOwner(
+  gardenId: string,
+  userId: string,
+): Promise<GardenResult<boolean>> {
+  const { data, error } = await supabase
+    .from("garden_members")
+    .select("role")
+    .eq("garden_id", gardenId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) return fail(error);
+  const role = (data as { role: GardenRole } | null)?.role;
+  return { ok: true, data: role === "owner" };
+}
+
 export async function deleteGarden(gardenId: string): Promise<GardenResult> {
+  const userId = currentUserId();
+  if (!userId) return { ok: false, error: "notAuthenticated" };
+  const owner = await isOwner(gardenId, userId);
+  if (!owner.ok) return owner;
+  if (!owner.data) return { ok: false, error: "notAllowed" };
+
+  const photos = await removeGardenPhotos(gardenId);
+  if (!photos.ok) return photos;
+
   const { error, count } = await supabase
     .from("gardens")
     .delete({ count: "exact" })

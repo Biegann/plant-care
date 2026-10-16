@@ -220,6 +220,7 @@
       "alreadyMember": "Już należysz do tego ogrodu",
       "notAllowed": "Nie masz uprawnień do tej operacji",
       "notAuthenticated": "Zaloguj się ponownie",
+      "photosNotRemoved": "Nie udało się usunąć zdjęć ogrodu. Sprawdź połączenie i spróbuj ponownie",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
   },

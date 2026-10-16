@@ -207,6 +207,7 @@
       "alreadyMember": "You already belong to this garden",
       "notAllowed": "You don't have permission to do this",
       "notAuthenticated": "Please log in again",
+      "photosNotRemoved": "Couldn't delete the garden's photos. Check your connection and try again",
       "unknown": "Something went wrong. Please try again"
     }
   },
