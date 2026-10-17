@@ -154,6 +154,26 @@
     "title": "Profil",
     "signedInAs": "Zalogowano jako"
   },
+  "account": {
+    "deleteLink": "Usuń konto",
+    "deleteTitle": "Usuń konto",
+    "deleteIntro": "To usunie na zawsze:",
+    "deleteProfile": "konto i profil",
+    "deleteGardens": "ogrody, których jesteś właścicielem, razem z roślinami: {{names}}",
+    "memberGardensStay": "Ogrody, w których jesteś członkiem, zostają. Twoje wpisy w nich zostają bez podpisu.",
+    "blocked": "Najpierw przekaż własność albo usuń ogród, w którym są inni członkowie: {{names}}",
+    "passwordPlaceholder": "Hasło",
+    "deleteForever": "Usuń konto na zawsze",
+    "errors": {
+      "passwordRequired": "Wpisz hasło",
+      "invalidPassword": "Nieprawidłowe hasło",
+      "ownsSharedGarden": "Masz ogród z innymi członkami. Najpierw przekaż własność albo usuń ogród",
+      "photosNotRemoved": "Nie udało się usunąć zdjęć. Konto zostało. Spróbuj ponownie",
+      "notAuthenticated": "Zaloguj się ponownie",
+      "rateLimited": "Zbyt wiele prób. Spróbuj za chwilę",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie"
+    }
+  },
   "notifications": {
     "channelName": "Codzienne przypomnienie",
     "sectionTitle": "Powiadomienia",

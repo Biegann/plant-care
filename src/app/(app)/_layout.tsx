@@ -60,6 +60,10 @@ export default function AppLayout() {
         name="journal/edit/[id]"
         options={{ title: t("journal.editTitle") }}
       />
+      <Stack.Screen
+        name="account/delete"
+        options={{ title: t("account.deleteTitle") }}
+      />
     </Stack>
   );
 }

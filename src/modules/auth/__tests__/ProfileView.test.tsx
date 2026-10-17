@@ -2,6 +2,11 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+const mockPush = jest.fn();
+jest.mock("expo-router", () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
+
 jest.mock("../api/authApi", () => ({ signOut: jest.fn() }));
 
 jest.mock("../../notifications/ui/NotificationSettings", () => ({
@@ -38,5 +43,11 @@ describe("ProfileView", () => {
     const utils = await render(<ProfileView />);
     await fireEvent.press(utils.getByTestId("logout-button"));
     expect(signOut).toHaveBeenCalledTimes(1);
+  });
+
+  test("link usuwania konta otwiera ekran usuwania", async () => {
+    const utils = await render(<ProfileView />);
+    await fireEvent.press(utils.getByTestId("delete-account-link"));
+    expect(mockPush).toHaveBeenCalledWith("/account/delete");
   });
 });

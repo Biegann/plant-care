@@ -145,6 +145,26 @@
     "title": "Profile",
     "signedInAs": "Signed in as"
   },
+  "account": {
+    "deleteLink": "Delete account",
+    "deleteTitle": "Delete account",
+    "deleteIntro": "This will permanently delete:",
+    "deleteProfile": "your account and profile",
+    "deleteGardens": "gardens you own, with their plants: {{names}}",
+    "memberGardensStay": "Gardens where you are a member stay. Your entries there stay without your name.",
+    "blocked": "First transfer ownership of or delete the garden that has other members: {{names}}",
+    "passwordPlaceholder": "Password",
+    "deleteForever": "Delete account permanently",
+    "errors": {
+      "passwordRequired": "Enter your password",
+      "invalidPassword": "Incorrect password",
+      "ownsSharedGarden": "You own a garden with other members. Transfer ownership or delete it first",
+      "photosNotRemoved": "Could not delete photos. Your account was kept. Try again",
+      "notAuthenticated": "Please sign in again",
+      "rateLimited": "Too many attempts. Try again in a moment",
+      "unknown": "Something went wrong. Try again"
+    }
+  },
   "notifications": {
     "channelName": "Daily reminder",
     "sectionTitle": "Notifications",

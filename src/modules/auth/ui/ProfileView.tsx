@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
 import { NotificationSettings } from "../../notifications/ui/NotificationSettings";
@@ -12,6 +13,7 @@ export function ProfileView() {
   const { t } = useTranslation();
   const session = useSession();
   const ui = useUi();
+  const router = useRouter();
 
   return (
     <Screen>
@@ -29,6 +31,12 @@ export function ProfileView() {
         onPress={() => signOut()}
       >
         <Text style={ui.buttonText}>{t("auth.logout")}</Text>
+      </Pressable>
+      <Pressable
+        testID="delete-account-link"
+        onPress={() => router.push("/account/delete")}
+      >
+        <Text style={ui.dangerLink}>{t("account.deleteLink")}</Text>
       </Pressable>
     </Screen>
   );
