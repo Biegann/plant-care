@@ -326,7 +326,7 @@
     },
     "errors": {
       "empty": "Dodaj notatkę albo zdjęcie",
-      "noteTooLong": "Notatka może mieć najwyżej 500 znaków",
+      "noteTooLong": "Notatka może mieć najwyżej 4000 znaków",
       "invalidDate": "Nieprawidłowa data",
       "futureDate": "Data nie może być z przyszłości",
       "invalidInput": "Sprawdź dane wpisu",
@@ -363,5 +363,41 @@
       "no": "Nie jest znana jako trująca dla kotów i psów"
     },
     "disclaimer": "Typowe zalecenia, dopasuj je do swojej rośliny."
+  },
+  "diagnosis": {
+    "title": "Diagnoza AI",
+    "open": "Diagnoza AI",
+    "photoHint": "Zrób zdjęcie z bliska chorego miejsca, w dobrym świetle. Jeśli podejrzewasz szkodniki, sfotografuj spód liścia.",
+    "description": "Co Cię niepokoi? (opcjonalnie)",
+    "descriptionPlaceholder": "Np. żółkną dolne liście, brązowe plamy",
+    "submit": "Zdiagnozuj",
+    "remaining": "Dziś zostało: {{count}} z {{limit}}",
+    "limitReached": "Limit na dziś wykorzystany. Wróć jutro.",
+    "analyzing": "Analizuję zdjęcie…",
+    "analyzingHint": "To może potrwać do kilkunastu sekund",
+    "disclaimer": "To podpowiedź AI, nie porada eksperta. Może się mylić.",
+    "causes": "Możliwe przyczyny",
+    "steps": "Co zrobić",
+    "worryIf": "Kiedy się martwić",
+    "confidence": {
+      "high": "wysoka pewność",
+      "medium": "średnia pewność",
+      "low": "niska pewność"
+    },
+    "saveToJournal": "Zapisz w dzienniku",
+    "savedToJournal": "Zapisano w dzienniku ✓",
+    "again": "Nowa diagnoza",
+    "journalPrefix": "Diagnoza AI:",
+    "journalSteps": "Co zrobić:",
+    "errors": {
+      "noPhoto": "Dodaj zdjęcie rośliny",
+      "network": "Brak połączenia z internetem. Diagnoza działa tylko online.",
+      "limitReached": "Limit na dziś wykorzystany. Wróć jutro.",
+      "aiFailed": "Nie udało się przygotować diagnozy. Spróbuj ponownie, ta próba nie została policzona.",
+      "notFound": "Nie masz dostępu do tej rośliny",
+      "invalidInput": "Zdjęcie lub opis są nieprawidłowe. Wybierz inne zdjęcie.",
+      "unauthorized": "Sesja wygasła. Zaloguj się ponownie.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   }
 }

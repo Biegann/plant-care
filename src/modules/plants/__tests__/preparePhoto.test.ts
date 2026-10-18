@@ -35,6 +35,23 @@ describe("preparePhoto", () => {
     expect(Array.from(new Uint8Array(data))).toEqual([1, 2, 3]);
   });
 
+  test("własny rozmiar i jakość (diagnoza AI)", async () => {
+    const { context, saveAsync } = makeContext(1024, 768);
+    mockManipulate.mockReturnValue(context);
+
+    await preparePhoto("file:///a.jpg", 4000, 3000, {
+      maxSize: 1024,
+      quality: 0.8,
+    });
+
+    expect(context.resize).toHaveBeenCalledWith({ width: 1024 });
+    expect(saveAsync).toHaveBeenCalledWith({
+      format: "jpeg",
+      compress: 0.8,
+      base64: true,
+    });
+  });
+
   test("małe zdjęcie: nie zmienia rozmiaru", async () => {
     const { context } = makeContext(500, 400);
     mockManipulate.mockReturnValue(context);

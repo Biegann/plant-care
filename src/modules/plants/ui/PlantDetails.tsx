@@ -148,6 +148,14 @@ export function PlantDetails({ plantId }: { plantId: string }) {
           )}
 
           <SpeciesTips speciesKey={plant.speciesKey} />
+          <Pressable
+            testID="plant-diagnose"
+            style={[ui.secondaryButton, styles.diagnose]}
+            onPress={() => router.push(`/diagnosis/${plant.id}`)}
+          >
+            <Ionicons name="sparkles-outline" size={18} color={colors.primary} />
+            <Text style={ui.secondaryButtonText}>{t("diagnosis.open")}</Text>
+          </Pressable>
           <CareSection plantId={plant.id} />
           <CareHistorySection plantId={plant.id} />
           <JournalSection plantId={plant.id} />
@@ -180,5 +188,11 @@ const useStyles = createThemedStyles((c) =>
     label: { width: 110, fontSize: 14, color: c.textMuted },
     value: { flex: 1, fontSize: 16, color: c.text },
     notes: { gap: 4 },
+    diagnose: {
+      flexDirection: "row",
+      justifyContent: "center",
+      gap: 8,
+      marginTop: 12,
+    },
   }),
 );

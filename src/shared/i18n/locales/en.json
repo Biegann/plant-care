@@ -320,7 +320,7 @@
     },
     "errors": {
       "empty": "Add a note or a photo",
-      "noteTooLong": "A note can have at most 500 characters",
+      "noteTooLong": "A note can have at most 4000 characters",
       "invalidDate": "Invalid date",
       "futureDate": "The date cannot be in the future",
       "invalidInput": "Check the entry details",
@@ -357,5 +357,41 @@
       "no": "Not known to be toxic to cats and dogs"
     },
     "disclaimer": "Typical guidance, adjust it to your plant."
+  },
+  "diagnosis": {
+    "title": "AI diagnosis",
+    "open": "AI diagnosis",
+    "photoHint": "Take a close-up photo of the affected part in good light. If you suspect pests, photograph the underside of a leaf.",
+    "description": "What worries you? (optional)",
+    "descriptionPlaceholder": "E.g. lower leaves turning yellow, brown spots",
+    "submit": "Diagnose",
+    "remaining": "Left today: {{count}} of {{limit}}",
+    "limitReached": "Daily limit used. Come back tomorrow.",
+    "analyzing": "Analyzing the photo…",
+    "analyzingHint": "This can take up to a few dozen seconds",
+    "disclaimer": "This is an AI suggestion, not expert advice. It can be wrong.",
+    "causes": "Possible causes",
+    "steps": "What to do",
+    "worryIf": "When to worry",
+    "confidence": {
+      "high": "high confidence",
+      "medium": "medium confidence",
+      "low": "low confidence"
+    },
+    "saveToJournal": "Save to journal",
+    "savedToJournal": "Saved to journal ✓",
+    "again": "New diagnosis",
+    "journalPrefix": "AI diagnosis:",
+    "journalSteps": "What to do:",
+    "errors": {
+      "noPhoto": "Add a photo of the plant",
+      "network": "No internet connection. Diagnosis works only online.",
+      "limitReached": "Daily limit used. Come back tomorrow.",
+      "aiFailed": "Could not prepare the diagnosis. Try again, this attempt was not counted.",
+      "notFound": "You don't have access to this plant",
+      "invalidInput": "The photo or description is invalid. Choose another photo.",
+      "unauthorized": "Your session has expired. Please log in again.",
+      "unknown": "Something went wrong. Please try again."
+    }
   }
 }

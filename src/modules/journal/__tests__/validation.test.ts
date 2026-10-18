@@ -29,12 +29,12 @@ describe("validateJournalInput", () => {
     });
   });
 
-  test("notatka: 500 znaków przechodzi, 501 nie", () => {
+  test("notatka: 4000 znaków przechodzi, 4001 nie", () => {
     expect(
-      validateJournalInput(input({ note: "a".repeat(500) }), TODAY),
+      validateJournalInput(input({ note: "a".repeat(4000) }), TODAY),
     ).toEqual({});
     expect(
-      validateJournalInput(input({ note: "a".repeat(501) }), TODAY),
+      validateJournalInput(input({ note: "a".repeat(4001) }), TODAY),
     ).toEqual({ note: "noteTooLong" });
   });
 

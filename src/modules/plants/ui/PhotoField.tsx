@@ -13,6 +13,7 @@ import { ActionSheet, type SheetAction } from "../../../shared/ui/ActionSheet";
 import { useUi } from "../../../shared/ui/styles";
 import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { pickPhoto, type PhotoSource, type PickedPhoto } from "../pickPhoto";
+import type { PhotoSize } from "../preparePhoto";
 
 type Props = {
   // Adres zdjęcia do pokazania albo null, gdy roślina nie ma zdjęcia
@@ -21,6 +22,8 @@ type Props = {
   onRemoved: () => void;
   // false: bez kadrowania do kwadratu (dziennik); podgląd i tak jest kwadratowy
   square?: boolean;
+  // rozmiar i jakość pliku, gdy inne niż dla roślin (np. diagnoza AI)
+  size?: PhotoSize;
 };
 
 export function PhotoField({
@@ -28,6 +31,7 @@ export function PhotoField({
   onPicked,
   onRemoved,
   square = true,
+  size,
 }: Props) {
   const { t } = useTranslation();
   const ui = useUi();
@@ -43,7 +47,7 @@ export function PhotoField({
     setMenuOpen(false);
     setErrorKey(null);
     setBusy(true);
-    const result = await pickPhoto(source, { square });
+    const result = await pickPhoto(source, { square, ...size });
     setBusy(false);
 
     if (result.status === "picked") onPicked(result.photo);

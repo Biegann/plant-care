@@ -125,6 +125,12 @@ describe("PlantDetails", () => {
     expect(mockPush).toHaveBeenCalledWith("/plant/edit/p1");
   });
 
+  test("przycisk Diagnoza AI: otwiera diagnozę tej rośliny", async () => {
+    const utils = await render(<PlantDetails plantId="p1" />);
+    await fireEvent.press(utils.getByTestId("plant-diagnose"));
+    expect(mockPush).toHaveBeenCalledWith("/diagnosis/p1");
+  });
+
   test("ikona kosza: pyta o potwierdzenie i nie usuwa bez niego", async () => {
     const utils = await render(<PlantDetails plantId="p1" />);
     await fireEvent.press(utils.getByTestId("plant-delete"));

@@ -61,6 +61,10 @@ export default function AppLayout() {
         options={{ title: t("journal.editTitle") }}
       />
       <Stack.Screen
+        name="diagnosis/[plantId]"
+        options={{ title: t("diagnosis.title") }}
+      />
+      <Stack.Screen
         name="account/delete"
         options={{ title: t("account.deleteTitle") }}
       />

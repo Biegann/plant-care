@@ -36,7 +36,7 @@ describe("pickPhoto", () => {
       status: "picked",
       photo: { uri: asset.uri, data },
     });
-    expect(mockPrepare).toHaveBeenCalledWith(asset.uri, 4000, 3000);
+    expect(mockPrepare).toHaveBeenCalledWith(asset.uri, 4000, 3000, {});
   });
 
   test("galeria: nie pyta o zgodę na aparat", async () => {
@@ -67,6 +67,18 @@ describe("pickPhoto", () => {
     mockPrepare.mockRejectedValue(new Error("boom"));
 
     expect(await pickPhoto("gallery")).toEqual({ status: "failed" });
+  });
+
+  test("przekazuje rozmiar i jakość pliku do przygotowania zdjęcia", async () => {
+    mockLibrary.mockResolvedValue({ canceled: false, assets: [asset] });
+    mockPrepare.mockResolvedValue(data);
+
+    await pickPhoto("gallery", { square: false, maxSize: 1024, quality: 0.8 });
+
+    expect(mockPrepare).toHaveBeenCalledWith(asset.uri, 4000, 3000, {
+      maxSize: 1024,
+      quality: 0.8,
+    });
   });
 
   test("bez kadrowania: nie pokazuje ekranu przycinania do kwadratu", async () => {

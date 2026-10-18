@@ -1,6 +1,6 @@
 import { isValidIsoDate } from "../../shared/utils/date";
 
-export const MAX_NOTE_LENGTH = 500;
+export const MAX_NOTE_LENGTH = 4000;
 
 export type JournalInput = {
   // Data wpisu jako RRRR-MM-DD
