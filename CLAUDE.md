@@ -14,7 +14,7 @@ Zasady dotyczące Expo i poleceń są w pliku AGENTS.md: @AGENTS.md
 - Zawsze najpierw sprawdź, co już istnieje, żeby nie tworzyć duplikatów plików ani niespójnego modelu danych.
 - Bądź szczery: jeśli widzisz niespójność, błąd lub lepsze rozwiązanie, powiedz to wprost.
 - Środowisko: nie mamy podpiętego Supabase CLI, ale jest connector Supabase (projekt `plant-care`). Migracje SQL zapisujesz w `supabase/migrations`. Odczyty i testy dostępu, które niczego nie zmieniają, uruchamiasz sam i podajesz mi wynik. Każdą migrację zmieniającą bazę najpierw mi pokazujesz i uruchamiasz dopiero po moim "ok".
-- Plik `.env` (EXPO_PUBLIC_SUPABASE_URL i EXPO_PUBLIC_SUPABASE_ANON_KEY) jest lokalny i ignorowany przez Git: nigdy go nie wypisuj ani nie commituj. Nigdy nie używaj klucza service_role w aplikacji.
+- Plik `.env` (EXPO_PUBLIC_SUPABASE_URL i EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY, klucz `sb_publishable_...`) jest lokalny i ignorowany przez Git: nigdy go nie wypisuj ani nie commituj. Nigdy nie używaj klucza tajnego (`sb_secret_...`, dawniej service_role) w aplikacji. Od 2026-10-18 używamy tylko nowych kluczy Supabase; funkcja `diagnose-plant` czyta je z `SUPABASE_PUBLISHABLE_KEYS` / `SUPABASE_SECRET_KEYS` (klucz `default`).
 
 ## 2. Zatwierdzone decyzje
 

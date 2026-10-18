@@ -23,14 +23,15 @@ function fail(status: number, error: ErrorCode): Response {
   return Response.json({ error }, { status });
 }
 
-// Nowe klucze (publishable/secret) z zapasem na stare (anon/service_role)
-function publishableKey(): string {
-  const keys = Deno.env.get('SUPABASE_PUBLISHABLE_KEYS');
-  return keys ? JSON.parse(keys).default : Deno.env.get('SUPABASE_ANON_KEY')!;
-}
-function secretKey(): string {
-  const keys = Deno.env.get('SUPABASE_SECRET_KEYS');
-  return keys ? JSON.parse(keys).default : Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+// Tylko nowe klucze (publishable/secret): Supabase podaje je jako JSON z kluczami
+// nazwanymi, nasze nazywają się "default". Stare anon/service_role będą wyłączone
+function namedKey(variable: 'SUPABASE_PUBLISHABLE_KEYS' | 'SUPABASE_SECRET_KEYS'): string | null {
+  try {
+    const key = JSON.parse(Deno.env.get(variable) ?? '{}').default;
+    return typeof key === 'string' && key ? key : null;
+  } catch {
+    return null;
+  }
 }
 
 async function callGemini(apiKey: string, image: string, prompt: string, system: string) {
@@ -84,7 +85,13 @@ Deno.serve(async (req) => {
   if (!authHeader) return fail(401, 'unauthorized');
 
   const url = Deno.env.get('SUPABASE_URL')!;
-  const userClient = createClient(url, publishableKey(), {
+  const publishableKey = namedKey('SUPABASE_PUBLISHABLE_KEYS');
+  const secretKey = namedKey('SUPABASE_SECRET_KEYS');
+  if (!publishableKey || !secretKey) {
+    console.error('missing publishable or secret key');
+    return fail(500, 'serverError');
+  }
+  const userClient = createClient(url, publishableKey, {
     global: { headers: { Authorization: authHeader } },
     auth: { persistSession: false },
   });
@@ -150,7 +157,7 @@ Deno.serve(async (req) => {
     })),
   };
 
-  const admin = createClient(url, secretKey(), { auth: { persistSession: false } });
+  const admin = createClient(url, secretKey, { auth: { persistSession: false } });
   const { data: remaining, error: quotaError } = await admin.rpc('consume_diagnosis_quota', {
     p_user: userId,
   });
