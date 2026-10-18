@@ -41,6 +41,8 @@ const files = {
   'splash-icon.png': svg(512, placed(GREEN, 512, 480)),
   'splash-icon-dark.png': svg(512, placed(GREEN_DARK, 512, 480)),
   'favicon.png': svg(48, placed(GREEN, 48, 34), BG_LIGHT),
+  // Ikona powiadomień na pasku stanu Androida: cała biała na przezroczystym tle, 96x96
+  'notification-icon.png': svg(96, placed('#ffffff', 96, 84)),
 };
 
 const previewDir = process.argv[2];
