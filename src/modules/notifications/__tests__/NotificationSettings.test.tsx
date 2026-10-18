@@ -16,12 +16,21 @@ jest.mock("../scheduler", () => ({
   requestPermission: jest.fn(),
 }));
 jest.mock("../sync", () => ({ syncNotifications: jest.fn() }));
+jest.mock("@expo/vector-icons", () => ({ Ionicons: () => null }));
+jest.mock("../../../../modules/exact-alarm", () => ({
+  canScheduleExactAlarms: jest.fn(),
+  openExactAlarmSettings: jest.fn(),
+}));
 jest.mock("../store/notificationStore", () => ({
   useNotificationStore: jest.fn(),
 }));
 
 import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import { AppState, Linking, Platform } from "react-native";
+import {
+  canScheduleExactAlarms,
+  openExactAlarmSettings,
+} from "../../../../modules/exact-alarm";
 import { getPermissionState, requestPermission } from "../scheduler";
 import { useNotificationStore } from "../store/notificationStore";
 import { syncNotifications } from "../sync";
@@ -31,6 +40,8 @@ const mockStore = useNotificationStore as unknown as jest.Mock;
 const mockPermission = getPermissionState as jest.Mock;
 const mockRequest = requestPermission as jest.Mock;
 const mockSync = syncNotifications as jest.Mock;
+const mockExact = canScheduleExactAlarms as jest.Mock;
+const mockOpenExact = openExactAlarmSettings as jest.Mock;
 
 const setEnabled = jest.fn();
 const setTime = jest.fn();
@@ -60,6 +71,7 @@ beforeEach(() => {
   mockPermission.mockResolvedValue("granted");
   mockRequest.mockResolvedValue("granted");
   mockSync.mockResolvedValue("scheduled");
+  mockExact.mockReturnValue(true);
 });
 
 afterEach(() => {
@@ -199,5 +211,47 @@ describe("NotificationSettings", () => {
     await waitFor(() =>
       expect(utils.getByText("notifications.denied")).toBeTruthy(),
     );
+  });
+
+  test("brak pozwolenia na dokładne alarmy: ramka z przyciskiem do ustawień", async () => {
+    mockExact.mockReturnValue(false);
+    const utils = await setup({ enabled: true });
+
+    expect(utils.getByText("notifications.exactHint")).toBeTruthy();
+    await fireEvent.press(utils.getByTestId("notifications-exact-open"));
+    expect(mockOpenExact).toHaveBeenCalledTimes(1);
+  });
+
+  test("po powrocie z ustawień z pozwoleniem: ramka znika", async () => {
+    mockExact.mockReturnValue(false);
+    const utils = await setup({ enabled: true });
+    await waitFor(() => expect(listen).toHaveBeenCalled());
+    const onChange = listen.mock.calls[0][1];
+
+    mockExact.mockReturnValue(true);
+    await act(async () => {
+      await onChange("active");
+    });
+
+    expect(utils.queryByTestId("notifications-exact-hint")).toBeNull();
+  });
+
+  test("bez ramki: z pozwoleniem, przy wyłączonych powiadomieniach i przy zablokowanych powiadomieniach", async () => {
+    const withPermission = await setup({ enabled: true });
+    expect(withPermission.queryByTestId("notifications-exact-hint")).toBeNull();
+    withPermission.unmount();
+
+    mockExact.mockReturnValue(false);
+    const disabled = await setup({ enabled: false });
+    expect(disabled.queryByTestId("notifications-exact-hint")).toBeNull();
+    disabled.unmount();
+
+    // Zablokowane powiadomienia mają własny komunikat, ramka by go zagłuszała
+    mockPermission.mockResolvedValue("denied");
+    const blocked = await setup({ enabled: true });
+    await waitFor(() =>
+      expect(blocked.getByText("notifications.denied")).toBeTruthy(),
+    );
+    expect(blocked.queryByTestId("notifications-exact-hint")).toBeNull();
   });
 });

@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker, {
     DateTimePickerAndroid,
 } from "@react-native-community/datetimepicker";
@@ -13,6 +14,10 @@ import {
     Text,
     View,
 } from "react-native";
+import {
+    canScheduleExactAlarms,
+    openExactAlarmSettings,
+} from "../../../../modules/exact-alarm";
 import { useUi } from "../../../shared/ui/styles";
 import { createThemedStyles, useColors } from "../../../shared/ui/theme";
 import { getPermissionState, requestPermission } from "../scheduler";
@@ -33,6 +38,8 @@ export function NotificationSettings() {
   const [denied, setDenied] = useState(false);
   const [failed, setFailed] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
+  // Pozwolenie "Alarmy i przypomnienia": bez niego Android spóźnia powiadomienia
+  const [exact, setExact] = useState(canScheduleExactAlarms);
 
   // Zgodę można cofnąć w ustawieniach telefonu już po włączeniu przypomnienia
   useEffect(() => {
@@ -87,6 +94,16 @@ export function NotificationSettings() {
     return () => subscription.remove();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- nasłuch zależy tylko od widoczności komunikatu
   }, [denied]);
+
+  // Po powrocie z ustawień sprawdzamy pozwolenie ponownie. Plan powiadomień
+  // przelicza wtedy useNotificationSync, już z dokładnymi alarmami
+  useEffect(() => {
+    if (!enabled || exact) return;
+    const subscription = AppState.addEventListener("change", (status) => {
+      if (status === "active") setExact(canScheduleExactAlarms());
+    });
+    return () => subscription.remove();
+  }, [enabled, exact]);
 
   const changeTime = async (date: Date) => {
     setTime(date.getHours(), date.getMinutes());
@@ -161,6 +178,21 @@ export function NotificationSettings() {
           </Pressable>
         </View>
       )}
+      {enabled && !denied && !exact && (
+        <View testID="notifications-exact-hint" style={styles.exactBox}>
+          <View style={styles.exactRow}>
+            <Ionicons name="alarm-outline" size={20} color={colors.warning} />
+            <Text style={styles.exactText}>{t("notifications.exactHint")}</Text>
+          </View>
+          <Pressable
+            testID="notifications-exact-open"
+            hitSlop={8}
+            onPress={() => openExactAlarmSettings()}
+          >
+            <Text style={ui.link}>{t("notifications.openSettings")}</Text>
+          </Pressable>
+        </View>
+      )}
       {failed && <Text style={ui.error}>{t("notifications.failed")}</Text>}
     </View>
   );
@@ -171,5 +203,16 @@ const useStyles = createThemedStyles((c) =>
     section: { gap: 4 },
     label: { fontSize: 16, color: c.text },
     hint: { gap: 4 },
+    exactBox: {
+      gap: 8,
+      marginTop: 8,
+      padding: 12,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: c.border,
+      backgroundColor: c.surface,
+    },
+    exactRow: { flexDirection: "row", alignItems: "flex-start", gap: 8 },
+    exactText: { flex: 1, fontSize: 14, color: c.text },
   }),
 );

@@ -181,6 +181,7 @@
     "time": "Godzina",
     "denied": "Powiadomienia są zablokowane w ustawieniach telefonu",
     "openSettings": "Otwórz ustawienia",
+    "exactHint": "Powiadomienie może przyjść nawet godzinę później. Włącz „Alarmy i przypomnienia”, żeby przychodziło o czasie.",
     "failed": "Nie udało się zaplanować powiadomień. Spróbuj ponownie",
     "title_one": "{{count}} zadanie opieki na dziś",
     "title_few": "{{count}} zadania opieki na dziś",
