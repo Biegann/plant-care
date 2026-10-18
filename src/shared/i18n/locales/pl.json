@@ -240,6 +240,7 @@
     "errors": {
       "invalidName": "Nazwa ogrodu musi mieć od 1 do 60 znaków",
       "invalidCode": "Kod jest nieprawidłowy lub wygasł",
+      "tooManyAttempts": "Za dużo nieudanych prób. Spróbuj ponownie za godzinę",
       "alreadyMember": "Już należysz do tego ogrodu",
       "notAllowed": "Nie masz uprawnień do tej operacji",
       "notAuthenticated": "Zaloguj się ponownie",

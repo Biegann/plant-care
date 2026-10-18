@@ -54,6 +54,9 @@ describe("mapGardenError", () => {
     expect(mapGardenError({ message: "not_authenticated" })).toBe(
       "notAuthenticated",
     );
+    expect(mapGardenError({ message: "too_many_attempts" })).toBe(
+      "tooManyAttempts",
+    );
   });
 
   test("naruszenie ograniczenia nazwy i błąd nieznany", () => {
@@ -177,6 +180,25 @@ describe("joinGarden i createInvite", () => {
       error: "invalidCode",
     });
     expect(db.rpc).not.toHaveBeenCalled();
+  });
+
+  test("zły kod: funkcja zwraca null (próba zapisana do limitu) -> invalidCode", async () => {
+    db.rpc.mockResolvedValue({ data: null, error: null });
+    expect(await joinGarden("ABCD1234EF")).toEqual({
+      ok: false,
+      error: "invalidCode",
+    });
+  });
+
+  test("limit prób wyczerpany: tooManyAttempts", async () => {
+    db.rpc.mockResolvedValue({
+      data: null,
+      error: { message: "too_many_attempts" },
+    });
+    expect(await joinGarden("ABCD1234EF")).toEqual({
+      ok: false,
+      error: "tooManyAttempts",
+    });
   });
 
   test("błędy z bazy: zły kod i już jesteś członkiem", async () => {

@@ -9,7 +9,7 @@
 - [ ] Sprawdzić warunki komercyjnego użycia Gemini API (diagnoza AI); z rozpoznawania roślin i pogody zrezygnowaliśmy
 - [ ] Cena Gemini 3.8 Flash podwaja się od 1.01.2027 (wejście 1,50 USD, wyjście 7,50 USD za 1 mln tokenów); sprawdzić koszt i limit 5 diagnoz dziennie
 - [x] Przełącznik języka PL/EN w ustawieniach aplikacji
-- [ ] Ograniczyć liczbę prób wpisywania kodu zaproszenia (ochrona przed zgadywaniem) i rozważyć dłuższe kody
+- [x] (zrobione 18.10.2026: najwyżej 10 nieudanych prób na godzinę na konto, tabela `invite_attempts`; dłuższe kody niepotrzebne, 10 znaków szesnastkowych to ok. 1,1 biliona możliwości) Ograniczyć liczbę prób wpisywania kodu zaproszenia (ochrona przed zgadywaniem) i rozważyć dłuższe kody
 - [x] Dodać przekazywanie własności ogrodu (funkcja transfer_garden: zmiana ról właściciel/członek)
 - [x] Ekran powitalny przy pierwszym uruchomieniu (zamiast pustej zakładki Ogrody)
 - [ ] Skonfigurować uprawnienia aparatu i zdjęć w app.json (plugin expo-image-picker) przed pierwszą wersją instalacyjną

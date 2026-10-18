@@ -227,6 +227,7 @@
     "errors": {
       "invalidName": "The garden name must be 1 to 60 characters",
       "invalidCode": "The code is invalid or has expired",
+      "tooManyAttempts": "Too many failed attempts. Try again in an hour",
       "alreadyMember": "You already belong to this garden",
       "notAllowed": "You don't have permission to do this",
       "notAuthenticated": "Please log in again",

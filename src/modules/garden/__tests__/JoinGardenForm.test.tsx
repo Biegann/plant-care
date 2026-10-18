@@ -49,4 +49,18 @@ describe("JoinGardenForm", () => {
     expect(await utils.findByText("gardens.errors.alreadyMember")).toBeTruthy();
     expect(mockBack).not.toHaveBeenCalled();
   });
+
+  test("limit prób wyczerpany: komunikat o godzinie przerwy", async () => {
+    mockJoin.mockResolvedValue({ ok: false, error: "tooManyAttempts" });
+    const utils = await render(<JoinGardenForm />);
+    await fireEvent.changeText(
+      utils.getByTestId("garden-code-input"),
+      "ABCD1234EF",
+    );
+    await fireEvent.press(utils.getByTestId("join-garden-submit"));
+
+    expect(
+      await utils.findByText("gardens.errors.tooManyAttempts"),
+    ).toBeTruthy();
+  });
 });

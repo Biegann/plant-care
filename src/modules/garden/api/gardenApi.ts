@@ -24,6 +24,7 @@ export type GardenErrorCode =
   | "notAuthenticated"
   | "notMember"
   | "photosNotRemoved"
+  | "tooManyAttempts"
   | "unknown";
 export type GardenResult<T = null> =
   | { ok: true; data: T }
@@ -38,6 +39,7 @@ export function mapGardenError(error: DbError): GardenErrorCode {
   if (message === "not_owner") return "notAllowed";
   if (message === "not_member") return "notMember";
   if (message === "not_authenticated") return "notAuthenticated";
+  if (message === "too_many_attempts") return "tooManyAttempts";
   if (error.code === "23514") return "invalidName";
   return "unknown";
 }
@@ -272,6 +274,8 @@ export async function createInvite(
   return { ok: true, data: data as string };
 }
 
+// Błędny, wygasły albo użyty kod: funkcja zwraca null (zamiast wyjątku), żeby baza
+// mogła zapisać nieudaną próbę do limitu
 export async function joinGarden(code: string): Promise<GardenResult<string>> {
   if (!isValidInviteCode(code)) return { ok: false, error: "invalidCode" };
 
@@ -279,5 +283,6 @@ export async function joinGarden(code: string): Promise<GardenResult<string>> {
     p_code: normalizeInviteCode(code),
   });
   if (error) return fail(error);
+  if (!data) return { ok: false, error: "invalidCode" };
   return { ok: true, data: data as string };
 }
