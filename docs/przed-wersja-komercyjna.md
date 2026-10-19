@@ -3,6 +3,8 @@
 - [x] (zrobione 19.10.2026: kod z e-maila, ekran "Potwierdź e-mail") Włączyć "Confirm email" w Supabase (Authentication → Providers → Email)
 - [x] (zrobione 19.10.2026: `no-reply@plantcareapp.pl`, SPF/DKIM/DMARC PASS) Własna domena dla e-maili + rekordy SPF/DKIM/DMARC w Brevo (zamiast nadawcy z Gmaila)
 - [ ] Sprawdzić limity wysyłki e-maili i plan Brevo
+- [x] (zrobione 19.10.2026: `kontakt@` i `contact@plantcareapp.pl` przez ImprovMX na `chamsterek@wp.pl`, w WP wpadają do spamu) Adres kontaktowy w domenie
+- [ ] Odpowiadanie jako `kontakt@plantcareapp.pl` (np. Thunderbird + SMTP Brevo) i ewentualnie cel przekierowania, który nie wrzuca do spamu
 - [ ] Polityka prywatności i zgodność z RODO
 - [ ] Rozważyć logowanie przez Google/Apple (na iOS Apple wymaga wtedy "Zaloguj się przez Apple")
 - [ ] Test scenariuszy end-to-end w Maestro na wersji instalacyjnej
