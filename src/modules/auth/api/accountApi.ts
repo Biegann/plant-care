@@ -1,5 +1,5 @@
+import { FunctionsHttpError } from "@supabase/supabase-js";
 import { supabase } from "../../../shared/api/supabase";
-import { removeGardenPhotos } from "../../garden/api/gardenApi";
 import { useAuthStore } from "../hooks/useSession";
 import { mapAuthError } from "./authApi";
 
@@ -55,8 +55,21 @@ export async function getDeletionPlan(): Promise<AccountResult<DeletionPlan>> {
   };
 }
 
-// Kolejność: hasło -> blokada -> zdjęcia -> konto. Zdjęcia trzeba skasować przed
-// kontem (potem reguły Storage nie wpuszczą); gdy się nie uda, konto zostaje.
+const SERVER_CODES: AccountErrorCode[] = ["ownsSharedGarden", "photosNotRemoved"];
+
+export async function mapDeleteError(error: unknown): Promise<AccountErrorCode> {
+  if (!(error instanceof FunctionsHttpError)) return "unknown";
+  try {
+    const body = await (error.context as Response).json();
+    if (SERVER_CODES.includes(body?.error)) return body.error;
+  } catch {
+    // treść nie jest JSON-em, np. odpowiedź bramki Supabase
+  }
+  return "unknown";
+}
+
+// Hasło sprawdzamy ponownym logowaniem, resztę (blokada -> zdjęcia -> konto) robi
+// funkcja delete-account, ta sama, której używa strona plantcareapp.pl/delete-account
 export async function deleteAccount(
   password: string,
 ): Promise<AccountResult> {
@@ -70,23 +83,8 @@ export async function deleteAccount(
     return { ok: false, error: code === "rateLimited" ? "rateLimited" : "unknown" };
   }
 
-  const plan = await getDeletionPlan();
-  if (!plan.ok) return plan;
-  if (plan.data.blocking.length > 0)
-    return { ok: false, error: "ownsSharedGarden" };
-
-  for (const garden of plan.data.removed) {
-    const photos = await removeGardenPhotos(garden.id);
-    if (!photos.ok) return { ok: false, error: "photosNotRemoved" };
-  }
-
-  const { error } = await supabase.rpc("delete_my_account");
-  if (error) {
-    return {
-      ok: false,
-      error: error.message === "owns_shared_garden" ? "ownsSharedGarden" : "unknown",
-    };
-  }
+  const { error } = await supabase.functions.invoke("delete-account");
+  if (error) return { ok: false, error: await mapDeleteError(error) };
 
   // konta już nie ma, więc wystarczy zapomnieć sesję na telefonie;
   // reszta (powiadomienia, cache zapytań) dzieje się jak przy zwykłym wylogowaniu
