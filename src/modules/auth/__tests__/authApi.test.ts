@@ -7,6 +7,7 @@ jest.mock("../../../shared/api/supabase", () => ({
       resetPasswordForEmail: jest.fn(),
       verifyOtp: jest.fn(),
       updateUser: jest.fn(),
+      resend: jest.fn(),
     },
   },
 }));
@@ -15,9 +16,11 @@ import { supabase } from "../../../shared/api/supabase";
 import {
   mapAuthError,
   requestPasswordReset,
+  resendSignupCode,
   resetPasswordWithCode,
   signIn,
   signUp,
+  verifySignupCode,
 } from "../api/authApi";
 import { useAuthStore } from "../hooks/useSession";
 
@@ -59,6 +62,15 @@ describe("mapAuthError", () => {
     expect(mapAuthError({ code: "same_password" })).toBe("samePassword");
   });
 
+  test("niepotwierdzony e-mail", () => {
+    expect(mapAuthError({ code: "email_not_confirmed" })).toBe(
+      "emailNotConfirmed",
+    );
+    expect(mapAuthError({ message: "Email not confirmed" })).toBe(
+      "emailNotConfirmed",
+    );
+  });
+
   test("nieznany błąd", () => {
     expect(mapAuthError({ message: "cokolwiek" })).toBe("unknown");
   });
@@ -94,6 +106,78 @@ describe("signIn i signUp", () => {
     expect(await signUp("a@b.pl", "haslo1234")).toEqual({
       ok: false,
       error: "emailTaken",
+    });
+  });
+});
+
+describe("signUp a potwierdzanie e-maila", () => {
+  const user = { id: "u1", identities: [{ id: "i1" }] };
+
+  test("bez potwierdzania (jest sesja): needsConfirmation = false", async () => {
+    auth.signUp.mockResolvedValue({
+      data: { user, session: { access_token: "t" } },
+      error: null,
+    });
+    expect(await signUp("a@b.pl", "haslo1234")).toEqual({
+      ok: true,
+      data: { needsConfirmation: false },
+    });
+  });
+
+  test("z potwierdzaniem (brak sesji): needsConfirmation = true", async () => {
+    auth.signUp.mockResolvedValue({ data: { user, session: null }, error: null });
+    expect(await signUp("a@b.pl", "haslo1234")).toEqual({
+      ok: true,
+      data: { needsConfirmation: true },
+    });
+  });
+
+  test("użytkownik bez tożsamości oznacza zajęty adres", async () => {
+    auth.signUp.mockResolvedValue({
+      data: { user: { id: "u1", identities: [] }, session: null },
+      error: null,
+    });
+    expect(await signUp("a@b.pl", "haslo1234")).toEqual({
+      ok: false,
+      error: "emailTaken",
+    });
+  });
+});
+
+describe("resendSignupCode i verifySignupCode", () => {
+  test("wysyła kod rejestracji na przycięty adres", async () => {
+    auth.resend.mockResolvedValue({ error: null });
+    expect(await resendSignupCode(" a@b.pl ")).toEqual({ ok: true });
+    expect(auth.resend).toHaveBeenCalledWith({ type: "signup", email: "a@b.pl" });
+  });
+
+  test("ponowna wysyłka za wcześnie: rateLimited", async () => {
+    auth.resend.mockResolvedValue({
+      error: { code: "over_email_send_rate_limit" },
+    });
+    expect(await resendSignupCode("a@b.pl")).toEqual({
+      ok: false,
+      error: "rateLimited",
+    });
+  });
+
+  test("weryfikuje kod typu email", async () => {
+    auth.verifyOtp.mockResolvedValue({ error: null });
+    expect(await verifySignupCode(" a@b.pl ", " 123456 ")).toEqual({
+      ok: true,
+    });
+    expect(auth.verifyOtp).toHaveBeenCalledWith({
+      email: "a@b.pl",
+      token: "123456",
+      type: "email",
+    });
+  });
+
+  test("zły kod: invalidCode", async () => {
+    auth.verifyOtp.mockResolvedValue({ error: { code: "otp_expired" } });
+    expect(await verifySignupCode("a@b.pl", "000000")).toEqual({
+      ok: false,
+      error: "invalidCode",
     });
   });
 });

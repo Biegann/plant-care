@@ -264,6 +264,16 @@
       "changeEmail": "Change email address",
       "backToLogin": "Back to log in"
     },
+    "verify": {
+      "title": "Confirm your email",
+      "codeSent": "We sent a code to {{email}}. Enter it below to finish creating your account.",
+      "code": "Code from the email",
+      "confirm": "Confirm",
+      "resend": "Resend code",
+      "resendIn": "Resend code (in {{seconds}} s)",
+      "resent": "We sent a new code.",
+      "changeEmail": "Change email address"
+    },
     "errors": {
       "invalidEmail": "Enter a valid email address",
       "shortPassword": "Password must be at least 8 characters",
@@ -272,6 +282,7 @@
       "invalidCode": "The code is invalid or has expired",
       "rateLimited": "Too many attempts. Please try again in a moment",
       "samePassword": "The new password must be different from the old one",
+      "emailNotConfirmed": "Please confirm your email address first",
       "unknown": "Something went wrong. Please try again"
     }
   },

@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -9,7 +9,7 @@ import {
   Text,
 } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
-import { signIn, signUp } from "../api/authApi";
+import { resendSignupCode, signIn, signUp } from "../api/authApi";
 import { CredentialErrors, validateCredentials } from "../validation";
 import { useAuthStyles } from "./authStyles";
 import { useColors } from "../../../shared/ui/theme";
@@ -37,13 +37,33 @@ export function AuthForm({ mode }: Props) {
     if (Object.keys(errors).length > 0) return;
 
     setLoading(true);
-    const result = isLogin
-      ? await signIn(email, password)
-      : await signUp(email, password);
-    setLoading(false);
-
-    if (!result.ok) setFormError(result.error);
+    if (isLogin) {
+      const result = await signIn(email, password);
+      if (!result.ok && result.error === "emailNotConfirmed") {
+        // Nowy kod wysyłamy od razu; jeśli się nie uda (np. limit 60 s),
+        // ekran potwierdzenia pozwala wysłać go ponownie
+        await resendSignupCode(email);
+        setLoading(false);
+        goToVerifyEmail();
+        return;
+      }
+      setLoading(false);
+      if (!result.ok) setFormError(result.error);
+    } else {
+      const result = await signUp(email, password);
+      setLoading(false);
+      if (!result.ok) setFormError(result.error);
+      // Bez potwierdzania e-maila Supabase od razu loguje, a strażnik tras
+      // sam przenosi do aplikacji
+      else if (result.data.needsConfirmation) goToVerifyEmail();
+    }
   };
+
+  const goToVerifyEmail = () =>
+    router.push({
+      pathname: "/verify-email",
+      params: { email: email.trim() },
+    });
 
   return (
     <KeyboardAvoidingView

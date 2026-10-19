@@ -4,6 +4,7 @@ jest.mock("expo-router", () => {
   return {
     Link: ({ children }: { children?: unknown }) =>
       React.createElement(Text, null, children),
+    router: { push: jest.fn() },
   };
 });
 
@@ -14,14 +15,18 @@ jest.mock("react-i18next", () => ({
 jest.mock("../api/authApi", () => ({
   signIn: jest.fn(),
   signUp: jest.fn(),
+  resendSignupCode: jest.fn(),
 }));
 
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import { signIn, signUp } from "../api/authApi";
+import { router } from "expo-router";
+import { resendSignupCode, signIn, signUp } from "../api/authApi";
 import { AuthForm } from "../ui/AuthForm";
 
 const mockSignIn = signIn as jest.Mock;
 const mockSignUp = signUp as jest.Mock;
+const mockResend = resendSignupCode as jest.Mock;
+const mockPush = router.push as jest.Mock;
 
 async function fillAndSubmit(
   utils: Awaited<ReturnType<typeof render>>,
@@ -57,7 +62,10 @@ describe("AuthForm", () => {
   });
 
   test("rejestracja: wywołuje signUp", async () => {
-    mockSignUp.mockResolvedValue({ ok: true });
+    mockSignUp.mockResolvedValue({
+      ok: true,
+      data: { needsConfirmation: false },
+    });
     const utils = await render(<AuthForm mode="register" />);
     await fillAndSubmit(utils, "anna@example.com", "haslo1234");
 
@@ -65,6 +73,39 @@ describe("AuthForm", () => {
       expect(mockSignUp).toHaveBeenCalledWith("anna@example.com", "haslo1234"),
     );
     expect(mockSignIn).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  test("rejestracja z potwierdzaniem: przechodzi do ekranu kodu", async () => {
+    mockSignUp.mockResolvedValue({
+      ok: true,
+      data: { needsConfirmation: true },
+    });
+    const utils = await render(<AuthForm mode="register" />);
+    await fillAndSubmit(utils, " anna@example.com ", "haslo1234");
+
+    await waitFor(() =>
+      expect(mockPush).toHaveBeenCalledWith({
+        pathname: "/verify-email",
+        params: { email: "anna@example.com" },
+      }),
+    );
+  });
+
+  test("logowanie na niepotwierdzone konto: wysyła kod i przechodzi do ekranu kodu", async () => {
+    mockSignIn.mockResolvedValue({ ok: false, error: "emailNotConfirmed" });
+    mockResend.mockResolvedValue({ ok: false, error: "rateLimited" });
+    const utils = await render(<AuthForm mode="login" />);
+    await fillAndSubmit(utils, "anna@example.com", "haslo1234");
+
+    await waitFor(() =>
+      expect(mockPush).toHaveBeenCalledWith({
+        pathname: "/verify-email",
+        params: { email: "anna@example.com" },
+      }),
+    );
+    expect(mockResend).toHaveBeenCalledWith("anna@example.com");
+    expect(utils.queryByText("auth.errors.rateLimited")).toBeNull();
   });
 
   test("błąd z serwera: pokazuje komunikat", async () => {

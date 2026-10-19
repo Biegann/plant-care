@@ -270,6 +270,16 @@
       "changeEmail": "Zmień adres e-mail",
       "backToLogin": "Wróć do logowania"
     },
+    "verify": {
+      "title": "Potwierdź e-mail",
+      "codeSent": "Wysłaliśmy kod na adres {{email}}. Wpisz go poniżej, żeby dokończyć zakładanie konta.",
+      "code": "Kod z e-maila",
+      "confirm": "Potwierdź",
+      "resend": "Wyślij kod ponownie",
+      "resendIn": "Wyślij kod ponownie (za {{seconds}} s)",
+      "resent": "Wysłaliśmy nowy kod.",
+      "changeEmail": "Zmień adres e-mail"
+    },
     "errors": {
       "invalidEmail": "Podaj poprawny adres e-mail",
       "shortPassword": "Hasło musi mieć co najmniej 8 znaków",
@@ -278,6 +288,7 @@
       "invalidCode": "Kod jest nieprawidłowy lub wygasł",
       "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za chwilę",
       "samePassword": "Nowe hasło musi być inne niż poprzednie",
+      "emailNotConfirmed": "Najpierw potwierdź adres e-mail",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
   },

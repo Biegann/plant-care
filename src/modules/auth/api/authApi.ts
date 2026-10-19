@@ -7,8 +7,12 @@ export type AuthErrorCode =
   | "invalidCode"
   | "rateLimited"
   | "samePassword"
+  | "emailNotConfirmed"
   | "unknown";
 export type AuthResult = { ok: true } | { ok: false; error: AuthErrorCode };
+export type SignUpResult =
+  | { ok: true; data: { needsConfirmation: boolean } }
+  | { ok: false; error: AuthErrorCode };
 
 export function mapAuthError(error: {
   code?: string;
@@ -43,18 +47,30 @@ export function mapAuthError(error: {
   if (error.code === "same_password") {
     return "samePassword";
   }
+  if (
+    error.code === "email_not_confirmed" ||
+    message === "email not confirmed"
+  ) {
+    return "emailNotConfirmed";
+  }
   return "unknown";
 }
 
 export async function signUp(
   email: string,
   password: string,
-): Promise<AuthResult> {
-  const { error } = await supabase.auth.signUp({
+): Promise<SignUpResult> {
+  const { data, error } = await supabase.auth.signUp({
     email: email.trim(),
     password,
   });
-  return error ? { ok: false, error: mapAuthError(error) } : { ok: true };
+  if (error) return { ok: false, error: mapAuthError(error) };
+  // Przy włączonym potwierdzaniu e-maila Supabase nie zdradza, że adres jest zajęty:
+  // zwraca użytkownika bez tożsamości i bez błędu
+  if (data.user?.identities?.length === 0) {
+    return { ok: false, error: "emailTaken" };
+  }
+  return { ok: true, data: { needsConfirmation: !data.session } };
 }
 
 export async function signIn(
@@ -64,6 +80,27 @@ export async function signIn(
   const { error } = await supabase.auth.signInWithPassword({
     email: email.trim(),
     password,
+  });
+  return error ? { ok: false, error: mapAuthError(error) } : { ok: true };
+}
+
+export async function resendSignupCode(email: string): Promise<AuthResult> {
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email: email.trim(),
+  });
+  return error ? { ok: false, error: mapAuthError(error) } : { ok: true };
+}
+
+// Poprawny kod loguje użytkownika; strażnik tras sam przeniesie go do aplikacji
+export async function verifySignupCode(
+  email: string,
+  code: string,
+): Promise<AuthResult> {
+  const { error } = await supabase.auth.verifyOtp({
+    email: email.trim(),
+    token: code.trim(),
+    type: "email",
   });
   return error ? { ok: false, error: mapAuthError(error) } : { ok: true };
 }

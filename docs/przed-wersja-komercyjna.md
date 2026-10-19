@@ -1,6 +1,6 @@
 # Do zrobienia przed wersją komercyjną
 
-- [ ] Włączyć "Confirm email" w Supabase (Authentication → Providers → Email)
+- [x] (zrobione 19.10.2026: kod z e-maila, ekran "Potwierdź e-mail") Włączyć "Confirm email" w Supabase (Authentication → Providers → Email)
 - [ ] Własna domena dla e-maili + rekordy SPF/DKIM/DMARC w Brevo (zamiast nadawcy z Gmaila)
 - [ ] Sprawdzić limity wysyłki e-maili i plan Brevo
 - [ ] Polityka prywatności i zgodność z RODO
