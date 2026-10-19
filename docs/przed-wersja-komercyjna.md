@@ -1,7 +1,7 @@
 # Do zrobienia przed wersją komercyjną
 
 - [x] (zrobione 19.10.2026: kod z e-maila, ekran "Potwierdź e-mail") Włączyć "Confirm email" w Supabase (Authentication → Providers → Email)
-- [ ] Własna domena dla e-maili + rekordy SPF/DKIM/DMARC w Brevo (zamiast nadawcy z Gmaila)
+- [x] (zrobione 19.10.2026: `no-reply@plantcareapp.pl`, SPF/DKIM/DMARC PASS) Własna domena dla e-maili + rekordy SPF/DKIM/DMARC w Brevo (zamiast nadawcy z Gmaila)
 - [ ] Sprawdzić limity wysyłki e-maili i plan Brevo
 - [ ] Polityka prywatności i zgodność z RODO
 - [ ] Rozważyć logowanie przez Google/Apple (na iOS Apple wymaga wtedy "Zaloguj się przez Apple")
