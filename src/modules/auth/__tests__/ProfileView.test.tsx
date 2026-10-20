@@ -8,6 +8,9 @@ jest.mock("expo-router", () => ({
 }));
 
 jest.mock("../api/authApi", () => ({ signOut: jest.fn() }));
+jest.mock("../../../shared/utils/links", () => ({
+  openPrivacyPolicy: jest.fn(),
+}));
 
 jest.mock("../../notifications/ui/NotificationSettings", () => ({
   NotificationSettings: () => null,
@@ -26,12 +29,19 @@ jest.mock("../hooks/useSession", () => ({
 }));
 
 import { fireEvent, render } from "@testing-library/react-native";
+import { openPrivacyPolicy } from "../../../shared/utils/links";
 import { signOut } from "../api/authApi";
 import { ProfileView } from "../ui/ProfileView";
 
 afterEach(() => jest.clearAllMocks());
 
 describe("ProfileView", () => {
+  test("link Polityka prywatności otwiera politykę", async () => {
+    const utils = await render(<ProfileView />);
+    await fireEvent.press(utils.getByTestId("privacy-policy-link"));
+    expect(openPrivacyPolicy).toHaveBeenCalled();
+  });
+
   test("pokazuje adres e-mail zalogowanego użytkownika", async () => {
     const utils = await render(<ProfileView />);
     expect(utils.getByTestId("profile-email").props.children).toBe(

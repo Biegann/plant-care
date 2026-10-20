@@ -412,5 +412,10 @@
       "unauthorized": "Sesja wygasła. Zaloguj się ponownie.",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie."
     }
+  },
+  "legal": {
+    "privacyPolicy": "Polityka prywatności",
+    "registerNotice": "Zakładając konto, przyjmujesz do wiadomości zasady opisane w",
+    "privacyPolicyInSentence": "polityce prywatności"
   }
 }

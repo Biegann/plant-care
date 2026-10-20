@@ -406,5 +406,10 @@
       "unauthorized": "Your session has expired. Please log in again.",
       "unknown": "Something went wrong. Please try again."
     }
+  },
+  "legal": {
+    "privacyPolicy": "Privacy policy",
+    "registerNotice": "By creating an account, you acknowledge the rules described in the",
+    "privacyPolicyInSentence": "privacy policy"
   }
 }

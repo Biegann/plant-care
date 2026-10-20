@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 import { TextField } from "../../../shared/ui/TextField";
+import { openPrivacyPolicy } from "../../../shared/utils/links";
 import { resendSignupCode, signIn, signUp } from "../api/authApi";
 import { CredentialErrors, validateCredentials } from "../validation";
 import { useAuthStyles } from "./authStyles";
@@ -123,6 +124,19 @@ export function AuthForm({ mode }: Props) {
           </Text>
         )}
       </Pressable>
+
+      {!isLogin && (
+        <Text style={styles.notice}>
+          {t("legal.registerNotice")}{" "}
+          <Text
+            testID="privacy-policy-link"
+            style={styles.noticeLink}
+            onPress={openPrivacyPolicy}
+          >
+            {t("legal.privacyPolicyInSentence")}
+          </Text>
+        </Text>
+      )}
 
       {isLogin && (
         <Link href="/forgot-password" style={styles.link}>

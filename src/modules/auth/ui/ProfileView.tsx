@@ -5,6 +5,7 @@ import { NotificationSettings } from "../../notifications/ui/NotificationSetting
 import { LanguageSettings } from "../../language/ui/LanguageSettings";
 import { ThemeSettings } from "../../theme/ui/ThemeSettings";
 import { Screen } from "../../../shared/ui/Screen";
+import { openPrivacyPolicy } from "../../../shared/utils/links";
 import { useUi } from "../../../shared/ui/styles";
 import { signOut } from "../api/authApi";
 import { useSession } from "../hooks/useSession";
@@ -31,6 +32,9 @@ export function ProfileView() {
         onPress={() => signOut()}
       >
         <Text style={ui.buttonText}>{t("auth.logout")}</Text>
+      </Pressable>
+      <Pressable testID="privacy-policy-link" onPress={openPrivacyPolicy}>
+        <Text style={ui.link}>{t("legal.privacyPolicy")}</Text>
       </Pressable>
       <Pressable
         testID="delete-account-link"

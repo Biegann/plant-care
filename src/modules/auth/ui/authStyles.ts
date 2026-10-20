@@ -26,5 +26,7 @@ export const useAuthStyles = createThemedStyles((c) =>
     buttonText: { color: c.onPrimary, fontSize: 16, fontWeight: "600" },
     link: { textAlign: "center", marginTop: 12, color: c.primary },
     linkDisabled: { color: c.textMuted },
+    notice: { color: c.textMuted, fontSize: 13, textAlign: "center" },
+    noticeLink: { color: c.primary, fontSize: 13 },
   }),
 );

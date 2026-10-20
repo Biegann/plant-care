@@ -18,8 +18,13 @@ jest.mock("../api/authApi", () => ({
   resendSignupCode: jest.fn(),
 }));
 
+jest.mock("../../../shared/utils/links", () => ({
+  openPrivacyPolicy: jest.fn(),
+}));
+
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { router } from "expo-router";
+import { openPrivacyPolicy } from "../../../shared/utils/links";
 import { resendSignupCode, signIn, signUp } from "../api/authApi";
 import { AuthForm } from "../ui/AuthForm";
 
@@ -40,6 +45,17 @@ async function fillAndSubmit(
 
 describe("AuthForm", () => {
   afterEach(() => jest.clearAllMocks());
+
+  test("rejestracja: link do polityki prywatności otwiera politykę", async () => {
+    const utils = await render(<AuthForm mode="register" />);
+    await fireEvent.press(utils.getByTestId("privacy-policy-link"));
+    expect(openPrivacyPolicy).toHaveBeenCalled();
+  });
+
+  test("logowanie: bez linku do polityki prywatności", async () => {
+    const utils = await render(<AuthForm mode="login" />);
+    expect(utils.queryByTestId("privacy-policy-link")).toBeNull();
+  });
 
   test("puste pola: pokazuje błędy i nie wywołuje logowania", async () => {
     const utils = await render(<AuthForm mode="login" />);
