@@ -409,7 +409,7 @@
   },
   "legal": {
     "privacyPolicy": "Privacy policy",
-    "registerNotice": "By creating an account, you acknowledge the rules described in the",
+    "registerNotice": "By creating an account, you confirm that you are at least 18 years old and acknowledge the rules described in the",
     "privacyPolicyInSentence": "privacy policy"
   }
 }

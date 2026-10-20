@@ -8,7 +8,8 @@
 - [x] (zrobione 20.10.2026: https://plantcareapp.pl/privacy/ i /en/privacy/, link w Profilu i przy rejestracji) Polityka prywatności i zgodność z RODO
 - [ ] Rozważyć logowanie przez Google/Apple (na iOS Apple wymaga wtedy "Zaloguj się przez Apple")
 - [ ] Test scenariuszy end-to-end w Maestro na wersji instalacyjnej
-- [ ] Sprawdzić warunki komercyjnego użycia Gemini API (diagnoza AI); z rozpoznawania roślin i pogody zrezygnowaliśmy
+- [x] (zrobione 20.10.2026: warunki z 28.04.2026; płatny poziom dla EOG jest; jedyna niezgodność to wiek: aplikacja z Gemini API nie może być dla osób poniżej 18 lat, więc polityka i dopisek przy rejestracji mówią o 18 latach) Sprawdzić warunki komercyjnego użycia Gemini API (diagnoza AI); z rozpoznawania roślin i pogody zrezygnowaliśmy
+- [ ] KONIECZNIE w Play Console ("Grupa docelowa i treści"): grupa docelowa tylko 18+ (wymóg regulaminu Gemini API); nie zgłaszać aplikacji do programu "Dla rodzin"
 - [ ] Cena Gemini 3.8 Flash podwaja się od 1.01.2027 (wejście 1,50 USD, wyjście 7,50 USD za 1 mln tokenów); sprawdzić koszt i limit 5 diagnoz dziennie
 - [x] Przełącznik języka PL/EN w ustawieniach aplikacji
 - [x] (zrobione 18.10.2026: najwyżej 10 nieudanych prób na godzinę na konto, tabela `invite_attempts`; dłuższe kody niepotrzebne, 10 znaków szesnastkowych to ok. 1,1 biliona możliwości) Ograniczyć liczbę prób wpisywania kodu zaproszenia (ochrona przed zgadywaniem) i rozważyć dłuższe kody
