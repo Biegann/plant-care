@@ -42,4 +42,8 @@ example
 /ios
 /android
 
+# pliki robocze Gradle w lokalnych modułach natywnych
+modules/*/android/.gradle/
+modules/*/android/build/
+
 .env
