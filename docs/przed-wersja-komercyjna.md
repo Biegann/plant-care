@@ -6,7 +6,7 @@
 - [x] (zrobione 19.10.2026: `kontakt@` i `contact@plantcareapp.pl` przez ImprovMX na `chamsterek@wp.pl`, w WP wpadają do spamu) Adres kontaktowy w domenie
 - [ ] Odpowiadanie jako `kontakt@plantcareapp.pl` (np. Thunderbird + SMTP Brevo) i ewentualnie cel przekierowania, który nie wrzuca do spamu
 - [x] (zrobione 20.10.2026: https://plantcareapp.pl/privacy/ i /en/privacy/, link w Profilu i przy rejestracji) Polityka prywatności i zgodność z RODO
-- [ ] Rozważyć logowanie przez Google/Apple (na iOS Apple wymaga wtedy "Zaloguj się przez Apple")
+- [x] (ODRZUCONE 20.10.2026: za dużo pracy jak na zysk; konto Google nie ma hasła, więc trzeba by przebudować potwierdzanie usuwania konta w aplikacji i na stronie, do tego trzy klienty OAuth z odciskami SHA-1, łączenie kont z tym samym adresem i na iOS wymóg "Zaloguj się przez Apple") Rozważyć logowanie przez Google/Apple
 - [ ] Test scenariuszy end-to-end w Maestro na wersji instalacyjnej
 - [x] (zrobione 20.10.2026: warunki z 28.04.2026; płatny poziom dla EOG jest; jedyna niezgodność to wiek: aplikacja z Gemini API nie może być dla osób poniżej 18 lat, więc polityka i dopisek przy rejestracji mówią o 18 latach) Sprawdzić warunki komercyjnego użycia Gemini API (diagnoza AI); z rozpoznawania roślin i pogody zrezygnowaliśmy
 - [x] (zrobione 20.10.2026: `docs/bezpieczenstwo-danych-play.md`) Przygotować odpowiedzi do formularza "Bezpieczeństwo danych" (Data safety) w Google Play
